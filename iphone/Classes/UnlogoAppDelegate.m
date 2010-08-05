@@ -16,6 +16,7 @@
 @synthesize navigationController;
 @synthesize deviceToken;
 @synthesize endpoint;
+@synthesize ipAddress;
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -37,6 +38,8 @@
     return YES;
 }
 
+
+
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)_deviceToken {  
 	deviceToken =  _deviceToken;
 	[deviceToken retain];
@@ -47,6 +50,7 @@
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
     deviceToken = [NSData data]; //empty
     NSLog(@"Error in registration. Error: %@", err);
+	[[navigationController topViewController] synchronizeWithServer];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

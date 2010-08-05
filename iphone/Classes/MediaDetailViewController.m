@@ -11,8 +11,8 @@
 
 @implementation MediaDetailViewController
 
-@synthesize thumbnailView, statusLabel, typeLabel, uploadButton, viewOriginalButton, imageZoomController;
-
+@synthesize thumbnailView, uploadButton, viewOriginalButton, viewProcessedButton, imageZoomController;
+@synthesize statusLabel, typeLabel, mediaIDLabel;
 
 /*
  // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
@@ -43,7 +43,7 @@
 }
 
 
-- (void) setActiveItem:(NSDictionary*) item 
+- (void) setActiveItem:(NSDictionary*)item 
 {
 	currentItem = item;
 	
@@ -53,102 +53,12 @@
 	self.title = [currentItem objectForKey:@"title"];
 	statusLabel.text = status;
 	typeLabel.text = type;
+	mediaIDLabel.text = [currentItem objectForKey:@"media_id"];
 	thumbnailView.image = [UIImage imageWithContentsOfFile:[currentItem objectForKey:@"thumbnail"]];
 
-	if(![status isEqualToString:@"new"])
-	{
-		[uploadButton setHidden:YES];
-	}
-	
-}
 
-- (IBAction)viewOriginal:(id)sender
-{
-	NSString* path = [currentItem objectForKey:@"filename"];
-	NSString* type = [currentItem objectForKey:@"type"];
-	if(path == NULL)
-	{
-		NSString* message = [NSString stringWithFormat:@"Can't find %@!", path];
-		UIAlertView *alert = [[UIAlertView alloc] 
-							  initWithTitle:@"Can't Find Video!" 
-							  message:message
-							  delegate:self
-							  cancelButtonTitle:@"Ok" 
-							  otherButtonTitles:nil];
-		
-		[alert setTag:ALERT_VIDEO_MISSING];
-		[alert show];
-		[alert release];
-	}
-	else if ([type isEqualToString:@"photo"])
-	{
-		[imageZoomController setPhoto:path];
-		[[self parentViewController] pushViewController:imageZoomController animated:YES];
-	}
-	else if ([type isEqualToString:@"video"])
-	{
-		NSLog(@"Attempting to play %@", path);
-		
-		// Create custom movie player   
-		moviePlayer = [[[CustomMoviePlayerViewController alloc] initWithPath:path] autorelease];
-		
-		// Show the movie player as modal
-		[self presentModalViewController:moviePlayer animated:YES];
-		
-		// Prep and play the movie
-		[moviePlayer readyPlayer]; 
-	}
-}
-
-
-- (IBAction)dismissZoomView:(id)sender
-{
-	[self dismissModalViewControllerAnimated:YES];	
-}
-
-- (IBAction)doUpload:(id)sender
-{
-	NSString* path = [currentItem objectForKey:@"filename"];
-	NSString* type = [currentItem objectForKey:@"type"];
-	
-	ASIFormDataRequest *uploadRequest = [[ASIFormDataRequest alloc] initWithURL:appDelegate.endpoint];
-	
-	if ([type isEqualToString:@"photo"])
-	{
-		[uploadRequest setData:[NSData dataWithContentsOfFile:path] withFileName:@"image.jpg" andContentType:@"image/jpeg" forKey:@"file"];
-	}
-	else if ([type isEqualToString:@"video"])
-	{
-		[uploadRequest setFile:path forKey:@"file"];
-		[uploadRequest setShouldStreamPostDataFromDisk:YES];
-	}
-
-	[uploadRequest setShowAccurateProgress:YES];
-	[uploadRequest setDelegate:self];
-	[uploadRequest setDidFinishSelector:@selector(uploadDone:)];
-	[uploadRequest setDidFailSelector:@selector(uploadWentWrong:)];
-	[uploadRequest setPostValue:@"upload" forKey:@"action"];
-	[uploadRequest setPostValue:deviceUDID forKey:@"udid"];
-	[uploadRequest setPostValue:deviceName forKey:@"device_name"];
-	[uploadRequest setData:appDelegate.deviceToken withFileName:@"token.bin" andContentType:@"application/octet-stream" forKey:@"device_token"];
-	
-	uploadProgressAlert = [[UIAlertView alloc] initWithTitle: @"Uploading... Please wait."
-							message: @" "
-							delegate: self
-							cancelButtonTitle: @"Cancel"
-							otherButtonTitles: nil];
-	[uploadProgressAlert setTag:ALERT_UPLOAD_CANCELLED];
-	
-	UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0f, 50.0f, 250.0f, 90.0f)];
-	
-	[uploadProgressAlert addSubview:progressView];
-	
-	
-	[uploadRequest setUploadProgressDelegate:progressView];
-	[uploadRequest startAsynchronous];
-	
-	[progressView release];
-	[uploadProgressAlert show];
+	[uploadButton setHidden:![status isEqualToString:@"new"]];
+	[viewProcessedButton setHidden:![status isEqualToString:@"done"]];
 }
 
 
@@ -190,6 +100,110 @@
 }
 
 
+#pragma mark -
+#pragma mark ButtonActions
+
+- (IBAction)viewProcessed:(id)sender
+{
+	NSLog(@"View Processed");
+}
+
+- (IBAction)viewOriginal:(id)sender
+{
+	NSString* path = [currentItem objectForKey:@"path"];
+	NSString* type = [currentItem objectForKey:@"type"];
+	if(path == NULL)
+	{
+		NSString* message = [NSString stringWithFormat:@"Can't find %@!", path];
+		UIAlertView *alert = [[UIAlertView alloc] 
+							  initWithTitle:@"Can't Find Video!" 
+							  message:message
+							  delegate:self
+							  cancelButtonTitle:@"Ok" 
+							  otherButtonTitles:nil];
+		
+		[alert setTag:ALERT_VIDEO_MISSING];
+		[alert show];
+		[alert release];
+	}
+	else if ([type isEqualToString:@"image"])
+	{
+		[imageZoomController setPhoto:path];
+		[[self parentViewController] pushViewController:imageZoomController animated:YES];
+	}
+	else if ([type isEqualToString:@"video"])
+	{
+		NSLog(@"Attempting to play %@", path);
+		
+		// Create custom movie player   
+		moviePlayer = [[[CustomMoviePlayerViewController alloc] initWithPath:path] autorelease];
+		
+		// Show the movie player as modal
+		[self presentModalViewController:moviePlayer animated:YES];
+		
+		// Prep and play the movie
+		[moviePlayer readyPlayer]; 
+	}
+}
+
+/*
+- (IBAction)dismissZoomView:(id)sender
+{
+	[self dismissModalViewControllerAnimated:YES];	
+}
+*/
+
+
+- (IBAction)doUpload:(id)sender
+{
+	NSString* path = [currentItem objectForKey:@"path"];
+	NSString* type = [currentItem objectForKey:@"type"];
+	NSString* media_id = [currentItem objectForKey:@"media_id"];
+	NSString* title = [currentItem objectForKey:@"title"];
+	
+	ASIFormDataRequest *uploadRequest = [[ASIFormDataRequest alloc] initWithURL:appDelegate.endpoint];
+	
+	if ([type isEqualToString:@"image"])
+	{
+		[uploadRequest setData:[NSData dataWithContentsOfFile:path] withFileName:@"image.jpg" andContentType:@"image/jpeg" forKey:@"file"];
+	}
+	else if ([type isEqualToString:@"video"])
+	{
+		[uploadRequest setFile:path forKey:@"file"];
+		[uploadRequest setShouldStreamPostDataFromDisk:YES];
+	}
+	
+	[uploadRequest setPostValue:@"upload" forKey:@"action"];
+	[uploadRequest setPostValue:deviceUDID forKey:@"udid"];
+	[uploadRequest setPostValue:deviceName forKey:@"device_name"];
+	[uploadRequest setData:appDelegate.deviceToken withFileName:@"token.bin" andContentType:@"application/octet-stream" forKey:@"device_token"];
+	[uploadRequest setPostValue:media_id forKey:@"media_id"];
+	[uploadRequest setPostValue:title forKey:@"title"];
+	[uploadRequest setShowAccurateProgress:YES];
+	[uploadRequest setDelegate:self];
+	[uploadRequest setDidFinishSelector:@selector(uploadDone:)];
+	[uploadRequest setDidFailSelector:@selector(uploadWentWrong:)];
+	
+	uploadProgressAlert = [[UIAlertView alloc] initWithTitle: @"Uploading... Please wait."
+													 message: @" "
+													delegate: self
+										   cancelButtonTitle: @"Cancel"
+										   otherButtonTitles: nil];
+	[uploadProgressAlert setTag:ALERT_UPLOAD_CANCELLED];
+	
+	UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0f, 50.0f, 250.0f, 90.0f)];
+	
+	[uploadProgressAlert addSubview:progressView];
+	
+	
+	[uploadRequest setUploadProgressDelegate:progressView];
+	[uploadRequest startAsynchronous];
+	
+	[progressView release];
+	[uploadProgressAlert show];
+}
+
+
 
 #pragma mark -
 #pragma mark HTTPRequestCallbacks
@@ -203,10 +217,14 @@
 	NSLog(@"Response: %@", responseString);
 	
 	NSDictionary *dictionary = [responseString JSONValue];
-	NSString* statusString = [dictionary objectForKey:@"status"];
-	//[statusLabel setText:statusString];
 	
-	if([statusString isEqualToString:@"ok"]) {	
+	NSLog(@"!!!  Make sure this is a valid JSON string! ");
+	
+	
+	NSString* statusString = [dictionary objectForKey:@"status"];
+
+	if([statusString isEqualToString:@"ok"])
+	{	
 		UIAlertView *alert = [[UIAlertView alloc] 
 							  initWithTitle:@"Upload Successful!" 
 							  message:@"Your upload was successful.  You will be notified when your upload has been processed." 
@@ -217,7 +235,7 @@
 		[alert show];
 		[alert release];
 		
-		[currentItem setValue:@"processing" forKey:@"status"];
+		[currentItem setValue:@"uploaded" forKey:@"status"];
 	}
 	
 	if([statusString isEqualToString:@"error"])

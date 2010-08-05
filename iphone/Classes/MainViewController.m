@@ -10,7 +10,6 @@
 
 
 @implementation MainViewController
-
 @synthesize myTableView, aboutView, settingsView, videoDetailView;
 
 /*
@@ -23,19 +22,11 @@
 }
 */
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
 	NSLog(@"viewWillAppear");
 	[self.navigationController setToolbarHidden:NO animated:YES];
 	[self.myTableView deselectRowAtIndexPath:self.myTableView.indexPathForSelectedRow animated:NO];
-	
 	[self.myTableView reloadData];
 }
 
@@ -45,17 +36,29 @@
 	
 	// Initialize some shit.
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-	prefs = [NSUserDefaults standardUserDefaults];
-	menuList = [[NSMutableArray alloc] init];
+	//prefs = [NSUserDefaults standardUserDefaults];
+	appPrefs = [Preferences sharedInstance];
 	deviceUDID = [[[UIDevice currentDevice] uniqueIdentifier] retain];
 	deviceName = [[[UIDevice currentDevice] name] retain];
+	ipAddress = [[MainViewController deviceIPAdress] retain];
 	fileManager = [[NSFileManager alloc] init];
 	appDelegate = [[UIApplication sharedApplication] delegate];
-	documentsDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0] retain];
-	NSLog(@"udid: %@, name: %@", deviceUDID, deviceName);
+	NSLog(@"udid: %@, name: %@, ip:%@", deviceUDID, deviceName, ipAddress);
 
-	// Make the Thumbnail directory if it doesn't exist.
-	NSString* thumbnailsDirectory = [documentsDirectory stringByAppendingPathComponent:@"thumbnails"];
+	
+	// Make the media directory if it doesn't exist.
+	documentsDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0] retain];
+	mediaDirectory = [[documentsDirectory stringByAppendingPathComponent:@"media"] retain];
+	if(![fileManager fileExistsAtPath:mediaDirectory isDirectory:nil]) {
+		NSError* err;
+		if(![fileManager createDirectoryAtPath:mediaDirectory withIntermediateDirectories:YES attributes:nil error:&err]) {
+			NSLog(@"Err desc-%@", [err localizedDescription]);
+			NSLog(@"Err reason-%@", [err localizedFailureReason]);
+		}
+	}
+	
+	// Make the Thumbnails directory if it doesn't exist.
+	thumbnailsDirectory = [[documentsDirectory stringByAppendingPathComponent:@"thumbnails"] retain];
 	if(![fileManager fileExistsAtPath:thumbnailsDirectory isDirectory:nil]) {
 		NSError* err;
 		if(![fileManager createDirectoryAtPath:thumbnailsDirectory withIntermediateDirectories:YES attributes:nil error:&err]) {
@@ -64,28 +67,143 @@
 		}
 	}
 	
-	// First try to load the "media" objects from the user prefs
-	[self loadTableFromUserPrefs];
+	NSLog(@"Directories:\n\tdocs: %@\n\tmedia: %@\n\tthumbs: %@", documentsDirectory, mediaDirectory, thumbnailsDirectory);
 	
-	// Also look in the documents directory for any stragglers
-	[self scanDocumentsDirectory];
-
-	
+	[appPrefs loadPrefs];
+	[self.myTableView reloadData];
     [super viewDidLoad];
 }
 
 
+
+/*
+- (void) loadTableFromUserPrefs
+{
+	// Try to load up previously-added videos
+	NSArray	*media = [prefs objectForKey:@"media"];
+	
+	
+	if(media != nil)
+	{
+		NSDictionary* item;
+		NSLog(@"Media found! %d items. Loading from defaults.", [media count]);
+		
+		BOOL alreadyInTable, isDir, fileExists;
+		NSString* fullPath;
+		
+		for (int i = 0; i < [media count]; i++)
+		{
+			item = [media objectAtIndex:i];
+			fullPath = [item objectForKey:@"path"];
+			alreadyInTable = [self fileExistsInTable: fullPath];
+			fileExists = [fileManager fileExistsAtPath:fullPath isDirectory:&isDir];
+			
+			if(fileExists && !alreadyInTable && !isDir)
+			{
+				NSLog(@"loadTableFromUserPrefs adding %@", fullPath);
+				[mediaItems addObject:item];
+			}
+			else
+			{
+				NSLog(@"loadTableFromUserPrefs Skipping: %@", fullPath);
+			}
+		}
+	}
+	[self.myTableView reloadData];
+}
+
+- (void) loadUserMedia
+{
+	NSError*		err;
+	NSArray*		mediaDirContents = [fileManager contentsOfDirectoryAtPath:mediaDirectory error:&err];
+	
+	if (err != NULL) {
+		NSLog(@"WARNING:  Couldn't get contents of documents directory!");
+		NSLog(@"Err desc-%@", [err localizedDescription]);
+		NSLog(@"Err reason-%@", [err localizedFailureReason]);
+		return;
+	}
+	
+	NSDictionary*	item;
+	BOOL isDir, fileExists;
+	NSString *media_id, *filename, *fullPath, *thumbnailPath, *title;
+	
+	for(int i = 0; i<[mediaDirContents count]; i++)
+	{
+		filename = [mediaDirContents objectAtIndex: i];
+		fullPath = [mediaDirectory stringByAppendingPathComponent:filename];
+		
+		if(![self getItemByPath:fullPath item:&item]) {
+			
+			fileExists = [fileManager fileExistsAtPath:fullPath isDirectory:&isDir];
+			media_id = [filename stringByDeletingPathExtension];
+			thumbnailPath = [NSString stringWithFormat:@"%@/%@.jpg", thumbnailsDirectory, media_id]; 
+			
+			if(fileExists && !isDir)
+			{
+				NSLog(@"scanDocumentsDirectory adding: %@", fullPath);
+				if ([[filename pathExtension] isEqualToString: @"mov"])
+				{
+					// Add the media to the menuList, which populates the tableView
+					NSArray *keys = [NSArray arrayWithObjects:@"path", @"type", @"title", @"thumbnail", @"title", @"status", nil];
+					NSArray *objects = [NSArray arrayWithObjects: fullPath, @"video", filename, thumbnailPath, title, @"unknown", nil];
+					NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+					[mediaItems addObject:dictionary];
+				}
+				
+				if ([[filename pathExtension] isEqualToString: @"jpg"])
+				{
+					// Add the media to the menuList, which populates the tableView
+					NSArray *keys = [NSArray arrayWithObjects:@"path", @"type", @"title", @"thumbnail", @"title", @"status", nil];
+					NSArray *objects = [NSArray arrayWithObjects: fullPath, @"image", filename, thumbnailPath, title, @"unknown", nil];
+					NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
+					[mediaItems addObject:dictionary];
+				}
+			}
+			
+		}
+	}
+	[self.myTableView reloadData];
+}
+*/
+
++ (NSString *)deviceIPAdress
+{
+	InitAddresses();
+	GetIPAddresses();
+	GetHWAddresses();
+	return [NSString stringWithFormat:@"%s", ip_names[1]];
+}
+
+
+- (NSString*) generateMediaID
+{
+	NSString* ipStr = [ipAddress stringByReplacingOccurrencesOfString:@"." withString:@""];
+	long unixtime = (long)[[NSDate date] timeIntervalSince1970];
+	NSString* mediaID = [NSString stringWithFormat:@"%@-%04x", ipStr, unixtime];
+	return mediaID;
+}
+
+/*
+ This is called by the AppDelegate when the device has received (or not received) the device token
+ We need to send it so that we can send push notifications.
+ */
 - (void) synchronizeWithServer 
 {
+	NSString* local = [[appPrefs getMediaArray] JSONFragment];
+
 	ASIFormDataRequest *request = [[[ASIFormDataRequest alloc] initWithURL:appDelegate.endpoint] retain];
 	[request setDelegate:self];
 	[request setPostValue:deviceUDID forKey:@"udid"];
 	[request setPostValue:@"sync" forKey:@"action"];
+	[request setPostValue:local  forKey:@"media"];
 	[request setPostValue:deviceName forKey:@"device_name"];
 	[request setData:appDelegate.deviceToken withFileName:@"token.bin" andContentType:@"application/octet-stream" forKey:@"device_token"];
 	[request setDidFinishSelector:@selector(syncDone:)];
 	[request setDidFailSelector:@selector(syncWentWrong:)];
 	[request startAsynchronous];	
+	
+	NSLog(@"Sync sending udid: %@ name: %@: %@", deviceUDID, deviceName, local);
 }
 
 /*
@@ -119,8 +237,11 @@
 
 - (void)dealloc {
 	NSLog(@"dealloc");
+	[appPrefs savePrefs];
+	
+	
 	[myTableView release];
-	[menuList release];
+	[appPrefs release];
 	[aboutView release];
 	[videoDetailView release];
 	[settingsView release];
@@ -134,7 +255,7 @@
 //--------------------------------------------------------------
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return menuList.count;
+	return [appPrefs numMediaItems];
 }
 
 //--------------------------------------------------------------
@@ -144,7 +265,7 @@
 	UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 	
 	int i = indexPath.row;
-	NSDictionary* entry = [menuList objectAtIndex:i];
+	NSDictionary* entry = [[appPrefs getMediaArray] objectAtIndex:i];
 	NSString* thumbnail = [entry objectForKey:@"thumbnail"];
 	if([fileManager fileExistsAtPath:thumbnail])
 	{
@@ -157,17 +278,23 @@
 		NSLog(@"Silly rabbit -- %@ doesn't exist.", thumbnail);
 	}
 	
-	if(![fileManager fileExistsAtPath:[entry objectForKey:@"filename"]]) {
-		NSLog(@"We've got problems.  %@ doesn't exist.", [entry objectForKey:@"filename"]);
+	if(![fileManager fileExistsAtPath:[entry objectForKey:@"path"]])
+	{
+		NSLog(@"We've got problems.  %@ doesn't exist.", [entry objectForKey:@"path"]);
 	}
 	
-
+	NSDate* date_added = [NSDate dateWithString:[entry objectForKey:@"date_added"]];
+	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *formattedDateString = [dateFormatter stringFromDate:date_added];
+	
 	cell.textLabel.lineBreakMode = UILineBreakModeWordWrap;
 	cell.textLabel.numberOfLines = 3;
 	cell.textLabel.font = [UIFont fontWithName:@"TrebuchetMS-Bold" size:17.0];
 	cell.textLabel.text = [NSString stringWithFormat:@"%@\n%@\nstatus: %@", 
 						   [entry objectForKey:@"title"], 
-						   [entry objectForKey:@"shortName"],
+						   formattedDateString,
 						   [entry objectForKey:@"status"]];
 	return cell;
 }
@@ -179,7 +306,7 @@
 //--------------------------------------------------------------
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[videoDetailView setActiveItem: [menuList objectAtIndex: indexPath.row]];
+	[videoDetailView setActiveItem: [appPrefs getMediaItemAtIndex:indexPath.row]];
 	[self.navigationController pushViewController:videoDetailView animated:YES];
 	[self.navigationController setToolbarHidden:YES animated:YES];
 }
@@ -239,85 +366,93 @@
 	
 	NSLog(@"didFinishPickingMediaWithInfo");
 	
-	NSURL			*mediaURL	= [info objectForKey:UIImagePickerControllerMediaURL];
-	NSString		*mediaType	= [info objectForKey:UIImagePickerControllerMediaType];
-	NSError			*err;
-	NSArray			*keys, *objects;	// This will be put into the menuList array and appear in the table.
+	NSError					*err;
+	NSURL					*mediaURL	= [info objectForKey:UIImagePickerControllerMediaURL];
+	NSString				*mediaType	= [info objectForKey:UIImagePickerControllerMediaType];
+	NSMutableDictionary		*mediaItem	= [[NSMutableDictionary dictionary] retain];
+	NSString				*media_id	= [self generateMediaID];
+	NSString				*timestamp	= [[NSDate date] description];
+
+	
+	[mediaItem setObject:media_id	forKey:@"media_id"];
+	[mediaItem setObject:@"new"		forKey:@"status"];
+	[mediaItem setObject:timestamp	forKey:@"date_added"];
 	
 	if ([mediaType isEqualToString:@"public.image"])
 	{
 		NSLog(@"image found.");
+		
+		// Save the image to the documents directory.
+		NSString* title = [NSString stringWithFormat:@"Image %d", [appPrefs numMediaItems]+1];
 		UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage]; 
 		NSData* imageData = UIImageJPEGRepresentation(image, 75);
-
-		// Save the image to the documents directory.
-		NSString* imageName = [[NSString alloc] initWithFormat:@"image_%d.jpg", menuList.count];
-		NSString* fullPathToImage = [documentsDirectory stringByAppendingPathComponent:imageName];
-		NSLog(@"Saving %@ to disk", fullPathToImage);
-		if([imageData writeToFile:fullPathToImage options:NSDataWritingAtomic error:&err]) {
-			NSLog(@"Successfully saved image %@ to file.", fullPathToImage);
+		NSString* newPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", mediaDirectory, media_id];
+		if([imageData writeToFile:newPath options:NSDataWritingAtomic error:&err]) {
+			NSLog(@"Successfully saved image %@ to file.", newPath);
 		} else {
-			NSLog(@"Error:  Could not write %@ to file.", fullPathToImage);
-			NSLog(@"Err desc-%@", [err localizedDescription]);
-			NSLog(@"Err reason-%@", [err localizedFailureReason]);
+			NSLog(@"Error:  Could not write %@ to file.\nErr desc-%@\nErr reason-%@", 
+					newPath, [err localizedDescription], [err localizedFailureReason]);
 			return;
 		}
 		
 		// Make and save a tiny thumbnail image
 		UIImage* thumb = [MainViewController imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(70, 70)];
-		NSData* thumbData = UIImageJPEGRepresentation(thumb, 70);
-		NSString* thumbName = [[NSString alloc] initWithFormat:@"thumbnails/%@", imageName];
-		NSString* fullPathToThumb = [documentsDirectory stringByAppendingPathComponent:thumbName];
-		if([thumbData writeToFile:fullPathToThumb atomically:NO]) {
-			NSLog(@"Saved thumbnail to %@.", fullPathToThumb);
+		NSData* thumbnailData = UIImageJPEGRepresentation(thumb, 70);
+		NSString* thumbnailPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", thumbnailsDirectory, media_id];
+		if([thumbnailData writeToFile:thumbnailPath atomically:NO]) {
+			NSLog(@"Saved thumbnail to %@.", thumbnailPath);
 		} else {
-			NSLog(@"Error:  Could not write %@ to file.", fullPathToThumb);
-			NSLog(@"Err desc-%@", [err localizedDescription]);
-			NSLog(@"Err reason-%@", [err localizedFailureReason]);
+			NSLog(@"Error:  Could not write %@ to file. \nErr desc-%@\nErr reason-%@", 
+				  thumbnailPath, [err localizedDescription], [err localizedFailureReason]);
+
 		}
 
 		// Add the media to the menuList, which populates the tableView
-		NSString* title = [[imageName stringByDeletingPathExtension] stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-		keys = [NSArray arrayWithObjects:@"filename", @"type", @"thumbnail", @"shortName", @"title", @"status", nil];
-		objects = [NSArray arrayWithObjects:fullPathToImage, @"photo", fullPathToThumb, imageName, title, @"new", nil];
+		[mediaItem setObject:newPath			forKey:@"path"];
+		[mediaItem setObject:@"image"		forKey:@"type"];
+		[mediaItem setObject:thumbnailPath	forKey:@"thumbnail"];
+		[mediaItem setObject:title			forKey:@"title"];
 
-
-		// Save to album if the user recorded a new video
+		// Save to album if the user took a new picture
 		if(!usingLibraryMedia)
 		{
 			NSLog(@"Saving image to album.");
-			UIImage* savedImage = [[UIImage alloc] initWithContentsOfFile:fullPathToImage];
-			UIImageWriteToSavedPhotosAlbum(savedImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+			UIImageWriteToSavedPhotosAlbum(image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
 		}
 	}
 	else if ([mediaType isEqualToString:@"public.movie"])
 	{
-		NSLog(@"video found: %@", [mediaURL path]);
-		NSString *videoFilePath	= [[mediaURL path] retain];
-
+		
 		// Move the video file to a better location
 		// We want to move it regardless of whether it is from the album or not because 
 		// the iOS makes a compressed/cropped copy of the file anyway
-		NSString* shortName = [[NSString alloc] initWithFormat:@"video_%d.mov", menuList.count];
-		NSString* newPath = [documentsDirectory stringByAppendingPathComponent:shortName];
-		
-		if([fileManager copyItemAtPath:videoFilePath toPath:newPath error:&err])
-		{
-			NSLog(@"Moved %@ to %@", videoFilePath, newPath);
+		NSString *title = [NSString stringWithFormat:@"Video %d", [appPrefs numMediaItems]+1];
+		NSString *currentPath	= [[mediaURL path] retain];
+		NSString *newPath = [NSString stringWithFormat:@"%@/%@.mov", mediaDirectory, media_id];
+		if([fileManager copyItemAtPath:currentPath toPath:newPath error:&err]) {
+			NSLog(@"Moved %@ to %@", currentPath, newPath);
 		}
-		else
-		{
-			NSLog(@"Error:  Could not copy %@ to %@.", videoFilePath, newPath);
-			NSLog(@"Err desc-%@", [err localizedDescription]);
-			NSLog(@"Err reason-%@", [err localizedFailureReason]);
+		else {
+			NSLog(@"Error:  Could not copy %@ to %@.\nErr desc-%@\nErr reason-%@", 
+				  currentPath, newPath, [err localizedDescription], [err localizedFailureReason]);
 		}
 		
 		// Save to album if the user recorded a new video
 		UIImage* viewThumb;
-		if(!usingLibraryMedia)
+		if(usingLibraryMedia)
+		{
+			// Images that are already in the library probably don't have thumbnails, so we have to cheat.
+			// Make a stupid little thumbnail image for the upload screen
+			CGSize sixzevid=CGSizeMake(picker.view.bounds.size.width,picker.view.bounds.size.height-100);
+			UIGraphicsBeginImageContext(sixzevid);
+			[picker.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+			viewThumb = UIGraphicsGetImageFromCurrentImageContext();
+			UIGraphicsEndImageContext();
+		}
+		else
 		{
 			// Find the system-made thumbnail
-			NSString *thumbPath = [MainViewController getThumbnailPathForVideo:videoFilePath];
+			NSString *thumbPath = [MainViewController getThumbnailPathForVideo:currentPath];
 			NSLog(@"Found a video thumbnail at %@", thumbPath);
 			viewThumb = [[[UIImage alloc] initWithContentsOfFile:thumbPath] retain];
 			
@@ -330,33 +465,24 @@
 				NSLog(@"video at path is not compatible with saved photos album");
 			}
 		}
-		else
-		{
-			// Make a stupid little thumbnail image for the upload screen
-			CGSize sixzevid=CGSizeMake(picker.view.bounds.size.width,picker.view.bounds.size.height-100);
-			UIGraphicsBeginImageContext(sixzevid);
-			[picker.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-			viewThumb = UIGraphicsGetImageFromCurrentImageContext();
-			UIGraphicsEndImageContext();
-		}
 
 		UIImage* smallThumb = [MainViewController imageWithImage:viewThumb scaledToSizeWithSameAspectRatio:CGSizeMake(70, 70)];
 		NSData* thumbData = UIImageJPEGRepresentation(smallThumb, 70);
-		NSString* thumbName = [[NSString alloc] initWithFormat:@"thumbnails/%@.jpg", [shortName stringByDeletingPathExtension]];
-		NSString* fullPathToThumb = [documentsDirectory stringByAppendingPathComponent:thumbName];
+		NSString* thumbnailPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", thumbnailsDirectory, media_id];
 
-		if([thumbData writeToFile:fullPathToThumb options:NSDataWritingAtomic error:&err]) {
-			NSLog(@"Successfully saved %@ to disk", fullPathToThumb);
+		if([thumbData writeToFile:thumbnailPath options:NSDataWritingAtomic error:&err]) {
+			NSLog(@"Successfully saved %@ to disk", thumbnailPath);
 		} else {
-			NSLog(@"Couldn't write %@ to disk", fullPathToThumb);
-			NSLog(@"Err desc-%@", [err localizedDescription]);
-			NSLog(@"Err reason-%@", [err localizedFailureReason]);
+			NSLog(@"Couldn't write %@ to disk\nErr desc-%@\nErr reason-%@", 
+				  thumbnailPath, [err localizedDescription], [err localizedFailureReason]);
+
 		}
 		
 		// Add the media to the menuList, which populates the tableView
-		NSString* title = [[shortName stringByDeletingPathExtension] stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-		keys = [NSArray arrayWithObjects:@"filename", @"type", @"shortName", @"thumbnail", @"title", @"status", nil];
-		objects = [NSArray arrayWithObjects: newPath, @"video", shortName, fullPathToThumb, title, @"new", nil];
+		[mediaItem setObject:newPath		forKey:@"path"];
+		[mediaItem setObject:@"video"		forKey:@"type"];
+		[mediaItem setObject:thumbnailPath	forKey:@"thumbnail"];
+		[mediaItem setObject:title			forKey:@"title"];
 	}
 	else
 	{
@@ -368,19 +494,13 @@
 	[picker release];
 
 	// Add it to the tableView
-	NSDictionary* newItem = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-	[menuList addObject:newItem];
+	[appPrefs addMediaItem:mediaItem];
 	[self.myTableView reloadData];
 	
 	// Set up the videoDetailView and push the view
-	[videoDetailView setActiveItem:newItem];
+	[videoDetailView setActiveItem:mediaItem];
 	[self.navigationController setToolbarHidden:YES animated:YES];
 	[self.navigationController pushViewController:videoDetailView animated:YES];
-	
-	// Set the User Prefs to the updated menuList
-	[prefs setObject:menuList forKey:@"media"];
-	[prefs synchronize];
-	
 	
 	//NSLog(@"NSUserDefaults dump: %@", [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
 }
@@ -458,24 +578,30 @@
 	}
 	NSString* statusString = [dictionary objectForKey:@"status"];
 	
-	if([statusString isEqualToString:@"ok"]) {	
-		
-		/*
+	if([statusString isEqualToString:@"ok"])
+	{	
 		NSArray *media = [dictionary objectForKey:@"media"];
-		
-		[prefs setObject:media forKey:@"media"];
-		[prefs synchronize];
-		
-		for (int i = 0; i < [media count]; i++) {
-			NSDictionary* item = [media objectAtIndex:i];
-			NSString* filename = [item objectForKey:@"filename"];
-			NSLog(@"filename: %@", filename);
+		for (int i=0; i < [media count]; i++)
+		{
+			NSDictionary* remoteItem = [media objectAtIndex:i];
+			NSString* media_id = [remoteItem objectForKey:@"media_id"];
+			NSDictionary* localItem = [appPrefs getMediaItemWithID:media_id];
+			if(localItem==nil)
+			{
+				NSLog(@"!!! Found an item on the server that isn't on this device!");
+			}
+			else
+			{
+				NSString* remoteStatus = [remoteItem objectForKey:@"status"];
+				[localItem setValue:remoteStatus forKey:@"status"];
+			}
 		}
-		 */
+		[self.myTableView reloadData];
+		[appPrefs savePrefs];
 	}
 	
-	if([statusString isEqualToString:@"error"]){
-		
+	if([statusString isEqualToString:@"error"])
+	{
 		NSMutableString *alertMessage = [[NSMutableString alloc] initWithString:@"There was an error on the server.\n"];
 		NSArray* errors = [dictionary objectForKey:@"errors"];
 		int errorCount = [errors count];
@@ -700,109 +826,31 @@
 	return [NSTemporaryDirectory() stringByAppendingPathComponent:latestFile];	
 }
 
--(BOOL) fileExistsInTable:(NSString*)filename
+
+-(BOOL)getItemByMediaID:(NSString*)media_id item:(NSDictionary**)result
 {
 	NSDictionary* item;
-	NSString* other;
-	for (int i = 0; i < [menuList count]; i++) {
-		item = [menuList objectAtIndex:i];
-		other = [item objectForKey:@"filename"];
-		if([filename isEqualToString:other]) {
+	for (int i = 0; i < [appPrefs numMediaItems]; i++) {
+		item = [appPrefs getMediaItemAtIndex:i];
+		if([media_id isEqualToString:[item objectForKey:@"media_id"]]) {
+			result = &item;
 			return YES;
 		}
 	}
 	return NO;
 }
 
-- (void) scanDocumentsDirectory
+-(BOOL)getItemByPath:(NSString*)path item:(NSDictionary**)result
 {
-
-	NSError*		err;
-	NSArray*		theFilesArray = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:&err];
-	
-	if (err != NULL)
-	{
-		
-		BOOL isDir, fileExists, alreadyInTable;
-		NSString *filename, *fullPath, *baseFilename, *fullPathToThumb, *title;
-		for(int i = 0; i<[theFilesArray count]; i++)
-		{
-			filename = [theFilesArray objectAtIndex: i];
-			fullPath = [documentsDirectory stringByAppendingPathComponent:filename];
-			fileExists = [fileManager fileExistsAtPath:fullPath isDirectory:&isDir];
-			alreadyInTable = [self fileExistsInTable: fullPath];
-			baseFilename = [filename stringByDeletingPathExtension];
-			fullPathToThumb = [NSString stringWithFormat:@"%@/thumbnails/%@.jpg", documentsDirectory, baseFilename]; 
-			title = [[baseFilename stringByDeletingPathExtension] stringByReplacingOccurrencesOfString:@"_" withString:@" "];
-			
-			if(!alreadyInTable && fileExists && !isDir)
-			{
-				NSLog(@"scanDocumentsDirectory adding: %@", fullPath);
-				if ([[filename pathExtension] isEqualToString: @"mov"])
-				{
-					// Add the media to the menuList, which populates the tableView
-					NSArray *keys = [NSArray arrayWithObjects:@"filename", @"type", @"shortName", @"thumbnail", @"title", @"status", nil];
-					NSArray *objects = [NSArray arrayWithObjects: fullPath, @"video", filename, fullPathToThumb, title, @"unknown", nil];
-					NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-					[menuList addObject:dictionary];
-				}
-				
-				if ([[filename pathExtension] isEqualToString: @"jpg"])
-				{
-					// Add the media to the menuList, which populates the tableView
-					NSArray *keys = [NSArray arrayWithObjects:@"filename", @"type", @"shortName", @"thumbnail", @"title", @"status", nil];
-					NSArray *objects = [NSArray arrayWithObjects: fullPath, @"photo", filename, fullPathToThumb, title, @"unknown", nil];
-					NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
-					[menuList addObject:dictionary];
-				}
-			}
-			else
-			{
-				NSLog(@"scanDocumentsDirectory Skipping: %@", fullPath);
-			}
-		}
-		[self.myTableView reloadData];
-	}
-	else
-	{
-		NSLog(@"WARNING:  Couldn't get contents of documents directory!");
-	}
-
-}
-
-- (void) loadTableFromUserPrefs
-{
-	// Try to load up previously-added videos
-	NSArray	*media = [prefs objectForKey:@"media"];
-
-	
-	if(media != nil)
-	{
-		NSDictionary* item;
-		NSLog(@"Media found! %d items. Loading from defaults.", [media count]);
-		
-		BOOL alreadyInTable, isDir, fileExists;
-		NSString* fullPath;
-		
-		for (int i = 0; i < [media count]; i++)
-		{
-			item = [media objectAtIndex:i];
-			fullPath = [item objectForKey:@"filename"];
-			alreadyInTable = [self fileExistsInTable: fullPath];
-			fileExists = [fileManager fileExistsAtPath:fullPath isDirectory:&isDir];
-			
-			if(fileExists && !alreadyInTable && !isDir)
-			{
-				NSLog(@"loadTableFromUserPrefs adding %@", fullPath);
-				[menuList addObject:item];
-			}
-			else
-			{
-				NSLog(@"loadTableFromUserPrefs Skipping: %@", fullPath);
-			}
+	NSDictionary* item;
+	for (int i = 0; i < [appPrefs numMediaItems]; i++) {
+		item = [appPrefs getMediaItemAtIndex:i];
+		if([path isEqualToString:[item objectForKey:@"path"]]) {
+			result = &item;
+			return YES;
 		}
 	}
-	[self.myTableView reloadData];
+	return NO;
 }
 
 @end

@@ -12,6 +12,8 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "SBJSON.h"
+#import "IPAddress.h"
+#import "Preferences.h"
 
 
 #define ALERT_SAVING_VIDEO_FAILED 1
@@ -30,18 +32,21 @@
 {
 	
 	UnlogoAppDelegate					*appDelegate;	// reference to the main app delegate
-	NSUserDefaults						*prefs;
+	Preferences							*appPrefs;
+	
+	
 	NSFileManager						*fileManager;
 	
 	UITableView							*myTableView;
-	NSMutableArray						*menuList;
 	UIViewController					*aboutView, *settingsView;;				
 	MediaDetailViewController			*videoDetailView;
 	
-	NSString							*documentsDirectory;
 	NSString							*deviceUDID, *deviceName;
+	NSString							*ipAddress;
 	
 	BOOL								usingLibraryMedia;
+	
+	NSString							*documentsDirectory, *mediaDirectory, *thumbnailsDirectory;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView					*myTableView;
@@ -55,24 +60,28 @@
 - (IBAction)showSettingsView:(id)sender;
 - (IBAction)synchronizeWithServer;
 
-- (BOOL) fileExistsInTable:(NSString*)filename;
-- (void) scanDocumentsDirectory;
-- (void) loadTableFromUserPrefs;
-+ (UIImage*)imageWithImage:(UIImage*)sourceImage scaledToSizeWithSameAspectRatio:(CGSize)targetSize;
-+ (NSString*)getThumbnailPathForVideo:(NSString *)vid;
+- (NSString*) generateMediaID;
+- (BOOL)getItemByPath:(NSString*)path  item:(NSDictionary**)result;
+- (BOOL)getItemByMediaID:(NSString*)media_id  item:(NSDictionary**)result;
+
 
 // ASIHttpRequest callbacks
 - (void)syncWentWrong:(ASIHTTPRequest *)request;
 - (void)syncDone:(ASIHTTPRequest *)request;
 
 //SaveToAlbum callbacks
-- (void) image: (UIImage *)image didFinishSavingWithError: (NSError *)error contextInfo:(void *)contextInfo;
-- (void) video: (NSString *)videoPath didFinishSavingWithError: (NSError *)error contextInfo:(void *)contextInfo;
+- (void) image:(UIImage *)image didFinishSavingWithError: (NSError *)error contextInfo:(void *)contextInfo;
+- (void) video:(NSString *)videoPath didFinishSavingWithError: (NSError *)error contextInfo:(void *)contextInfo;
 
 // UIImagePickerController delagate
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
 - (void) imagePickerControllerDidCancel:(UIImagePickerController *)picker;
 - (void) navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void) navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated;
+
+
++ (UIImage*)imageWithImage:(UIImage*)sourceImage scaledToSizeWithSameAspectRatio:(CGSize)targetSize;
++ (NSString*)getThumbnailPathForVideo:(NSString *)vid;
++ (NSString*)deviceIPAdress;
 
 @end

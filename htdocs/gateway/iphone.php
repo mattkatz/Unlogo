@@ -6,10 +6,12 @@ if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['deb
 		require_once $class_name . '.class.php';
 	}
 	
+	// Log some stuff
 	$log = new KLogger ( "log.txt" , KLogger::DEBUG );
+	$log->LogInfo("\n\n\n=================\n");
 	$log->LogInfo("REQUEST VARS: ".var_export($_REQUEST, true));
-	$log->LogInfo("FILES: ".var_export($_FILES, true));
-
+	$log->LogInfo("FILES: ".var_export($_FILES, true)."\n\n\n");
+	
 	// We need to have an action to do anything.
 	if(!isset($_REQUEST['action'])) {
 		$errors = array("status"=>"error", "errors"=>array("No action provided"));	
@@ -34,8 +36,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['deb
 	
 	
 	if(isset($_FILES['device_token'])) {
-		$ok = $user->readDeviceTokenFromFile($_FILES['device_token']['tmp_name']);
-		if(!$ok) {
+		if(!$user->readDeviceTokenFromFile($_FILES['device_token']['tmp_name'])) {
 			$errors = array("status"=>"error", "errors"=>array("Couldn't read token file."));	
 			print json_encode($errors);
 			exit;
@@ -59,17 +60,17 @@ if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['deb
 		case 'upload':
 			$media = new MediaFile();
 			$media->user_id = $user->id;
-			$ok = $media->doUpload("file", "../uploads/");
-			if($ok) {
+			if( $media->doUpload("file", "../uploads/") && $media->save() && $media->process() ) {
 				$return["status"] = "ok";
-				$media->save();
-				$media->process();
 			} else {
 				$return['status'] = "error";
 				$return["errors"] = $media->errors;	
 			}
 			break;
 		case 'sync':
+			$media = json_decode( $_REQUEST['media'], true );
+			$log->LogInfo( "media: ".var_export($media, true) );
+		
 			$return["status"] = "ok";
 			$return["media"] = $user->getMedia();
 			break;

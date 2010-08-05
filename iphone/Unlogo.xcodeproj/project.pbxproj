@@ -11,6 +11,8 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1F1A6A601209E3A9004647DF /* IPAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1F1A6A5F1209E3A9004647DF /* IPAddress.c */; };
+		1F1A6B29120A04A9004647DF /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F1A6B28120A04A9004647DF /* Preferences.m */; };
 		1F369FEB1207859800A5D8E3 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F369FEA1207859800A5D8E3 /* MediaPlayer.framework */; };
 		1F4FCED41201F4B500A1F800 /* 46-movie2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F4FCED31201F4B500A1F800 /* 46-movie2.png */; };
 		1F56E7EB12007AC700723051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F56E7EA12007AC700723051 /* CFNetwork.framework */; };
@@ -63,6 +65,10 @@
 		1D3623250D0F684500981E51 /* UnlogoAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnlogoAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* Unlogo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unlogo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		1F1A6A441209D2ED004647DF /* IPAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPAddress.h; sourceTree = "<group>"; };
+		1F1A6A5F1209E3A9004647DF /* IPAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = IPAddress.c; sourceTree = "<group>"; };
+		1F1A6B27120A04A9004647DF /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
+		1F1A6B28120A04A9004647DF /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
 		1F369FEA1207859800A5D8E3 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		1F4FCED31201F4B500A1F800 /* 46-movie2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "46-movie2.png"; path = "Resources/glyphish-icons/icons/46-movie2.png"; sourceTree = SOURCE_ROOT; };
 		1F56E7EA12007AC700723051 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -180,8 +186,7 @@
 				1F74E6F6120888640024AD87 /* CustomMoviePlayerViewController.m */,
 				1F78079112089D45009F2D57 /* ImageZoomController.h */,
 				1F78079212089D45009F2D57 /* ImageZoomController.m */,
-				1F97407811FF95B100E5B98D /* ASIHTTPRequest */,
-				1F9740C111FF95B100E5B98D /* JSON */,
+				1F1A6B55120A082C004647DF /* utils */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -192,6 +197,19 @@
 				1D6058910D05DD3D006BFB54 /* Unlogo.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1F1A6B55120A082C004647DF /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				1F1A6A441209D2ED004647DF /* IPAddress.h */,
+				1F1A6A5F1209E3A9004647DF /* IPAddress.c */,
+				1F1A6B27120A04A9004647DF /* Preferences.h */,
+				1F1A6B28120A04A9004647DF /* Preferences.m */,
+				1F97407811FF95B100E5B98D /* ASIHTTPRequest */,
+				1F9740C111FF95B100E5B98D /* JSON */,
+			);
+			name = utils;
 			sourceTree = "<group>";
 		};
 		1F97407811FF95B100E5B98D /* ASIHTTPRequest */ = {
@@ -217,9 +235,8 @@
 				1F97409811FF95B100E5B98D /* External */,
 				1F97409D11FF95B100E5B98D /* S3 */,
 			);
-			name = ASIHTTPRequest;
-			path = Classes/ASIHTTPRequest;
-			sourceTree = SOURCE_ROOT;
+			path = ASIHTTPRequest;
+			sourceTree = "<group>";
 		};
 		1F97408911FF95B100E5B98D /* CloudFiles */ = {
 			isa = PBXGroup;
@@ -309,9 +326,8 @@
 				1F9740CD11FF95B100E5B98D /* SBJsonWriter.h */,
 				1F9740CE11FF95B100E5B98D /* SBJsonWriter.m */,
 			);
-			name = JSON;
-			path = Classes/JSON;
-			sourceTree = SOURCE_ROOT;
+			path = JSON;
+			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
@@ -464,6 +480,8 @@
 				1FA2BD5412076D70003599E0 /* MediaDetailViewController.m in Sources */,
 				1F74E6F7120888640024AD87 /* CustomMoviePlayerViewController.m in Sources */,
 				1F78079312089D45009F2D57 /* ImageZoomController.m in Sources */,
+				1F1A6A601209E3A9004647DF /* IPAddress.c in Sources */,
+				1F1A6B29120A04A9004647DF /* Preferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

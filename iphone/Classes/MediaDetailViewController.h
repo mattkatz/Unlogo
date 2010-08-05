@@ -30,8 +30,8 @@
 	
 	UIAlertView							*uploadProgressAlert;
 	UIImageView							*thumbnailView;
-	UILabel								*statusLabel, *typeLabel;
-	UIButton							*uploadButton, *viewOriginalButton;
+	UILabel								*statusLabel, *typeLabel, *mediaIDLabel;
+	UIButton							*uploadButton, *viewOriginalButton, *viewProcessedButton;
 	
 	NSString							*deviceUDID;
 	NSString							*deviceName;
@@ -43,8 +43,8 @@
 }
 
 @property (nonatomic, retain) IBOutlet	UIImageView			*thumbnailView;
-@property (nonatomic, retain) IBOutlet	UIButton			*uploadButton, *viewOriginalButton;
-@property (nonatomic, retain) IBOutlet	UILabel				*statusLabel, *typeLabel;
+@property (nonatomic, retain) IBOutlet	UIButton			*uploadButton, *viewOriginalButton, *viewProcessedButton;
+@property (nonatomic, retain) IBOutlet	UILabel				*statusLabel, *typeLabel, *mediaIDLabel;
 @property (nonatomic, retain) IBOutlet  ImageZoomController	*imageZoomController;
 
 
@@ -52,9 +52,9 @@
 - (void) uploadDone:(ASIHTTPRequest *)request;
 - (void) uploadWentWrong:(ASIHTTPRequest *)request;
 
-- (IBAction)dismissZoomView:(id)sender;
+//- (IBAction)dismissZoomView:(id)sender;
 - (IBAction)doUpload:(id)sender;
 - (IBAction)viewOriginal:(id)sender;
 - (void) setActiveItem:(NSDictionary*) item;
-
+- (void) viewProcessed:(id)sender;
 @end

@@ -23,7 +23,7 @@ class User {
 		if($this->id==NULL) {
 			return false;	
 		}
-		$sql="SELECT id, udid, device_token, date_added, device_name FROM users WHERE id={$this->id}";
+		$sql="SELECT id, udid, device_token, date_added, device_name FROM users WHERE id={$this->id} LIMIT 1";
 		$result = mysql_query($sql);
 		if(mysql_num_rows($result) > 0) {
 			$this->in_database = true;
@@ -37,7 +37,7 @@ class User {
 
 	function loadFromUDID($udid) {
 		$this->udid = $udid;
-		$sql="SELECT id, udid, device_token, date_added, device_name FROM users WHERE udid='$udid'";
+		$sql="SELECT id, udid, device_token, date_added, device_name FROM users WHERE udid='$udid' LIMIT 1";
 		$result = mysql_query($sql);
 		if(mysql_num_rows($result) > 0) {
 			$this->in_database = true;
@@ -57,17 +57,17 @@ class User {
 		if($this->id==NULL) {
 			return false;	
 		}
-		$sql="SELECT id FROM uploads WHERE user_id={$this->id}";	
+		
+		$media = array();
+		
+		$sql="SELECT id FROM media WHERE user_id={$this->id}";	
 		$result = mysql_query($sql);
 		if(mysql_num_rows($result) > 0) {
-			$media = array();
 			while($row = mysql_fetch_assoc($result)) {
 				$media[] = new MediaFile($row['id']);	
 			}
-			return $media;
-		} else {
-			return false;	
 		}
+		return $media;
 	}
 
 	function getFinishedMedia() {
