@@ -1,4 +1,11 @@
 <?php
+function error($code, $message)
+{
+	$error = array("code"=>$code, "message"=>$message);
+	$errors = array("status"=>"error", "errors"=>array($error));	
+	print json_encode($errors);	
+}
+
 if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['debug']))
 {
 	require_once("db.php");
@@ -14,16 +21,14 @@ if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['deb
 	
 	// We need to have an action to do anything.
 	if(!isset($_REQUEST['action'])) {
-		$errors = array("status"=>"error", "errors"=>array("No action provided"));	
-		print json_encode($errors);
+		error("NO_ACTION", "No action provided");
 		$log->LogInfo("User did not provide an action.  Quitting.");
 		exit;
 	}
 	
 	// Try to construct the user.
 	if(!isset($_REQUEST['udid'])) {
-		$errors = array("status"=>"error", "errors"=>array("No udid provided"));	
-		print json_encode($errors);
+		error("NO_UDID", "No udid provided");	
 		$log->LogInfo("User did not provide a UDID.  Quitting.");
 		exit;
 	}
@@ -37,8 +42,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['deb
 	
 	if(isset($_FILES['device_token'])) {
 		if(!$user->readDeviceTokenFromFile($_FILES['device_token']['tmp_name'])) {
-			$errors = array("status"=>"error", "errors"=>array("Couldn't read token file."));	
-			print json_encode($errors);
+			error("UNREADABLE_TOKEN", "Couldn't read token file.");
 			exit;
 		}
 	}
@@ -64,7 +68,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['deb
 				$return["status"] = "ok";
 			} else {
 				$return['status'] = "error";
-				$return["errors"] = $media->errors;	
+				$return["errors"] = $media->errors;
 			}
 			break;
 		case 'sync':
@@ -86,5 +90,6 @@ if (strpos($_SERVER['HTTP_USER_AGENT'],"iPhone") == true || isset($_REQUEST['deb
 else
 {
 	include("goaway.html");
+	print_r($_SERVER);
 }
 ?>

@@ -98,8 +98,7 @@ class User {
 				WHERE id={$this->id} LIMIT 1";
 			mysql_query($sql);
 			if(mysql_errno() > 0) {
-				$this->errors[] = $sql;
-				$this->errors[] = mysql_error();
+				$this->errors[] = array("code"=>"SQL_ERROR", "message"=>mysql_error());
 				return false;	
 			} else {
 				return true;
@@ -112,7 +111,7 @@ class User {
 				date_added=NOW()";
 			mysql_query($sql);
 			if(mysql_errno() > 0) {
-				$this->errors[] = mysql_error();
+				$this->errors[] = array("code"=>"SQL_ERROR", "message"=>mysql_error());
 				return false;	
 			} else {
 				$this->id = mysql_insert_id();
@@ -124,7 +123,7 @@ class User {
 	
 	function readDeviceTokenFromFile($filename) {
 		if(!file_exists($filename) || !is_readable($filename) ) {
-			$this->errors[] = "$filename does not exist or is not readable.";
+			$this->errors[] = array("code"=>"NO_TOKEN", "message"=>"$filename does not exist or is not readable.");
 			return false;	
 		}
 		$handle = fopen($filename, "rb");

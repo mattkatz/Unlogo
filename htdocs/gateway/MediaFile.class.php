@@ -2,25 +2,23 @@
 
 class MediaFile {
 
-	var $filename;  // The local (server) filename for the media
+	var $original;  // The local (server) filename for the media
 
 	var $media_id;  // The system-wide unique identifier for the media
 
 	var $errors = array();
 
-	var $media_type = NULL;
-
-	var $valid_media_types = array("image", "video");
+	var $media_type = NULL; // $valid_media_types = array("image", "video");
 
 	var $user_id;
 
-	var $status;
-	
-	var $valid_statuses = array("new", "queued", "processing", "done");
+	var $status; // $valid_statuses = array("new", "queued", "processing", "done");
 	
 	var $in_database = false;
 	
 	var $title="";
+	
+	var $download_link;
 	
 	function MediaFile($id=NULL) {
 		if($id!=NULL) {
@@ -34,17 +32,18 @@ class MediaFile {
 			return false;
 		}
 		
-		$sql="SELECT filename, title, media_id, media_type, user_id, status, date_modified, date_uploaded 
+		$sql="SELECT original, download_link, title, media_id, media_type, user_id, status, date_modified, date_uploaded 
 			FROM media WHERE id={$this->id} LIMIT 1";
 		$result = mysql_query($sql);
 		if(mysql_errno() > 0) {
-			$this->errors[] = "Couldn't load media id={$this->id}";
+			$this->errors[] = array("code"=>"NO_MEDIA_ID", "message"=>"Couldn't load media id={$this->id}");
 			return false;
 		}
 		$row = mysql_fetch_assoc($result);
 		$this->title = $row['title'];
+		$this->download_link = $row['download_link'];
 		$this->media_id = $row['media_id'];
-		$this->filename = $row['filename'];
+		$this->original = $row['original'];
 		$this->media_type = $row['media_type'];
 		$this->user_id = $row['user_id'];
 		$this->status = $row['status'];
@@ -56,11 +55,12 @@ class MediaFile {
 	function process() {
 		// This is where the unlogo exe will be called. 
 		// For now, just make a copy
-		if(!copy("../uploads/{$this->filename}", "../processed/{$this->filename}")) {
-			$this->errors[] = "There was an error processing the file.";
+		if(!copy("../uploads/{$this->original}", "../processed/{$this->original}")) {
+			$this->errors[] = array("code"=>"PROCESSING_ERROR", "message"=>"There was an error processing the file.");
 			return false;	
 		}
 		$this->status = 'done';
+		$this->download_link = "http://{$_SERVER['SERVER_NAME']}/processed/{$this->original}";
 		if(!$this->save()) {
 			return false;	
 		}
@@ -93,18 +93,18 @@ class MediaFile {
 			$destination .= "/";
 			
 		if(!isset($_FILES[$files_index])) {
-			$this->errors[] = "No file was posted.";
+			$this->errors[] = array("code"=>"NO_FILE_POSTED", "message"=>"No file was posted.");
 			return false;
 		}
 	
 		// Ty to open the upload directory.
 		if (!($handle = opendir($destination))) {
-			$this->errors[] = "couldn't open upload directory.";
+			$this->errors[] = array("code"=>"UPLOAD_DIR", "message"=>"couldn't open upload directory.");
 			return false;
 		}
 		
 		if(empty($_REQUEST['media_id'])) {
-			$this->errors[] = "No media ID was provided.";
+			$this->errors[] = array("code"=>"NO_MEDIA_ID", "message"=>"No media ID was provided.");
 			return false;
 		}
 		
@@ -113,7 +113,7 @@ class MediaFile {
 		$sql="SELECT id FROM media WHERE media_id='{$this->media_id}' ";
 		$result = mysql_query($sql);
 		if(mysql_num_rows($result)>0) {
-			$this->errors[] = "The media ID {$this->media_id} already exists.";
+			$this->errors[] = array("code"=>"MEDIA_ID_EXISTS", "message"=>"The media ID {$this->media_id} already exists.");
 			return false;
 		}
 	
@@ -124,28 +124,28 @@ class MediaFile {
 			} else if(eregi("png", $_FILES[$files_index]['type'])) {
 				$ext = ".png";
 			} else {
-				$this->errors[] = "Image not recognized.  Please upload a jpeg or png image.";
+				$this->errors[] = array("code"=>"UNKNOWN_IMAGE_FORMAT", "message"=>"Image not recognized.  Please upload a jpeg or png image.");
 				return false;
 			}
 			
-			$this->filename = $this->media_id.$ext;
+			$this->original = $this->media_id.$ext;
 			$this->media_type = "image";
 		} else if(eregi('video', $_FILES[$files_index]['type'])) {
 			$this->media_type = "video";
-			$this->filename = $this->media_id.".mov";
+			$this->original = $this->media_id.".mov";
 		} else {
-			$this->errors[] = "The uploaded file is not an image or video. Please upload a valid file!";
+			$this->errors[] = array("code"=>"UNKNOWN_UPLOAD_FORMAT", "message"=>"The uploaded file is not an image or video. Please upload a valid file!");
 			return false;
 		}
 		
-		$new_path = $destination.$this->filename;
+		$new_path = $destination.$this->original;
 		if(file_exists($new_path)) {
-			$this->errors[] = "This file has already been uploaded.";
+			$this->errors[] = array("code"=>"UPLOAD_FILE_EXISTS", "message"=>"This file has already been uploaded.");
 			return false;	
 		}
 		
 		if (!move_uploaded_file($_FILES[$files_index]['tmp_name'], $new_path)) {
-			$this->errors[] = "couldn't move uploaded file. possible file upload attack!";
+			$this->errors[] = array("code"=>"MOVE_UPLOAD_FAILED", "message"=>"couldn't move uploaded file. possible file upload attack!");
 			return false;
 		}
 	
@@ -155,22 +155,24 @@ class MediaFile {
 	function save() {
 		global $_FILES, $_REQUEST;
 	
-		$file = basename($this->filename);
+		$file = basename($this->original);
 		$file = mysql_escape_string($file);
 		$title = mysql_escape_string($this->title);
+		$link = mysql_escape_string($this->download_link);
 		
 		if($this->in_database) {
 			$sql="UPDATE media SET 
-				filename = '$file',
+				original = '$file',
 				title = '$title',
 				media_id = '{$this->media_id}',
 				media_type='{$this->media_type}',
+				download_link='$link',
 				user_id = $this->user_id,
 				status = '$this->status'
 				WHERE id={$this->id} LIMIT 1";
 		} else {
 			$sql="INSERT INTO media SET 
-				filename='$file', 
+				original='$file', 
 				title = '$title',
 				media_id = '{$this->media_id}',
 				media_type='{$this->media_type}',
@@ -182,7 +184,7 @@ class MediaFile {
 		
 		mysql_query($sql);
 		if(mysql_errno()>0) {
-			$this->errors[] =  mysql_error();
+			$this->errors[] = array("code"=>"SQL_ERROR", "message"=>mysql_error());
 			return false;
 		} else {
 			$this->id = mysql_insert_id();
