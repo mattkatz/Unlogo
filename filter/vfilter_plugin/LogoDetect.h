@@ -1,6 +1,7 @@
 #ifndef __LOGO_DETECT_H
 #define __LOGO_DETECT_H
 
+#include <cstdio>
 #include "siftfast.h"
 #include "ANN/ANN.h"
 
