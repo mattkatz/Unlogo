@@ -106,6 +106,40 @@ static Preferences *sharedInstance = nil;
 	return [[self getMediaArray] count];
 }
 
+- (void)deleteMediaItemAtIndex:(int)i
+{
+	NSMutableArray* media = [self getMediaArray];
+	if(i<[media count])
+	{
+		NSFileManager *fileManager = [[NSFileManager alloc] init];
+		NSDictionary* item = [media objectAtIndex:i];
+		
+		
+		NSArray* files = [NSArray arrayWithObjects:@"original", @"thumbnail", @"unlogo", nil];
+		for(int i=0; i<[files count]; i++)
+		{
+			NSString* path = [item objectForKey: [files objectAtIndex:i]];
+			if([fileManager fileExistsAtPath:path])
+			{
+				NSError* err;
+				[fileManager removeItemAtPath:path error:&err];
+				if(err == NULL)
+				{
+					NSLog(@"Deleted %@", path);
+				}
+				else
+				{
+					NSLog(@"WARNING:  Couldn't delete %@", path);
+					//NSLog(@"Err desc-%@", [err localizedDescription]);
+					//NSLog(@"Err reason-%@", [err localizedFailureReason]);
+				}
+
+			}
+		}
+		[media removeObjectAtIndex:i];
+	}
+}
+
 -(NSDictionary*)getMediaItemAtIndex:(int)i
 {
 	return [[self getMediaArray] objectAtIndex:i];

@@ -59,6 +59,7 @@
 - (IBAction)showAboutView:(id)sender;
 - (IBAction)showSettingsView:(id)sender;
 - (IBAction)synchronizeWithServer;
+- (void)setEditing:(BOOL)editing;
 
 - (NSString*) generateMediaID;
 - (BOOL)mkdir:(NSString*)path;

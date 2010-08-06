@@ -29,4 +29,5 @@
 - (NSMutableArray*)	getMediaArray;
 - (int)				numMediaItems;
 - (void)			addMediaItem:(NSDictionary*)item;
+- (void)			deleteMediaItemAtIndex:(int)i;
 @end

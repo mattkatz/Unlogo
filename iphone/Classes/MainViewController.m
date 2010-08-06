@@ -63,8 +63,16 @@
 	[appPrefs loadPrefs];
 	[self.myTableView reloadData];
     [super viewDidLoad];
+	
+	self.navigationItem.rightBarButtonItem = [self editButtonItem];
 }
 
+
+- (void) setEditing:(BOOL)editing animated:(BOOL)animated
+{
+    [super setEditing: editing animated: animated];
+    [self.myTableView setEditing:editing animated:animated];
+}
 
 
 /*
@@ -198,6 +206,9 @@
 	NSString* mediaID = [NSString stringWithFormat:@"%06x-%04x-%04x", ipInt, secs, usecs];
 	return mediaID;
 }
+
+
+
 
 /*
  This is called by the AppDelegate when the device has received (or not received) the device token
@@ -334,6 +345,19 @@
     return 80;
 }
 
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (editingStyle == UITableViewCellEditingStyleDelete)
+	{
+		NSLog(@"Deleting row %d", indexPath.row);
+		[appPrefs deleteMediaItemAtIndex: indexPath.row];
+		[self.myTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		
+		//[self.myTableView reloadData];
+		[appPrefs savePrefs];
+	}
+}
 
 
 
