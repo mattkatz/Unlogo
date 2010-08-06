@@ -38,6 +38,7 @@
 	myScrollView.contentSize = CGSizeMake(myImage.frame.size.width, myImage.frame.size.height);
 	myScrollView.maximumZoomScale = 4.0;
 	myScrollView.minimumZoomScale = 0.2;
+
 	myScrollView.clipsToBounds = YES;
 	myScrollView.delegate = self;
     [myScrollView addSubview:myImage];	

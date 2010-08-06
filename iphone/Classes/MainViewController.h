@@ -46,7 +46,7 @@
 	
 	BOOL								usingLibraryMedia;
 	
-	NSString							*documentsDirectory, *mediaDirectory, *thumbnailsDirectory;
+	NSString							*documentsDir, *mediaDir, *unlogoDir, *thumbnailsDir;
 }
 
 @property (nonatomic, retain) IBOutlet UITableView					*myTableView;
@@ -61,6 +61,7 @@
 - (IBAction)synchronizeWithServer;
 
 - (NSString*) generateMediaID;
+- (BOOL)mkdir:(NSString*)path;
 - (BOOL)getItemByPath:(NSString*)path  item:(NSDictionary**)result;
 - (BOOL)getItemByMediaID:(NSString*)media_id  item:(NSDictionary**)result;
 

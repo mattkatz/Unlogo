@@ -21,6 +21,8 @@
 #define ALERT_UPLOAD_CANCELLED 3
 #define ALERT_UPLOAD_SERVER_ERROR 4
 #define ALERT_VIDEO_MISSING 5
+#define ALERT_DOWNLOAD_CANCELLED 6
+#define ALERT_DOWNLOAD_FAILED 7
 
 @interface MediaDetailViewController : UIViewController <UIAlertViewDelegate,ASIHTTPRequestDelegate> {
 	
@@ -28,22 +30,26 @@
 	NSUserDefaults						*prefs;
 	NSFileManager						*fileManager;
 	
-	UIAlertView							*uploadProgressAlert;
+	UIAlertView							*uploadProgressAlert, *downloadProgressAlert;
 	UIImageView							*thumbnailView;
 	UILabel								*statusLabel, *typeLabel, *mediaIDLabel;
-	UIButton							*uploadButton, *viewOriginalButton, *viewProcessedButton;
+	UIBarButtonItem						*uploadButton, *viewOriginalButton, *viewProcessedButton;
 	
 	NSString							*deviceUDID;
 	NSString							*deviceName;
 
 	NSDictionary						*currentItem;
 	
-	CustomMoviePlayerViewController		*moviePlayer;
 	ImageZoomController					*imageZoomController;
+	
+	UITabBar							*tabBar;
+	
+	NSString							*documentsDir, *mediaDir, *unlogoDir, *thumbnailsDir;
 }
 
+@property (nonatomic, retain) IBOutlet  UITabBar			*tabBar;
 @property (nonatomic, retain) IBOutlet	UIImageView			*thumbnailView;
-@property (nonatomic, retain) IBOutlet	UIButton			*uploadButton, *viewOriginalButton, *viewProcessedButton;
+@property (nonatomic, retain) IBOutlet	UIBarButtonItem		*uploadButton, *viewOriginalButton, *viewProcessedButton;
 @property (nonatomic, retain) IBOutlet	UILabel				*statusLabel, *typeLabel, *mediaIDLabel;
 @property (nonatomic, retain) IBOutlet  ImageZoomController	*imageZoomController;
 
@@ -51,10 +57,14 @@
 // HTTPRequest callbacks
 - (void) uploadDone:(ASIHTTPRequest *)request;
 - (void) uploadWentWrong:(ASIHTTPRequest *)request;
+- (void) downloadDone:(ASIHTTPRequest *)request;
+- (void) downloadWentWrong:(ASIHTTPRequest *)request;
 
-//- (IBAction)dismissZoomView:(id)sender;
+// API
 - (IBAction)doUpload:(id)sender;
-- (IBAction)viewOriginal:(id)sender;
+- (void)doDownload;
+- (IBAction) viewOriginal:(id)sender;
+- (IBAction) viewProcessed;
 - (void) setActiveItem:(NSDictionary*) item;
-- (void) viewProcessed:(id)sender;
+
 @end

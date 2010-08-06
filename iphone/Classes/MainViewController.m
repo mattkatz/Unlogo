@@ -36,7 +36,6 @@
 	
 	// Initialize some shit.
 	self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-	//prefs = [NSUserDefaults standardUserDefaults];
 	appPrefs = [Preferences sharedInstance];
 	deviceUDID = [[[UIDevice currentDevice] uniqueIdentifier] retain];
 	deviceName = [[[UIDevice currentDevice] name] retain];
@@ -45,29 +44,21 @@
 	appDelegate = [[UIApplication sharedApplication] delegate];
 	NSLog(@"udid: %@, name: %@, ip:%@", deviceUDID, deviceName, ipAddress);
 
-	
 	// Make the media directory if it doesn't exist.
-	documentsDirectory = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0] retain];
-	mediaDirectory = [[documentsDirectory stringByAppendingPathComponent:@"media"] retain];
-	if(![fileManager fileExistsAtPath:mediaDirectory isDirectory:nil]) {
-		NSError* err;
-		if(![fileManager createDirectoryAtPath:mediaDirectory withIntermediateDirectories:YES attributes:nil error:&err]) {
-			NSLog(@"Err desc-%@", [err localizedDescription]);
-			NSLog(@"Err reason-%@", [err localizedFailureReason]);
-		}
-	}
+	documentsDir = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0] retain];
+	mediaDir = [[documentsDir stringByAppendingPathComponent:@"originals"] retain];
+	[self mkdir:mediaDir];
+	
+	// This is where the processed movie files will go
+	unlogoDir = [[documentsDir stringByAppendingPathComponent:@"unlogo"] retain];
+	[self mkdir:unlogoDir];
 	
 	// Make the Thumbnails directory if it doesn't exist.
-	thumbnailsDirectory = [[documentsDirectory stringByAppendingPathComponent:@"thumbnails"] retain];
-	if(![fileManager fileExistsAtPath:thumbnailsDirectory isDirectory:nil]) {
-		NSError* err;
-		if(![fileManager createDirectoryAtPath:thumbnailsDirectory withIntermediateDirectories:YES attributes:nil error:&err]) {
-			NSLog(@"Err desc-%@", [err localizedDescription]);
-			NSLog(@"Err reason-%@", [err localizedFailureReason]);
-		}
-	}
-	
-	NSLog(@"Directories:\n\tdocs: %@\n\tmedia: %@\n\tthumbs: %@", documentsDirectory, mediaDirectory, thumbnailsDirectory);
+	thumbnailsDir = [[documentsDir stringByAppendingPathComponent:@"thumbnails"] retain];
+	[self mkdir:thumbnailsDir];
+
+	NSLog(@"Directories:\n\tdocs: %@\n\tmedia: %@\n\tprocessed: %@\n\tthumbs: %@", 
+		  documentsDir, mediaDir, unlogoDir, thumbnailsDir);
 	
 	[appPrefs loadPrefs];
 	[self.myTableView reloadData];
@@ -94,7 +85,7 @@
 		for (int i = 0; i < [media count]; i++)
 		{
 			item = [media objectAtIndex:i];
-			fullPath = [item objectForKey:@"path"];
+			fullPath = [item objectForKey:@"original"];
 			alreadyInTable = [self fileExistsInTable: fullPath];
 			fileExists = [fileManager fileExistsAtPath:fullPath isDirectory:&isDir];
 			
@@ -145,7 +136,7 @@
 				if ([[filename pathExtension] isEqualToString: @"mov"])
 				{
 					// Add the media to the menuList, which populates the tableView
-					NSArray *keys = [NSArray arrayWithObjects:@"path", @"type", @"title", @"thumbnail", @"title", @"status", nil];
+					NSArray *keys = [NSArray arrayWithObjects:@"original", @"type", @"title", @"thumbnail", @"title", @"status", nil];
 					NSArray *objects = [NSArray arrayWithObjects: fullPath, @"video", filename, thumbnailPath, title, @"unknown", nil];
 					NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 					[mediaItems addObject:dictionary];
@@ -154,7 +145,7 @@
 				if ([[filename pathExtension] isEqualToString: @"jpg"])
 				{
 					// Add the media to the menuList, which populates the tableView
-					NSArray *keys = [NSArray arrayWithObjects:@"path", @"type", @"title", @"thumbnail", @"title", @"status", nil];
+					NSArray *keys = [NSArray arrayWithObjects:@"original", @"type", @"title", @"thumbnail", @"title", @"status", nil];
 					NSArray *objects = [NSArray arrayWithObjects: fullPath, @"image", filename, thumbnailPath, title, @"unknown", nil];
 					NSDictionary *dictionary = [NSDictionary dictionaryWithObjects:objects forKeys:keys];
 					[mediaItems addObject:dictionary];
@@ -167,6 +158,7 @@
 }
 */
 
+
 + (NSString *)deviceIPAdress
 {
 	InitAddresses();
@@ -175,12 +167,35 @@
 	return [NSString stringWithFormat:@"%s", ip_names[1]];
 }
 
+- (BOOL)mkdir:(NSString*)path 
+{
+	if([fileManager fileExistsAtPath:path isDirectory:nil])
+	{
+		return NO;
+	}
+	NSError* err;
+	if(![fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&err])
+	{
+		NSLog(@"Err desc-%@", [err localizedDescription]);
+		NSLog(@"Err reason-%@", [err localizedFailureReason]);
+		return NO;
+	}
+	return YES;
+}
 
+
+/**
+ A Media ID is generated as follows:
+ [hex value of IP address without dots]-[hex value of unixtime seconds]-[hex value of unixtime microseconds]
+ */
 - (NSString*) generateMediaID
 {
 	NSString* ipStr = [ipAddress stringByReplacingOccurrencesOfString:@"." withString:@""];
-	long unixtime = (long)[[NSDate date] timeIntervalSince1970];
-	NSString* mediaID = [NSString stringWithFormat:@"%@-%04x", ipStr, unixtime];
+	int ipInt = [ipStr intValue];
+	long secs = (long)[[NSDate date] timeIntervalSince1970];
+	long usecs = (long)[[NSDate date] timeIntervalSince1970] * 1000;
+	usecs -= secs;
+	NSString* mediaID = [NSString stringWithFormat:@"%06x-%04x-%04x", ipInt, secs, usecs];
 	return mediaID;
 }
 
@@ -270,6 +285,8 @@
 	if([fileManager fileExistsAtPath:thumbnail])
 	{
 		UIImageView *imageView = [[UIImageView alloc] initWithImage:[[UIImage alloc] initWithContentsOfFile:thumbnail]];
+		[imageView setBounds:CGRectMake(0, 0, 70, 70)];
+		[imageView setContentMode:UIViewContentModeScaleAspectFit];
 		cell.accessoryView = imageView;
 		[imageView release];
 	}
@@ -278,9 +295,9 @@
 		NSLog(@"Silly rabbit -- %@ doesn't exist.", thumbnail);
 	}
 	
-	if(![fileManager fileExistsAtPath:[entry objectForKey:@"path"]])
+	if(![fileManager fileExistsAtPath:[entry objectForKey:@"original"]])
 	{
-		NSLog(@"We've got problems.  %@ doesn't exist.", [entry objectForKey:@"path"]);
+		NSLog(@"We've got problems.  %@ doesn't exist.", [entry objectForKey:@"original"]);
 	}
 	
 	NSDate* date_added = [NSDate dateWithString:[entry objectForKey:@"date_added"]];
@@ -386,7 +403,7 @@
 		NSString* title = [NSString stringWithFormat:@"Image %d", [appPrefs numMediaItems]+1];
 		UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage]; 
 		NSData* imageData = UIImageJPEGRepresentation(image, 75);
-		NSString* newPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", mediaDirectory, media_id];
+		NSString* newPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", mediaDir, media_id];
 		if([imageData writeToFile:newPath options:NSDataWritingAtomic error:&err]) {
 			NSLog(@"Successfully saved image %@ to file.", newPath);
 		} else {
@@ -396,9 +413,9 @@
 		}
 		
 		// Make and save a tiny thumbnail image
-		UIImage* thumb = [MainViewController imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(70, 70)];
+		UIImage* thumb = [MainViewController imageWithImage:image scaledToSizeWithSameAspectRatio:CGSizeMake(300, 300)];
 		NSData* thumbnailData = UIImageJPEGRepresentation(thumb, 70);
-		NSString* thumbnailPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", thumbnailsDirectory, media_id];
+		NSString* thumbnailPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", thumbnailsDir, media_id];
 		if([thumbnailData writeToFile:thumbnailPath atomically:NO]) {
 			NSLog(@"Saved thumbnail to %@.", thumbnailPath);
 		} else {
@@ -408,7 +425,7 @@
 		}
 
 		// Add the media to the menuList, which populates the tableView
-		[mediaItem setObject:newPath			forKey:@"path"];
+		[mediaItem setObject:newPath			forKey:@"original"];
 		[mediaItem setObject:@"image"		forKey:@"type"];
 		[mediaItem setObject:thumbnailPath	forKey:@"thumbnail"];
 		[mediaItem setObject:title			forKey:@"title"];
@@ -428,7 +445,7 @@
 		// the iOS makes a compressed/cropped copy of the file anyway
 		NSString *title = [NSString stringWithFormat:@"Video %d", [appPrefs numMediaItems]+1];
 		NSString *currentPath	= [[mediaURL path] retain];
-		NSString *newPath = [NSString stringWithFormat:@"%@/%@.mov", mediaDirectory, media_id];
+		NSString *newPath = [NSString stringWithFormat:@"%@/%@.mov", mediaDir, media_id];
 		if([fileManager copyItemAtPath:currentPath toPath:newPath error:&err]) {
 			NSLog(@"Moved %@ to %@", currentPath, newPath);
 		}
@@ -466,9 +483,9 @@
 			}
 		}
 
-		UIImage* smallThumb = [MainViewController imageWithImage:viewThumb scaledToSizeWithSameAspectRatio:CGSizeMake(70, 70)];
+		UIImage* smallThumb = [MainViewController imageWithImage:viewThumb scaledToSizeWithSameAspectRatio:CGSizeMake(300, 300)];
 		NSData* thumbData = UIImageJPEGRepresentation(smallThumb, 70);
-		NSString* thumbnailPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", thumbnailsDirectory, media_id];
+		NSString* thumbnailPath = [[NSString alloc] initWithFormat:@"%@/%@.jpg", thumbnailsDir, media_id];
 
 		if([thumbData writeToFile:thumbnailPath options:NSDataWritingAtomic error:&err]) {
 			NSLog(@"Successfully saved %@ to disk", thumbnailPath);
@@ -479,7 +496,7 @@
 		}
 		
 		// Add the media to the menuList, which populates the tableView
-		[mediaItem setObject:newPath		forKey:@"path"];
+		[mediaItem setObject:newPath		forKey:@"original"];
 		[mediaItem setObject:@"video"		forKey:@"type"];
 		[mediaItem setObject:thumbnailPath	forKey:@"thumbnail"];
 		[mediaItem setObject:title			forKey:@"title"];
@@ -594,6 +611,11 @@
 			{
 				NSString* remoteStatus = [remoteItem objectForKey:@"status"];
 				[localItem setValue:remoteStatus forKey:@"status"];
+				
+				NSString* downloadLink = [remoteItem objectForKey:@"download_link"];
+				if(downloadLink != nil) {
+					[localItem setValue:downloadLink forKey:@"download_link"];
+				}
 			}
 		}
 		[self.myTableView reloadData];
@@ -604,18 +626,25 @@
 	{
 		NSMutableString *alertMessage = [[NSMutableString alloc] initWithString:@"There was an error on the server.\n"];
 		NSArray* errors = [dictionary objectForKey:@"errors"];
+		
+		NSDictionary *error;
+		NSString *message, *code;
 		int errorCount = [errors count];
 		for (int i = 0; i < errorCount; i++) {
-			[alertMessage appendString: [errors objectAtIndex:i]];
+			error = [errors objectAtIndex:i];
+			message = [error objectForKey:@"message"];
+			code = [error objectForKey:@"code"];
+			
+			[alertMessage appendString: message];
 			[alertMessage appendString:@"\n"];
 		}
 		
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server-Side Error" 
-												message:alertMessage
-												delegate:self cancelButtonTitle:@"Ok" 
-											  otherButtonTitles:nil];
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server-side Error" 
+									message:alertMessage
+									delegate:self cancelButtonTitle:@"Ok" 
+									otherButtonTitles:nil];
 		
-		[alert setTag:ALERT_SYNC_SERVER_ERROR];
+		[alert setTag:ALERT_UPLOAD_SERVER_ERROR];
 		[alert show];
 		[alert release];
 	}
@@ -716,6 +745,8 @@
 
 #pragma mark -
 #pragma mark Static Methods
+
+
 
 + (UIImage*)imageWithImage:(UIImage*)sourceImage scaledToSizeWithSameAspectRatio:(CGSize)targetSize;
 {  
@@ -845,7 +876,7 @@
 	NSDictionary* item;
 	for (int i = 0; i < [appPrefs numMediaItems]; i++) {
 		item = [appPrefs getMediaItemAtIndex:i];
-		if([path isEqualToString:[item objectForKey:@"path"]]) {
+		if([path isEqualToString:[item objectForKey:@"original"]]) {
 			result = &item;
 			return YES;
 		}

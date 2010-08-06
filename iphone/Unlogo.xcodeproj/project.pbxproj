@@ -13,8 +13,12 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		1F1A6A601209E3A9004647DF /* IPAddress.c in Sources */ = {isa = PBXBuildFile; fileRef = 1F1A6A5F1209E3A9004647DF /* IPAddress.c */; };
 		1F1A6B29120A04A9004647DF /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F1A6B28120A04A9004647DF /* Preferences.m */; };
+		1F1A6D52120B41E0004647DF /* UnlogoMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F1A6D51120B41E0004647DF /* UnlogoMediaItem.m */; };
+		1F1A6E0A120B7F82004647DF /* 45-movie1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1A6E08120B7F82004647DF /* 45-movie1.png */; };
+		1F1A6E0B120B7F82004647DF /* 46-movie2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1A6E09120B7F82004647DF /* 46-movie2.png */; };
+		1F1A6E0D120B807A004647DF /* 131-upload.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1A6E0C120B807A004647DF /* 131-upload.png */; };
+		1F1A6E13120B8271004647DF /* 121-lanscape.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F1A6E12120B8271004647DF /* 121-lanscape.png */; };
 		1F369FEB1207859800A5D8E3 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F369FEA1207859800A5D8E3 /* MediaPlayer.framework */; };
-		1F4FCED41201F4B500A1F800 /* 46-movie2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1F4FCED31201F4B500A1F800 /* 46-movie2.png */; };
 		1F56E7EB12007AC700723051 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F56E7EA12007AC700723051 /* CFNetwork.framework */; };
 		1F56E7ED12007AC700723051 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F56E7EC12007AC700723051 /* MobileCoreServices.framework */; };
 		1F56E7EF12007AC700723051 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F56E7EE12007AC700723051 /* SystemConfiguration.framework */; };
@@ -69,15 +73,20 @@
 		1F1A6A5F1209E3A9004647DF /* IPAddress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = IPAddress.c; sourceTree = "<group>"; };
 		1F1A6B27120A04A9004647DF /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
 		1F1A6B28120A04A9004647DF /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
+		1F1A6D50120B41E0004647DF /* UnlogoMediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnlogoMediaItem.h; sourceTree = "<group>"; };
+		1F1A6D51120B41E0004647DF /* UnlogoMediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnlogoMediaItem.m; sourceTree = "<group>"; };
+		1F1A6E08120B7F82004647DF /* 45-movie1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "45-movie1.png"; path = "Resources/glyphish-icons/icons/45-movie1.png"; sourceTree = SOURCE_ROOT; };
+		1F1A6E09120B7F82004647DF /* 46-movie2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "46-movie2.png"; path = "Resources/glyphish-icons/icons/46-movie2.png"; sourceTree = SOURCE_ROOT; };
+		1F1A6E0C120B807A004647DF /* 131-upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "131-upload.png"; path = "Resources/glyphish-icons/icons/131-upload.png"; sourceTree = SOURCE_ROOT; };
+		1F1A6E12120B8271004647DF /* 121-lanscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "121-lanscape.png"; path = "Resources/glyphish-icons/icons/121-lanscape.png"; sourceTree = SOURCE_ROOT; };
 		1F369FEA1207859800A5D8E3 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		1F4FCED31201F4B500A1F800 /* 46-movie2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "46-movie2.png"; path = "Resources/glyphish-icons/icons/46-movie2.png"; sourceTree = SOURCE_ROOT; };
 		1F56E7EA12007AC700723051 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		1F56E7EC12007AC700723051 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		1F56E7EE12007AC700723051 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1F56E7F012007AC700723051 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		1F56E893120083D600723051 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = SOURCE_ROOT; };
-		1F74E6F5120888640024AD87 /* CustomMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomMoviePlayerViewController.h; path = Classes/CustomMoviePlayerViewController.h; sourceTree = SOURCE_ROOT; };
-		1F74E6F6120888640024AD87 /* CustomMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomMoviePlayerViewController.m; path = Classes/CustomMoviePlayerViewController.m; sourceTree = SOURCE_ROOT; };
+		1F74E6F5120888640024AD87 /* CustomMoviePlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMoviePlayerViewController.h; sourceTree = "<group>"; };
+		1F74E6F6120888640024AD87 /* CustomMoviePlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMoviePlayerViewController.m; sourceTree = "<group>"; };
 		1F74E73412088AD00024AD87 /* about.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = about.png; path = Resources/about.png; sourceTree = SOURCE_ROOT; };
 		1F78079112089D45009F2D57 /* ImageZoomController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageZoomController.h; sourceTree = "<group>"; };
 		1F78079212089D45009F2D57 /* ImageZoomController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageZoomController.m; sourceTree = "<group>"; };
@@ -178,15 +187,10 @@
 			children = (
 				1D3623240D0F684500981E51 /* UnlogoAppDelegate.h */,
 				1D3623250D0F684500981E51 /* UnlogoAppDelegate.m */,
-				1F973F7B11FF779800E5B98D /* MainViewController.h */,
-				1F973F7C11FF779800E5B98D /* MainViewController.m */,
-				1FA2BD5212076D70003599E0 /* MediaDetailViewController.h */,
-				1FA2BD5312076D70003599E0 /* MediaDetailViewController.m */,
-				1F74E6F5120888640024AD87 /* CustomMoviePlayerViewController.h */,
-				1F74E6F6120888640024AD87 /* CustomMoviePlayerViewController.m */,
-				1F78079112089D45009F2D57 /* ImageZoomController.h */,
-				1F78079212089D45009F2D57 /* ImageZoomController.m */,
-				1F1A6B55120A082C004647DF /* utils */,
+				1F1A6D50120B41E0004647DF /* UnlogoMediaItem.h */,
+				1F1A6D51120B41E0004647DF /* UnlogoMediaItem.m */,
+				1F1A6D53120B41E9004647DF /* View Controllers */,
+				1F1A6B55120A082C004647DF /* Utilities */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -199,9 +203,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1F1A6B55120A082C004647DF /* utils */ = {
+		1F1A6B55120A082C004647DF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				1F74E6F5120888640024AD87 /* CustomMoviePlayerViewController.h */,
+				1F74E6F6120888640024AD87 /* CustomMoviePlayerViewController.m */,
 				1F1A6A441209D2ED004647DF /* IPAddress.h */,
 				1F1A6A5F1209E3A9004647DF /* IPAddress.c */,
 				1F1A6B27120A04A9004647DF /* Preferences.h */,
@@ -209,7 +215,20 @@
 				1F97407811FF95B100E5B98D /* ASIHTTPRequest */,
 				1F9740C111FF95B100E5B98D /* JSON */,
 			);
-			name = utils;
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		1F1A6D53120B41E9004647DF /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1F973F7B11FF779800E5B98D /* MainViewController.h */,
+				1F973F7C11FF779800E5B98D /* MainViewController.m */,
+				1FA2BD5212076D70003599E0 /* MediaDetailViewController.h */,
+				1FA2BD5312076D70003599E0 /* MediaDetailViewController.m */,
+				1F78079112089D45009F2D57 /* ImageZoomController.h */,
+				1F78079212089D45009F2D57 /* ImageZoomController.m */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		1F97407811FF95B100E5B98D /* ASIHTTPRequest */ = {
@@ -353,8 +372,11 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1F1A6E12120B8271004647DF /* 121-lanscape.png */,
+				1F1A6E0C120B807A004647DF /* 131-upload.png */,
+				1F1A6E08120B7F82004647DF /* 45-movie1.png */,
+				1F1A6E09120B7F82004647DF /* 46-movie2.png */,
 				1F74E73412088AD00024AD87 /* about.png */,
-				1F4FCED31201F4B500A1F800 /* 46-movie2.png */,
 				1F97404711FF922200E5B98D /* Default.png */,
 				1F97404811FF922200E5B98D /* Icon.png */,
 				1F973F7911FF76EF00E5B98D /* star.png */,
@@ -436,8 +458,11 @@
 				1F97404911FF922200E5B98D /* Default.png in Resources */,
 				1F97404A11FF922200E5B98D /* Icon.png in Resources */,
 				1F56E894120083D600723051 /* Entitlements.plist in Resources */,
-				1F4FCED41201F4B500A1F800 /* 46-movie2.png in Resources */,
 				1F74E73512088AD00024AD87 /* about.png in Resources */,
+				1F1A6E0A120B7F82004647DF /* 45-movie1.png in Resources */,
+				1F1A6E0B120B7F82004647DF /* 46-movie2.png in Resources */,
+				1F1A6E0D120B807A004647DF /* 131-upload.png in Resources */,
+				1F1A6E13120B8271004647DF /* 121-lanscape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +507,7 @@
 				1F78079312089D45009F2D57 /* ImageZoomController.m in Sources */,
 				1F1A6A601209E3A9004647DF /* IPAddress.c in Sources */,
 				1F1A6B29120A04A9004647DF /* Preferences.m in Sources */,
+				1F1A6D52120B41E0004647DF /* UnlogoMediaItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -38,7 +38,14 @@
 	prefs =			[NSUserDefaults standardUserDefaults];
 	deviceUDID =	[[[UIDevice currentDevice] uniqueIdentifier] retain];
 	deviceName =	[[[UIDevice currentDevice] name] retain];
-
+	fileManager =	[[NSFileManager alloc] init];
+	
+	documentsDir = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES) objectAtIndex:0] retain];
+	mediaDir = [[documentsDir stringByAppendingPathComponent:@"originals"] retain];
+	unlogoDir = [[documentsDir stringByAppendingPathComponent:@"unlogo"] retain];
+	thumbnailsDir = [[documentsDir stringByAppendingPathComponent:@"thumbnails"] retain];
+	
+	
     [super viewDidLoad];
 }
 
@@ -57,8 +64,8 @@
 	thumbnailView.image = [UIImage imageWithContentsOfFile:[currentItem objectForKey:@"thumbnail"]];
 
 
-	[uploadButton setHidden:![status isEqualToString:@"new"]];
-	[viewProcessedButton setHidden:![status isEqualToString:@"done"]];
+	[uploadButton setEnabled:[status isEqualToString:@"new"]];
+	[viewProcessedButton setEnabled:[status isEqualToString:@"done"]];
 }
 
 
@@ -91,6 +98,14 @@
 
 
 - (void)dealloc {
+	if(uploadProgressAlert!=nil)
+	{
+		[uploadProgressAlert release];
+	}
+	if(downloadProgressAlert!=nil)
+	{
+		[downloadProgressAlert release];
+	}
 	[thumbnailView release];
 	[uploadButton release];
 	[viewOriginalButton release];
@@ -103,14 +118,83 @@
 #pragma mark -
 #pragma mark ButtonActions
 
-- (IBAction)viewProcessed:(id)sender
-{
+- (IBAction)viewProcessed
+{	
 	NSLog(@"View Processed");
+	NSString* unlogo = [currentItem objectForKey:@"unlogo"];
+	if(unlogo==nil || ![fileManager fileExistsAtPath:unlogo]) 
+	{
+		NSLog(@"Unlogo doesn't exist.  Starting download.");
+		[self doDownload];
+	} 
+	else 
+	{
+		NSString* type = [currentItem objectForKey:@"type"];
+		if ([type isEqualToString:@"image"])
+		{
+			[imageZoomController setPhoto:unlogo];
+			[[self parentViewController] pushViewController:imageZoomController animated:YES];
+		}
+		else if ([type isEqualToString:@"video"])
+		{		
+			CustomMoviePlayerViewController	*moviePlayer = [[[CustomMoviePlayerViewController alloc] initWithPath:unlogo] autorelease];
+			[self presentModalViewController:moviePlayer animated:YES];
+			[moviePlayer readyPlayer]; 
+		}
+	}
 }
+
+- (void)doDownload
+{
+	NSString* download_link = [currentItem objectForKey:@"download_link"];
+	if(download_link==nil)
+	{
+		UIAlertView *alert = [[UIAlertView alloc] 
+							  initWithTitle:@"Oops" 
+							  message:@"This video is not yet ready for download"
+							  delegate:self
+							  cancelButtonTitle:@"Ok" 
+							  otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		return;
+	}
+	
+	NSURL* url = [NSURL URLWithString:download_link];
+	NSString* dest = [[unlogoDir stringByAppendingPathComponent:[url lastPathComponent]] retain];
+	NSLog(@"downloading %@ to %@", url, dest);
+
+	[currentItem setValue:dest forKey:@"unlogo"];
+	
+	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+	[request setDownloadDestinationPath:dest];
+	[request setShowAccurateProgress:YES];
+	[request setDelegate:self];
+	[request setDidFinishSelector:@selector(downloadDone:)];
+	[request setDidFailSelector:@selector(downloadWentWrong:)];
+	
+	downloadProgressAlert = [[UIAlertView alloc] initWithTitle: @"Downloading... Please wait."
+												message: @" "
+												delegate: self
+												cancelButtonTitle: @"Cancel"
+												otherButtonTitles: nil];
+	[downloadProgressAlert setTag:ALERT_DOWNLOAD_CANCELLED];
+	
+	UIProgressView *progressView = [[UIProgressView alloc] initWithFrame:CGRectMake(20.0f, 50.0f, 250.0f, 90.0f)];
+	
+	[downloadProgressAlert addSubview:progressView];
+	
+	[request setUploadProgressDelegate:progressView];
+	[request startAsynchronous];
+	
+	[progressView release];
+	[downloadProgressAlert show];
+}
+
 
 - (IBAction)viewOriginal:(id)sender
 {
-	NSString* path = [currentItem objectForKey:@"path"];
+	NSString* path = [currentItem objectForKey:@"original"];
 	NSString* type = [currentItem objectForKey:@"type"];
 	if(path == NULL)
 	{
@@ -136,7 +220,7 @@
 		NSLog(@"Attempting to play %@", path);
 		
 		// Create custom movie player   
-		moviePlayer = [[[CustomMoviePlayerViewController alloc] initWithPath:path] autorelease];
+		CustomMoviePlayerViewController	*moviePlayer = [[[CustomMoviePlayerViewController alloc] initWithPath:path] autorelease];
 		
 		// Show the movie player as modal
 		[self presentModalViewController:moviePlayer animated:YES];
@@ -156,33 +240,34 @@
 
 - (IBAction)doUpload:(id)sender
 {
-	NSString* path = [currentItem objectForKey:@"path"];
+	NSString* original = [currentItem objectForKey:@"original"];
 	NSString* type = [currentItem objectForKey:@"type"];
 	NSString* media_id = [currentItem objectForKey:@"media_id"];
 	NSString* title = [currentItem objectForKey:@"title"];
 	
-	ASIFormDataRequest *uploadRequest = [[ASIFormDataRequest alloc] initWithURL:appDelegate.endpoint];
+	ASIFormDataRequest *request = [[ASIFormDataRequest alloc] initWithURL:appDelegate.endpoint];
 	
 	if ([type isEqualToString:@"image"])
 	{
-		[uploadRequest setData:[NSData dataWithContentsOfFile:path] withFileName:@"image.jpg" andContentType:@"image/jpeg" forKey:@"file"];
+		[request setData:[NSData dataWithContentsOfFile:original] withFileName:@"image.jpg" andContentType:@"image/jpeg" forKey:@"file"];
 	}
 	else if ([type isEqualToString:@"video"])
 	{
-		[uploadRequest setFile:path forKey:@"file"];
-		[uploadRequest setShouldStreamPostDataFromDisk:YES];
+		[request setFile:original forKey:@"file"];
+		[request setShouldStreamPostDataFromDisk:YES];
 	}
 	
-	[uploadRequest setPostValue:@"upload" forKey:@"action"];
-	[uploadRequest setPostValue:deviceUDID forKey:@"udid"];
-	[uploadRequest setPostValue:deviceName forKey:@"device_name"];
-	[uploadRequest setData:appDelegate.deviceToken withFileName:@"token.bin" andContentType:@"application/octet-stream" forKey:@"device_token"];
-	[uploadRequest setPostValue:media_id forKey:@"media_id"];
-	[uploadRequest setPostValue:title forKey:@"title"];
-	[uploadRequest setShowAccurateProgress:YES];
-	[uploadRequest setDelegate:self];
-	[uploadRequest setDidFinishSelector:@selector(uploadDone:)];
-	[uploadRequest setDidFailSelector:@selector(uploadWentWrong:)];
+	[request setPostValue:@"upload" forKey:@"action"];
+	[request setPostValue:deviceUDID forKey:@"udid"];
+	[request setPostValue:deviceName forKey:@"device_name"];
+	[request setData:appDelegate.deviceToken withFileName:@"token.bin" andContentType:@"application/octet-stream" forKey:@"device_token"];
+	[request setPostValue:media_id forKey:@"media_id"];
+	[request setPostValue:title forKey:@"title"];
+	[request setShowAccurateProgress:YES];
+	[request setDelegate:self];
+	[request setDidFinishSelector:@selector(uploadDone:)];
+	[request setDidFailSelector:@selector(uploadWentWrong:)];
+	[request setNumberOfTimesToRetryOnTimeout:4];
 	
 	uploadProgressAlert = [[UIAlertView alloc] initWithTitle: @"Uploading... Please wait."
 													 message: @" "
@@ -196,8 +281,8 @@
 	[uploadProgressAlert addSubview:progressView];
 	
 	
-	[uploadRequest setUploadProgressDelegate:progressView];
-	[uploadRequest startAsynchronous];
+	[request setUploadProgressDelegate:progressView];
+	[request startAsynchronous];
 	
 	[progressView release];
 	[uploadProgressAlert show];
@@ -207,6 +292,31 @@
 
 #pragma mark -
 #pragma mark HTTPRequestCallbacks
+
+- (void)downloadDone:(ASIHTTPRequest *)request
+{
+	[downloadProgressAlert dismissWithClickedButtonIndex:1 animated:YES];
+	NSLog(@"Download done.  Viewing %@", [currentItem objectForKey:@"unlogo"]);
+	[self viewProcessed];
+}
+
+- (void)downloadWentWrong:(ASIHTTPRequest *)request 
+{
+	[downloadProgressAlert dismissWithClickedButtonIndex:0 animated:YES];
+	
+	NSError *error = [request error];
+	//[statusLabel setText:@""];
+	NSLog(@"Request Failed: %@", [error localizedDescription] );
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[error localizedDescription]
+													message: [error localizedFailureReason]
+												   delegate:self 
+										  cancelButtonTitle:@"Cancel" 
+										  otherButtonTitles:@"Retry", nil];
+	[alert setTag:ALERT_DOWNLOAD_FAILED];
+	[alert show];
+	[alert release];
+	[request release];
+}
 
 //--------------------------------------------------------------
 - (void)uploadDone:(ASIHTTPRequest *)request {
@@ -243,33 +353,41 @@
 		
 		NSMutableString *alertMessage = [[NSMutableString alloc] initWithString:@"There was an error on the server.\n"];
 		NSArray* errors = [dictionary objectForKey:@"errors"];
+		
+		NSDictionary *error;
+		NSString *message, *code;
 		int errorCount = [errors count];
 		for (int i = 0; i < errorCount; i++) {
-			[alertMessage appendString: [errors objectAtIndex:i]];
+			error = [errors objectAtIndex:i];
+			message = [error objectForKey:@"message"];
+			code = [error objectForKey:@"code"];
+			if([code isEqualToString:@"UPLOAD_FILE_EXISTS"])
+			{
+				[currentItem setValue:@"uploaded" forKey:@"status"];
+				[uploadButton setHidden:YES];
+			}
+			
+			[alertMessage appendString: message];
 			[alertMessage appendString:@"\n"];
 		}
 		
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Server-side Error" 
-														message:alertMessage
-													   delegate:self cancelButtonTitle:@"Ok" 
-											  otherButtonTitles:nil];
+									message:alertMessage
+									delegate:self cancelButtonTitle:@"Ok" 
+									otherButtonTitles:nil];
 		
 		[alert setTag:ALERT_UPLOAD_SERVER_ERROR];
 		[alert show];
 		[alert release];
 	}
-	
-	
-	
-	//Use when fetching binary data
-	//NSData *responseData = [request responseData];
+
 	[request release];
 }
 
 
 //--------------------------------------------------------------
-- (void)uploadWentWrong:(ASIHTTPRequest *)request {
-	
+- (void)uploadWentWrong:(ASIHTTPRequest *)request
+{
 	[uploadProgressAlert dismissWithClickedButtonIndex:0 animated:YES];
 	
 	NSError *error = [request error];
@@ -296,14 +414,17 @@
 	switch([alertView tag]) {
 			
 		case ALERT_UPLOAD_FAILED:
-			if (buttonIndex == 0)
+			if (buttonIndex == 1)
 			{
-				NSLog(@"cancel");
-			}
-			else
-			{
-				NSLog(@"retry");
+				NSLog(@"retry upload");
 				[self doUpload:nil];
+			}
+			break;
+		case ALERT_DOWNLOAD_FAILED:
+			if (buttonIndex == 1)
+			{
+				NSLog(@"retry download");
+				[self doDownload];
 			}
 			break;
 		case ALERT_VIDEO_MISSING:
