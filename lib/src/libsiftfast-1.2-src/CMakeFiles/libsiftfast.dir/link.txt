@@ -1,0 +1,1 @@
+/usr/bin/c++   -dynamiclib -headerpad_max_install_names -L/opt/local/lib -o libsiftfast.dylib -install_name /Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/libsiftfast.dylib CMakeFiles/libsiftfast.dir/libsiftfast.o -lm -lstdc++ 

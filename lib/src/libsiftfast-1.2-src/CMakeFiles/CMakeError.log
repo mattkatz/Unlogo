@@ -1,0 +1,22 @@
+Determining if the function _init exists in the lapack failed with the following output:
+Change Dir: /Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/CMakeTmp
+
+Run Build Command:/opt/local/bin/gmake "cmTryCompileExec/fast"
+/opt/local/bin/gmake -f CMakeFiles/cmTryCompileExec.dir/build.make CMakeFiles/cmTryCompileExec.dir/build
+gmake[1]: Entering directory `/Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/CMakeTmp'
+/opt/local/bin/cmake -E cmake_progress_report /Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/CMakeTmp/CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o
+/usr/bin/gcc   -I/opt/local/include   -DCHECK_FUNCTION_EXISTS=_init   -o CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o   -c /opt/local/share/cmake-2.8/Modules/CheckFunctionExists.c
+Linking C executable cmTryCompileExec
+/opt/local/bin/cmake -E cmake_link_script CMakeFiles/cmTryCompileExec.dir/link.txt --verbose=1
+/usr/bin/gcc   -I/opt/local/include   -DCHECK_FUNCTION_EXISTS=_init -Wl,-search_paths_first -headerpad_max_install_names -L/opt/local/lib CMakeFiles/cmTryCompileExec.dir/CheckFunctionExists.c.o  -o cmTryCompileExec  -llapack 
+Undefined symbols:
+  "__init", referenced from:
+      _main in CheckFunctionExists.c.o
+ld: symbol(s) not found
+collect2: ld returned 1 exit status
+gmake[1]: *** [cmTryCompileExec] Error 1
+gmake[1]: Leaving directory `/Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/CMakeTmp'
+gmake: *** [cmTryCompileExec/fast] Error 2
+
+

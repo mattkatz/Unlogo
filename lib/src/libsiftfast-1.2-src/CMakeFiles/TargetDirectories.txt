@@ -1,0 +1,4 @@
+/Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/libsiftfast.dir
+/Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/libsiftfast-static.dir
+/Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/siftfast.dir
+/Users/jeff/Desktop/unlogo/filter/libsiftfast-1.2-src/CMakeFiles/uninstall.dir

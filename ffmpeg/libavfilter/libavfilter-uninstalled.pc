@@ -1,0 +1,12 @@
+prefix=
+exec_prefix=
+libdir=${pcfiledir}
+includedir=/Users/jeff/Desktop/filter/ffmpeg
+
+Name: libavfilter
+Description: FFmpeg video filtering library
+Version: 1.26.1
+Requires: libavcore = 0.1.0
+Conflicts:
+Libs: ${libdir}/libavfilter.a  -lx264 -lmp3lame -lm -lbz2 -lz 
+Cflags: -I${includedir}

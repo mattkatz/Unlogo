@@ -1,0 +1,42 @@
+UNLOGO
+By Jeff Crouse
+with support from Minnesota Art on Wheels and Eyebeam
+
+This software is licensed under the GNU-LGPL version 2.1 or later.
+
+jefftimesten at gmail dot com
+
+Unlogo is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+Unlogo is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+
+INSTRUCTIONS
+================
+* To compile FFMPEG
+
+./configure --arch=x86 --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-gpl --disable-doc
+
+* The directory 'ffmpeg' includes the plugin filter. To compile it just run
+  /configure as usual.
+
+* The directory 'vfilter_plugin' includes the implementation of the logo 
+  detection filter. OpenCV needs to be installed to compile it.
+
+bin/ffmpeg -qscale 2 -i share/videos/IMG_0092.MOV -vf plugin=./logo.so:./share/logos/Dior.jpg -y out.mov
+
+
+
+CREDITS
+================
+Jeff Crouse - creator, a bit of everything
+Michael Schieben - Web programming
+Kashif Bilal - AVFilter implementation
+Mike Burakoff - graphic design
+
