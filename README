@@ -1,10 +1,9 @@
 UNLOGO
 By Jeff Crouse and Kashif Bilal
+jefftimesten at gmail dot com
 with support from Minnesota Art on Wheels and Eyebeam
 
-This software is licensed under the GNU-LGPL version 2.1 or later.
-
-jefftimesten at gmail dot com
+This software is licensed under the GNU-GPL version 3 or later.
 
 Unlogo is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public
@@ -18,25 +17,50 @@ General Public License for more details.
 
 REQUIREMENTS
 ===============
-- OpenCV
 
+- OpenCV: http://opencv.willowgarage.com/wiki/
+- libANN:  http://www.cs.umd.edu/~mount/ANN/
+	direct link: http://www.cs.umd.edu/~mount/ANN/Files/1.1.2/ann_1.1.2.zip
+- libsiftfast: http://sourceforge.net/projects/libsift 
+	direct: http://downloads.sourceforge.net/project/libsift/libsiftfast/libsiftfast-1.2/libsiftfast-1.2-src.tgz
+- pkg-config
+
+Note:
+- When compiling libANN for OSX, it might complain 'libtool: unrecognized option `-static`'.  This is because of a Macports/Fink issue.  Just open the Makefile and change this:
+
+	"MAKELIB = libtool -static -o " \
+to this
+	"MAKELIB = /usr/bin/libtool -static -o " \
+
+- Even with this fix, you will get an error in 'rand.cpp'.  Ignore this and move the lib and include files into your system.
+
+- On OSX, use 'cmake -DUSE_OPENMP=OFF .' to configure libsiftfast.  
 
 INSTRUCTIONS
 ================
 
-* The version of FFMPEG included with this package includes the 'plugin' AVFilter. I recommend compiling it with --prefix=../ and installing everything into the main driectory, But you can also just install it into your system as usual.
+The Unlogo filter uses the 'plugin' AVFilter for FFMPEG written by Kashif Balil.  This greatly simplifies and speeds up the process of making an AVFilter by allowing the user to reference a shared object when running FFMPEG rather than building the functionality into FFMPEG and having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.   
 
-* To compile FFMPEG
+Note:  Libavfilter is only available in the 0.6 branch. Older version of FFMPEG will not work. 
 
-./configure --arch=x86 --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-gpl --disable-doc
+- Run checkout.sh
 
-* The directory 'ffmpeg' includes the plugin filter. To compile it just run
-  /configure as usual.
+- Configure and build FFMPEG as you normally would. Google is full of tutorials of how to build FFMPEG on your particular platform.  This works for me:
 
-* The directory 'vfilter_plugin' includes the implementation of the logo 
-  detection filter. OpenCV needs to be installed to compile it.
+	./configure --arch=x86 --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-gpl --disable-doc --prefix=../
 
-bin/ffmpeg -qscale 2 -i share/videos/IMG_0092.MOV -vf plugin=./logo.so:./share/logos/Dior.jpg -y out.mov
+	make
+	
+	make install
+
+- Now make logo.so by running 'make'.  Make sure you've already installed the requirements listed above
+
+- You're done!  To use the filter, make sure to reference the version of FFMPEG that you just built, and then do something like this: 
+
+	ffmpeg -qscale 2 -i [input video] -vf plugin=logo.so:[logo image] -y [output file name]
+
+	ffmpeg -qscale 2 -i share/videos/IMG_0092.MOV -vf plugin=./logo.so:./share/logos/Dior.jpg -y out.mov
+
 
 
 
