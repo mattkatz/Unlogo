@@ -19,10 +19,19 @@ REQUIREMENTS
 ===============
 
 - OpenCV: http://opencv.willowgarage.com/wiki/
+
+	svn co https://code.ros.org/svn/opencv/trunk/opencv -r 3059
+	cd opencv
+	cmake .
+	make
+	install
+
 - libANN:  http://www.cs.umd.edu/~mount/ANN/
+
 	direct link: http://www.cs.umd.edu/~mount/ANN/Files/1.1.2/ann_1.1.2.zip
+
 - libsiftfast: http://sourceforge.net/projects/libsift 
-	direct: http://downloads.sourceforge.net/project/libsift/libsiftfast/libsiftfast-1.2/libsiftfast-1.2-src.tgz
+
 - pkg-config
 
 Note:
@@ -39,23 +48,25 @@ to this
 INSTRUCTIONS
 ================
 
-The Unlogo filter uses the 'plugin' AVFilter for FFMPEG written by Kashif Balil.  This greatly simplifies and speeds up the process of making an AVFilter by allowing the user to reference a shared object when running FFMPEG rather than building the functionality into FFMPEG and having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.   
-
-Note:  Libavfilter is only available in the 0.6 branch. Older version of FFMPEG will not work. 
+The Unlogo filter uses the 'plugin' AVFilter for FFMPEG written by Kashif Balil.  This greatly simplifies and speeds up the process of making an AVFilter by allowing the user to reference a shared object when running FFMPEG rather than building the functionality into FFMPEG and having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.   Note:  Libavfilter is only available in the 0.6 branch. Older version of FFMPEG will not work. 
 
 - Run checkout.sh
 
+	./checkout.sh
+
 - Configure and build FFMPEG as you normally would. Google is full of tutorials of how to build FFMPEG on your particular platform.  This works for me:
 
+	cd ffmpeg
+	
 	./configure --arch=x86 --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-gpl --disable-doc --prefix=../
 
 	make
 	
 	make install
 
-- Now make logo.so by running 'make'.  Make sure you've already installed the requirements listed above
+- Now make logo.so by running 'make' from the root directory.  Make sure you've already installed the requirements listed above
 
-- You're done!  To use the filter, make sure to reference the version of FFMPEG that you just built, and then do something like this: 
+- You're done!  To use the filter, make sure to use the version of FFMPEG that you just built, and then do something like this: 
 
 	ffmpeg -qscale 2 -i [input video] -vf plugin=logo.so:[logo image] -y [output file name]
 
