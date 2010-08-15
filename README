@@ -15,16 +15,18 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
+
+
 REQUIREMENTS
 ===============
 
 - OpenCV: http://opencv.willowgarage.com/wiki/
 
-	svn co https://code.ros.org/svn/opencv/trunk/opencv -r 3059
+	svn co https://code.ros.org/svn/opencv/trunk/opencv -r 3513
 	cd opencv
-	cmake .
-	make
-	install
+	sudo cmake -G "Unix Makefiles" .
+	sudo make
+	sudo make install
 
 - libANN:  http://www.cs.umd.edu/~mount/ANN/
 
@@ -34,7 +36,15 @@ REQUIREMENTS
 
 - pkg-config
 
-Note:
+
+OSX NOTES
+================
+
+- Unlogo uses a lot of bleeding-edge stuff. Update your MacPorts!
+
+	sudo port selfupdate
+	sudo port upgrade outdated
+
 - When compiling libANN for OSX, it might complain 'libtool: unrecognized option `-static`'.  This is because of a Macports/Fink issue.  Just open the Makefile and change this:
 
 	"MAKELIB = libtool -static -o " \
@@ -44,6 +54,21 @@ to this
 - Even with this fix, you will get an error in 'rand.cpp'.  Ignore this and move the lib and include files into your system.
 
 - On OSX, use 'cmake -DUSE_OPENMP=OFF .' to configure libsiftfast.  
+
+== OpenCV Notes ==
+
+- You might need to change line 55 in both opencv/modules/gpu/src/constantspacebp_gpu.cpp and opencv/modules/gpu/src/beliefpropagation_gpu.cpp from 
+
+	void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
+to
+
+	void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, Stream&) { throw_nogpu(); }
+
+- In opencv/modules/gpu/src/matrix_operations.cpp, comment out line 71 -- the function doesn't exist.
+
+	void MatPL::get_property_device() { throw_nogpu(); }
+
+
 
 INSTRUCTIONS
 ================
