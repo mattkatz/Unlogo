@@ -1,16 +1,19 @@
 CPP      = g++
-CPPFLAGS = -fPIC -O0 -g -Wall -W `pkg-config --cflags opencv`
-INCLUDES = -I./include
-SRCS     = src/logo.cpp src/LogoDetect.cpp
+CPPFLAGS = -fPIC -O0 -g -Wall -W -L/usr/local/lib 
+INCLUDES = -I/usr/local/include -I/usr/local/include/opencv -I/opt/local/include
+SRCS     = src/unlogo.cpp
 OBJS     = $(SRCS:.cpp=.o)
-LIBS     = -lsiftfast -lANN `pkg-config --libs opencv`
+LIBS     = -lopencv_highgui -lopencv_calib3d -lopencv_core -lopencv_features2d -lopencv_imgproc -lopencv_video
 
 
 all: $(OBJS)
-	g++ -shared -o logo.so $(OBJS) $(LIBS)
+	g++ -shared -o unlogo.so $(OBJS) $(LIBS)
+
 
 clean:
 	rm -f *.so src/*.o
 
 .cpp.o:
 	$(CPP) -c $(CPPFLAGS) $(INCLUDES) $< -o $@
+
+

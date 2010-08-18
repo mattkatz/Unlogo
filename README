@@ -95,7 +95,7 @@ The Unlogo filter uses the 'plugin' AVFilter for FFMPEG written by Kashif Balil.
 
 	ffmpeg -qscale 2 -i [input video] -vf plugin=logo.so:[logo image] -y [output file name]
 
-	ffmpeg -qscale 2 -i share/videos/IMG_0092.MOV -vf plugin=./logo.so:./share/logos/Dior.jpg -y out.mov
+	ffmpeg -qscale 2 -i share/videos/IMG_0092.MOV -vf plugin=./unlogo.so:FAST:SURF:BruteForce:./share/logos/Dior.jpg -y out.mov
 
 
 
