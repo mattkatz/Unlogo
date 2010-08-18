@@ -58,7 +58,7 @@ to
 BUILDING
 ========================
 
-The Unlogo filter uses the 'plugin' AVFilter for FFMPEG written by Kashif Balil.  This greatly simplifies and speeds up the process of making an AVFilter by allowing the user to reference a shared object when running FFMPEG rather than having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.   
+The Unlogo filter uses the 'plugin' AVFilter for FFMPEG written by Kashif Balil.  This greatly simplifies and speeds up the process of making a filter by allowing the user to reference a shared object when running FFMPEG rather than having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.   
 Note:  Libavfilter is only available in the 0.6 branch. Older version of FFMPEG will not work. 
 
 - Run checkout.sh
@@ -86,7 +86,7 @@ To use the filter, make sure to use the version of FFMPEG that you just built, a
 
 	ffmpeg -qscale 2 -i [input video] -vf plugin=unlogo.so:[detector type]:[descriptor extracor type]:[matcher type]:[logo image(s)] -y [output file name]
 
-	ffmpeg -qscale 2 -i share/videos/IMG_0092.MOV -vf plugin=unlogo.so:SURF:SURF:BruteForce:share/logos/Dior.jpg:share/replace/Dior.jpg:share/logos/Chanel.jpg:#FFFFFF -y out.mov
+	ffmpeg -qscale 2 -i share/videos/IMG_0092.MOV -vf plugin=unlogo.so:SURF:SURF:BruteForce:share/logos/Dior.jpg:#FF00FF:share/logos/Chanel.jpg:#FFFFFF -y out.mov
 
 Possible values as of OpenCV 3513 are:
 

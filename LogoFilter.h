@@ -48,6 +48,7 @@ protected:
 	Ptr<DescriptorMatcher> descriptorMatcher;
 	
 	int ransacReprojThreshold;
+	int ransacMethod;
 	vector<Logo> logos;
 	int framenum;
 	

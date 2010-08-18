@@ -36,6 +36,8 @@ int LogoFilter::init( const char* argstr )
 	string descriptor_extractor_type = args[1];
 	string descriptor_matcher_type = args[2];
 	ransacReprojThreshold = 2;
+	ransacMethod = CV_LMEDS; //CV_RANSAC
+	
 	
 	// Construct the detector, extractor, and matcher.
 	detector = createDetector( detector_type );
@@ -106,18 +108,22 @@ int LogoFilter::init( const char* argstr )
 	return 0;
 }
 
-int LogoFilter::filter(Mat &in_image, Mat &out_img)
+
+// in_image is the one to analyze
+// out_img is the one to draw on
+int LogoFilter::filter(Mat &in_img, Mat &out_img)
 {
-	Mat gray_image; 
-	cvtColor(in_image, gray_image, CV_RGB2GRAY);
+	log(LOG_LEVEL_DEBUG, "Frame %d", framenum);
+	
+	Mat gray_img; 
+	cvtColor(in_img, gray_img, CV_RGB2GRAY);
 	
     vector<KeyPoint> keypoints2;
-    detector->detect( gray_image, keypoints2 );
+    detector->detect( gray_img, keypoints2 );
 	log(LOG_LEVEL_DEBUG, "%d keypoints in frame", keypoints2.size());
 	
-    log(LOG_LEVEL_DEBUG, "Computing descriptors for keypoints from frame...");
     Mat descriptors2;
-    descriptorExtractor->compute( gray_image, keypoints2, descriptors2 );
+    descriptorExtractor->compute( gray_img, keypoints2, descriptors2 );
 	
 	for(size_t i=0; i<logos.size(); i++)
 	{
@@ -130,11 +136,11 @@ int LogoFilter::filter(Mat &in_image, Mat &out_img)
 		Mat H12;
 		vector<Point2f> points2;
 		
-		if(ransacReprojThreshold >= 0 )
+		if(ransacReprojThreshold >= 0)
 		{
 			log(LOG_LEVEL_DEBUG, "Computing homography (RANSAC)");
 			KeyPoint::convert(keypoints2, points2, matches);
-			H12 = findHomography( Mat(logos[i].points), Mat(points2), CV_RANSAC, ransacReprojThreshold );
+			H12 = findHomography( Mat(logos[i].points), Mat(points2), ransacMethod, ransacReprojThreshold );
 		}
 		
 		if( H12.empty() )
@@ -165,6 +171,7 @@ int LogoFilter::filter(Mat &in_image, Mat &out_img)
 			}
 		}
 	}
+	
 	framenum++;
 	return 0;
 }
