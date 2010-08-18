@@ -1,6 +1,6 @@
 CPP      = g++
 CPPFLAGS = -fPIC -O0 -g -Wall -W -L/usr/local/lib 
-INCLUDES = -I/usr/local/include -I/usr/local/include/opencv -I/opt/local/include
+INCLUDES = -I/usr/local/include -I/usr/local/include/opencv 
 SRCS     = src/unlogo.cpp
 OBJS     = $(SRCS:.cpp=.o)
 LIBS     = -lopencv_highgui -lopencv_calib3d -lopencv_core -lopencv_features2d -lopencv_imgproc -lopencv_video
