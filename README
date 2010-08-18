@@ -28,13 +28,7 @@ REQUIREMENTS
 	sudo make
 	sudo make install
 
-- libANN:  http://www.cs.umd.edu/~mount/ANN/
-
-	direct link: http://www.cs.umd.edu/~mount/ANN/Files/1.1.2/ann_1.1.2.zip
-
-- libsiftfast: http://sourceforge.net/projects/libsift 
-
-- pkg-config
+- FFMPEG
 
 
 OSX NOTES
@@ -45,19 +39,7 @@ OSX NOTES
 	sudo port selfupdate
 	sudo port upgrade outdated
 
-- When compiling libANN for OSX, it might complain 'libtool: unrecognized option `-static`'.  This is because of a Macports/Fink issue.  Just open the Makefile and change this:
-
-	"MAKELIB = libtool -static -o " \
-to this
-	"MAKELIB = /usr/bin/libtool -static -o " \
-
-- Even with this fix, you will get an error in 'rand.cpp'.  Ignore this and move the lib and include files into your system.
-
-- On OSX, use 'cmake -DUSE_OPENMP=OFF .' to configure libsiftfast.  
-
-== OpenCV Notes ==
-
-- You might need to change line 55 in both opencv/modules/gpu/src/constantspacebp_gpu.cpp and opencv/modules/gpu/src/beliefpropagation_gpu.cpp from 
+- In OpenCV, you might need to change line 55 in both opencv/modules/gpu/src/constantspacebp_gpu.cpp and opencv/modules/gpu/src/beliefpropagation_gpu.cpp from 
 
 	void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
 to
