@@ -5,7 +5,7 @@ svn co -r 24789 svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg
 # Copy the plugin 
 # Note:  Libavfilter is only available in the 0.6 branch. Older version of FFMPEG will not work.
 echo "Moving vf_plugin.c..."
-cp src/vf_plugin.c  ffmpeg/libavfilter/vf_plugin.c
+cp vf_plugin.c  ffmpeg/libavfilter/vf_plugin.c
 
 #
 # We need to modify 2 files in libavfilter so that it will include
