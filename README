@@ -31,7 +31,8 @@ REQUIREMENTS
 - Boost - http://sourceforge.net/projects/boost/files/boost/1.44.0/
 
 - FFMPEG (fetched automatically with checkout.sh)
-	
+
+
 
 OSX NOTES
 ========================
@@ -41,7 +42,14 @@ OSX NOTES
 	sudo port selfupdate
 	sudo port upgrade outdated
 
-- In OpenCV rev 3513, you might need to change line 55 in both opencv/modules/gpu/src/constantspacebp_gpu.cpp and opencv/modules/gpu/src/beliefpropagation_gpu.cpp from 
+- In OpenCV rev 3513, you might need to apply some changes.
+
+You can use 'patch' to apply the changes to OpenCV. Run the following
+command in the root of your OpenCV checkout:
+
+	patch -p0 -i PATH_TO_UNLOGO/osx_gpu_propagation_fix_opencv_rev3515.patch
+
+Or change line 55 in both opencv/modules/gpu/src/constantspacebp_gpu.cpp and opencv/modules/gpu/src/beliefpropagation_gpu.cpp from 
 
 	void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
 
@@ -98,7 +106,20 @@ Possible values as of OpenCV 3513 are:
 	
 - Descriptor Matcher Types
 	BruteForce, BruteForce-L1
-	
+
+
+
+TROUBLESHOOTING
+========================
+- make logo.so
+On OS X 10.5 (gcc version 4.0.1) change the Makefile
+g++ -shared -o unlogo.so $(OBJS) $(LIBS)
+g++ -bundle -o unlogo.so $(OBJS) $(LIBS)
+(http://stackoverflow.com/questions/1494407/undefined-symbol-main-when-trying-to-build-shared-library-g-mac)
+
+If you get "error: boost/algorithm/string.hpp: No such file or directory" specify the path to your boost installation in the Makefile INCLUDES
+-I/usr/bin/boost_1_44_0
+
 
 
 TO DO

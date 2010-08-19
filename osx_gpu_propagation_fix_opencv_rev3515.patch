@@ -1,0 +1,39 @@
+Index: modules/gpu/src/constantspacebp_gpu.cpp
+===================================================================
+--- modules/gpu/src/constantspacebp_gpu.cpp	(revision 3513)
++++ modules/gpu/src/constantspacebp_gpu.cpp	(working copy)
+@@ -52,7 +52,7 @@
+ cv::gpu::StereoConstantSpaceBP::StereoConstantSpaceBP(int, int, int, int, float, float, float, float, int, int) { throw_nogpu(); }
+ 
+ void cv::gpu::StereoConstantSpaceBP::operator()(const GpuMat&, const GpuMat&, GpuMat&) { throw_nogpu(); }
+-void cv::gpu::StereoConstantSpaceBP::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
++void cv::gpu::StereoConstantSpaceBP::operator()(const GpuMat&, const GpuMat&, GpuMat&, Stream&) { throw_nogpu(); }
+ 
+ #else /* !defined (HAVE_CUDA) */
+ 
+Index: modules/gpu/src/beliefpropagation_gpu.cpp
+===================================================================
+--- modules/gpu/src/beliefpropagation_gpu.cpp	(revision 3513)
++++ modules/gpu/src/beliefpropagation_gpu.cpp	(working copy)
+@@ -52,7 +52,7 @@
+ cv::gpu::StereoBeliefPropagation::StereoBeliefPropagation(int, int, int, float, float, float, float, int) { throw_nogpu(); }
+ 
+ void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&) { throw_nogpu(); }
+-void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
++void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, Stream&) { throw_nogpu(); }
+ 
+ #else /* !defined (HAVE_CUDA) */
+ 
+Index: modules/gpu/src/matrix_operations.cpp
+===================================================================
+--- modules/gpu/src/matrix_operations.cpp	(revision 3513)
++++ modules/gpu/src/matrix_operations.cpp	(working copy)
+@@ -68,7 +68,7 @@
+         void GpuMat::release() { throw_nogpu(); }
+ 
+         void MatPL::create(int /*_rows*/, int /*_cols*/, int /*_type*/, int /*type_alloc*/) { throw_nogpu(); }
+-        void MatPL::get_property_device() { throw_nogpu(); }
++        //void MatPL::get_property_device() { throw_nogpu(); }
+         void MatPL::release() { throw_nogpu(); }
+     }
+ 
