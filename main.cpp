@@ -32,7 +32,7 @@ int main (int argc, char * const argv[])
 		g_filter.filter(frame, drawImg, true);
 		
 		imshow("out", drawImg);
-        char c = (char)cvWaitKey(0);
+        char c = (char)cvWaitKey(5);
         if( c == '\x1b' ) // esc
         {
             cout << "Exiting ..." << endl;

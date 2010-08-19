@@ -37,7 +37,7 @@ int LogoFilter::addLogo(string search, string replace)
 {
 	Logo logo;
 	logo.search = search;
-	logo.img = imread( logo.search, CV_LOAD_IMAGE_GRAYSCALE);
+	logo.img = imread( logo.search, CV_LOAD_IMAGE_GRAYSCALE );
 	if( logo.img.empty() )
 	{
 		log(LOG_LEVEL_ERROR, "Can not read template image: %s\n", logo.search.c_str());
@@ -88,12 +88,12 @@ int LogoFilter::addLogo(string search, string replace)
 // out_img is the one to draw on
 int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 {
-	log(LOG_LEVEL_DEBUG, "Frame %d", framenum);
+	log(LOG_LEVEL_DEBUG, "Frame %d\n\n", framenum);
 	
 	Mat gray_img; 
 	cvtColor(in_img, gray_img, CV_RGB2GRAY);
-	
-	
+	//blur(gray_img, gray_img, Size(3,3), Size(0,0));
+
     vector<KeyPoint> keypoints2;
     detector->detect( gray_img, keypoints2 );
 	log(LOG_LEVEL_DEBUG, "%d keypoints in frame", keypoints2.size());
@@ -129,31 +129,32 @@ int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 		{
 			log(LOG_LEVEL_DEBUG, "Homography found...");
 			
-			
-			Mat points1t; perspectiveTransform(Mat(logos[i].points), points1t, H12);
+			Mat points1t;
+			perspectiveTransform(Mat(logos[i].points), points1t, H12);
 			vector<int>::const_iterator mit = matches.begin();
-			int inliers=0;
-			for( size_t i1 = 0; i1 < logos[i].points.size(); i1++ )
+			vector<Point2f> inliers;
+			Point2f center;
+			for( size_t j = 0; j < logos[i].points.size(); j++ )
 			{
-				if( norm(points2[i1] - points1t.at<Point2f>(i1,0)) < 4) // inlier
+				if( norm(points2[j] - points1t.at<Point2f>(j,0)) < 4) // inlier
 				{
-					inliers++;
-					matchesMask[i1] = 1;
+					matchesMask[j] = 1;
+					inliers.push_back( points2[j] );
+					circle(out_img, points2[j], 4, CV_RGB(255, 0, 0), 1);
+					center += points2[j];
 				}
 			}
 			
-			log(LOG_LEVEL_DEBUG, "%d inliers", inliers);
+			center = Point2d(center.x/inliers.size(), center.y/inliers.size());
 			
-			for(size_t i2=0; i2<matches.size(); i2++)
-			{
-				if(matchesMask[i2]>0)
-				{
-					int match = matches[i2];
-					Point2f p = points2[match];
-
-					circle(out_img, p, 4, CV_RGB(255, 0, 0), 1);
-				}
-			}
+			circle(out_img, center, 10, logos[i].replace_color, 5, CV_AA);
+			
+			Rect roi(center.x, center.y, logos[i].replace_img.cols, logos[i].replace_img.rows);
+			Mat out_roi = out_img(roi);
+			
+			logos[i].replace_img.copyTo(out_roi);
+			
+			log(LOG_LEVEL_DEBUG, "%d inliers", inliers.size() );
 		}
 		
 		if(draw_matches)
