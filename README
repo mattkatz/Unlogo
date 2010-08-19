@@ -37,6 +37,10 @@ REQUIREMENTS
 OSX NOTES
 ========================
 
+- If you are a developer, it helps to set the openCV CMAKE_BUILD_TYPE to 'Debug'.  You can change this by running the following:
+	
+	sudo cmake -i -G "Unix Makefiles" .
+
 - Unlogo uses a lot of bleeding-edge stuff. Update your MacPorts!
 
 	sudo port selfupdate

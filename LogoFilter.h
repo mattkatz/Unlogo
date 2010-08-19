@@ -13,7 +13,6 @@
 #include "opencv2/features2d/features2d.hpp"
 #include <highgui.h>
 #include <cvaux.h>
-#include <boost/algorithm/string.hpp>
 
 #define LOG_LEVEL_DEBUG 1
 #define LOG_LEVEL_WARNING 2
@@ -21,7 +20,6 @@
 
 using namespace cv;
 using namespace std;
-using namespace boost;
 
 typedef struct Logo {
 	string search;
@@ -37,9 +35,10 @@ typedef struct Logo {
 class LogoFilter {
 public:
 	LogoFilter();
-	int init(const char* args);
-	int filter(Mat &in_image, Mat &out_img);
-	
+	int init( string detector_type, string descriptor_extractor_type, string descriptor_matcher_type );
+	int filter(Mat &in_image, Mat &out_img, bool draw_matches=false);
+	int addLogo(string search, string replace);
+
 protected:
 	int log( int level, const char * format, ... );
 	

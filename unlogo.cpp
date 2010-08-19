@@ -14,6 +14,7 @@
 #include <string.h>
 #include <iostream>
 #include "opencv2/core/core.hpp"
+#include <boost/algorithm/string.hpp>
 
 #include "LogoFilter.h"
 
@@ -24,11 +25,39 @@ using namespace boost;
 
 LogoFilter* g_filter = 0;
 
-extern "C" int init( const char* args )
+extern "C" int init( const char* argstr )
 {
 	try {
+		// Parse arguments.
+		vector<string> args;
+		split(args, argstr, is_any_of(":"));
+		
+		if(args.size()<5 || args.size()%2!=1)
+		{
+			cout << "Usage" << endl;
+			cout << "[detector]:[descriptor]:[matcher]:[search:replace]..." << endl;
+			cout << "where [search:replace] is a list of images to look for and either image " << endl;
+			cout << "or hex color to replace it with.  Hex colors must begin with 0x and be 6 digits" << endl;
+			cout << endl;
+			cout << "Detector Types: FAST, STAR, SIFT, SURF, MSER, GFTT, HARRIS" << endl;
+			cout << "Descriptor Types: SIFT, SURF" << endl;
+			cout << "Matcher Types: BruteForce, BruteForce-L1" << endl;
+			return -1;
+		}
+
 		g_filter = new LogoFilter( );
-		return g_filter->init( args );
+		int init = g_filter->init( args[0], args[1], args[2] );
+		if(init != 0)
+		{
+			return -1;
+		}
+		
+		// Add all of the search/replace pairs
+		for(size_t i=3; i<args.size(); i+=2)
+		{
+			g_filter->addLogo(args[i], args[i+1]);
+		}
+		return 0;
 	}
 	catch ( ... ) {
 		return -1;

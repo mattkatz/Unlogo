@@ -17,7 +17,11 @@ int main (int argc, char * const argv[])
 	}
 	
 	LogoFilter g_filter;
-	g_filter.init( argv[2] );
+	g_filter.init( "SURF", "SURF", "BruteForce" );
+	for(int i=2; i<argc; i+=2)
+	{
+		g_filter.addLogo(argv[i], argv[i+1]);
+	}
 	
 	Mat frame;
 	Mat drawImg;
@@ -25,10 +29,14 @@ int main (int argc, char * const argv[])
     {
         cap >> frame; 
 		drawImg = frame.clone();
-			
-		g_filter.filter(frame, drawImg);
+		g_filter.filter(frame, drawImg, true);
 		
 		imshow("out", drawImg);
-        if(waitKey(30) >= 0) break;
+        char c = (char)cvWaitKey(0);
+        if( c == '\x1b' ) // esc
+        {
+            cout << "Exiting ..." << endl;
+            return 0;
+        }
     }
 }	
