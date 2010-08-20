@@ -70,6 +70,10 @@ void MatImage::drawIntoMe( MatImage &child, int x, int y )
 //--------------------------------------------------
 void MatImage::changeTo( int new_type )
 {
+	if(cvImage.empty())
+	{
+		log(LOG_LEVEL_ERROR, "Image is empty."); 
+	}
 	if(type == -1)
 	{
 		log(LOG_LEVEL_WARNING, "Unknown image type!");
@@ -146,9 +150,7 @@ void MatImage::operator = ( VideoCapture &cap )
 	cap >> cvImage;
 	if(cap.get(CV_CAP_PROP_CONVERT_RGB)==0)
 	{
-		int oldType = type;
 		type = MATIMG_CSPACE_BGR;
-		changeTo(oldType);
 	}
 	else
 	{

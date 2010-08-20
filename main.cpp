@@ -11,7 +11,7 @@ using namespace std;
 
 int main (int argc, char * const argv[])
 {
-	VideoCapture cap(argv[1]); // open the default camera
+	VideoCapture cap(argv[1]);
 	cap.set(CV_CAP_PROP_CONVERT_RGB, 1);
 	
     if(!cap.isOpened())  
@@ -24,11 +24,12 @@ int main (int argc, char * const argv[])
 	head.open("share/faces/Chanel.png");
 	
 	MatImage frame;
+	//frame.changeTo(MATIMG_CSPACE_RGBA);
+	
 	for(int i=0; 1; i++)
     {
         frame = cap;
-		
-		//frame.changeTo(MATIMG_CSPACE_RGBA);
+		frame.changeTo(MATIMG_CSPACE_RGBA);
 		
 		frame.drawIntoMe( head, 0, 0 );
 		
