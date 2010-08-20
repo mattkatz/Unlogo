@@ -11,6 +11,7 @@
 
 int log( int level, const char * format, ... )
 {
+	using namespace std;	
 	string color;
 	switch(level) {
 		default:

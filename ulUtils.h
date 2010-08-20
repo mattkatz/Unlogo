@@ -9,6 +9,9 @@
 
 #include <iostream>
 #include <string>
+#include <stdarg.h>
+#include <cstdio>
+
 
 using namespace std;
 
