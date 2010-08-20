@@ -149,10 +149,9 @@ int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 			
 			circle(out_img, center, 10, logos[i].replace_color, 5, CV_AA);
 			
-			Rect roi(center.x, center.y, logos[i].replace_img.cols, logos[i].replace_img.rows);
-			Mat out_roi = out_img(roi);
-			
-			logos[i].replace_img.copyTo(out_roi);
+			//Rect roi(center.x, center.y, logos[i].replace_img.cols, logos[i].replace_img.rows);
+			//Mat out_roi = out_img(roi);
+			//logos[i].replace_img.copyTo(out_roi);
 			
 			log(LOG_LEVEL_DEBUG, "%d inliers", inliers.size() );
 		}
@@ -168,21 +167,4 @@ int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 	
 	framenum++;
 	return 0;
-}
-
-int LogoFilter::log( int level, const char * format, ... )
-{
-	string color;
-	switch(level) {
-		default:
-		case LOG_LEVEL_DEBUG: 	color="\033[01;33m"; break;
-		case LOG_LEVEL_WARNING:	color="\033[01;34m"; break;
-		case LOG_LEVEL_ERROR:	color="\033[01;31m"; break;
-	}
-	va_list args;
-	va_start(args, format);
-	string fstr(color+string("[unlogo] ")+format+"\n");
-	int status = vfprintf(stderr, fstr.c_str(), args);
-	va_end(args);
-	return status;
 }

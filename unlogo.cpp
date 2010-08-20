@@ -17,6 +17,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "LogoFilter.h"
+#include "ulUtils.h"
 
 using namespace cv;
 using namespace std;

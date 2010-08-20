@@ -1,12 +1,49 @@
 
 #include <iostream>
 #include <highgui.h>
-#include "opencv2/core/core.hpp"
 #include "LogoFilter.h"
+#include "MatImage.h"
+
 
 using namespace cv;
 using namespace std;
 
+
+int main (int argc, char * const argv[])
+{
+	VideoCapture cap(argv[1]); // open the default camera
+	cap.set(CV_CAP_PROP_CONVERT_RGB, 1);
+	
+    if(!cap.isOpened())  
+	{
+		cout << "Can not open video file." << endl;
+        return -1;
+	}
+	
+	MatImage head;
+	head.open("share/faces/Chanel.png");
+	
+	MatImage frame;
+	for(int i=0; 1; i++)
+    {
+        frame = cap;
+		
+		//frame.changeTo(MATIMG_CSPACE_RGBA);
+		
+		frame.drawIntoMe( head, 0, 0 );
+		
+		frame.show( "out" );
+		
+        char c = (char)cvWaitKey(5);
+        if( c == '\x1b' ) // esc
+        {
+            cout << "Exiting ..." << endl;
+            return 0;
+        }
+    }
+}
+
+/*
 int main (int argc, char * const argv[])
 {
 	VideoCapture cap(argv[1]); // open the default camera
@@ -25,6 +62,7 @@ int main (int argc, char * const argv[])
 	
 	Mat frame;
 	Mat drawImg;
+	
     for(int i=0; 1; i++)
     {
         cap >> frame; 
@@ -40,3 +78,4 @@ int main (int argc, char * const argv[])
         }
     }
 }	
+*/

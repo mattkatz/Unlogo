@@ -13,10 +13,9 @@
 #include "opencv2/features2d/features2d.hpp"
 #include <highgui.h>
 #include <cvaux.h>
+#include "MatImage.h"
+#include "ulUtils.h"
 
-#define LOG_LEVEL_DEBUG 1
-#define LOG_LEVEL_WARNING 2
-#define LOG_LEVEL_ERROR 3
 
 using namespace cv;
 using namespace std;
@@ -40,8 +39,7 @@ public:
 	int addLogo(string search, string replace);
 
 protected:
-	int log( int level, const char * format, ... );
-	
+
 	Ptr<FeatureDetector> detector;
 	Ptr<DescriptorExtractor> descriptorExtractor;
 	Ptr<DescriptorMatcher> descriptorMatcher;

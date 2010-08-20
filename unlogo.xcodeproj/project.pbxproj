@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F2A64FC121DD94600806631 /* MatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A64FB121DD94600806631 /* MatImage.cpp */; };
+		1F2A654D121DEAAF00806631 /* ulUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A654C121DEAAF00806631 /* ulUtils.cpp */; };
 		1FF04E6B121C8C210017E206 /* libopencv_calib3d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E65121C8C210017E206 /* libopencv_calib3d.dylib */; };
 		1FF04E6C121C8C210017E206 /* libopencv_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E66121C8C210017E206 /* libopencv_core.dylib */; };
 		1FF04E6D121C8C210017E206 /* libopencv_features2d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E67121C8C210017E206 /* libopencv_features2d.dylib */; };
@@ -33,6 +35,10 @@
 
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		1F2A64FA121DD94600806631 /* MatImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatImage.h; sourceTree = "<group>"; };
+		1F2A64FB121DD94600806631 /* MatImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatImage.cpp; sourceTree = "<group>"; };
+		1F2A654B121DEAAF00806631 /* ulUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ulUtils.h; sourceTree = "<group>"; };
+		1F2A654C121DEAAF00806631 /* ulUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ulUtils.cpp; sourceTree = "<group>"; };
 		1FF04E65121C8C210017E206 /* libopencv_calib3d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.dylib; path = /usr/local/lib/libopencv_calib3d.dylib; sourceTree = "<absolute>"; };
 		1FF04E66121C8C210017E206 /* libopencv_core.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.dylib; path = /usr/local/lib/libopencv_core.dylib; sourceTree = "<absolute>"; };
 		1FF04E67121C8C210017E206 /* libopencv_features2d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_features2d.dylib; path = /usr/local/lib/libopencv_features2d.dylib; sourceTree = "<absolute>"; };
@@ -77,8 +83,12 @@
 			isa = PBXGroup;
 			children = (
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
+				1F2A64FA121DD94600806631 /* MatImage.h */,
+				1F2A64FB121DD94600806631 /* MatImage.cpp */,
 				1FF04EFE121C94B90017E206 /* LogoFilter.h */,
 				1FF04EFF121C94B90017E206 /* LogoFilter.cpp */,
+				1F2A654B121DEAAF00806631 /* ulUtils.h */,
+				1F2A654C121DEAAF00806631 /* ulUtils.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -157,6 +167,8 @@
 			files = (
 				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
 				1FF04F00121C94B90017E206 /* LogoFilter.cpp in Sources */,
+				1F2A64FC121DD94600806631 /* MatImage.cpp in Sources */,
+				1F2A654D121DEAAF00806631 /* ulUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,6 +189,10 @@
 					/usr/local/include,
 				);
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = unlogo;
 			};
 			name = Debug;
@@ -192,6 +208,10 @@
 					/usr/local/include,
 				);
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = unlogo;
 			};
 			name = Release;
