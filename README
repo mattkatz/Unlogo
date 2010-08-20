@@ -28,6 +28,9 @@ REQUIREMENTS
 	sudo make
 	sudo make install
 
+	Note: We have also enabled alpha-channel in OpenCV as described here:
+	http://blog.developer.stylight.de/2010/05/how-to-load-alpha-channel-pngs-with.html
+
 - Boost - http://sourceforge.net/projects/boost/files/boost/1.44.0/
 
 - FFMPEG (fetched automatically with checkout.sh)
