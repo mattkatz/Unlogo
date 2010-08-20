@@ -31,7 +31,6 @@ void MatImage::show( const char* window_name )
 //--------------------------------------------------
 int MatImage::open( const char* path )
 {
-
 	cvImage = imread( path );
 	if( cvImage.empty() )
 	{

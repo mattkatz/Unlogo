@@ -17,6 +17,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "LogoFilter.h"
+#include "MatImage.h"
 #include "ulUtils.h"
 
 using namespace cv;
@@ -25,6 +26,9 @@ using namespace boost;
 
 
 LogoFilter* g_filter = 0;
+Mat rgb_img;
+int framenum;
+
 
 extern "C" int init( const char* argstr )
 {
@@ -58,6 +62,8 @@ extern "C" int init( const char* argstr )
 		{
 			g_filter->addLogo(args[i], args[i+1]);
 		}
+		
+		framenum=0;
 		return 0;
 	}
 	catch ( ... ) {
@@ -77,6 +83,8 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 					   uint8_t* src[4], int src_stride[4],
 					   int width, int height)
 {
+	log(LOG_LEVEL_DEBUG, "Frame %d\n\n", framenum);
+	log(LOG_LEVEL_DEBUG, "Copying frame to destination");
 	for ( int i(0); i<3; ++i )
 	{
 		uint8_t* pdst = dst[i];
@@ -98,7 +106,14 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		}
 	}
 	
+	log(LOG_LEVEL_DEBUG, "Creating Mat version YUV");
 	Mat dst_img(width, height, CV_8UC3, dst[0], dst_stride[0]);
-	Mat rgb_image; cvtColor(dst_img, rgb_image, CV_YCrCb2RGB);
-	return g_filter->filter( rgb_image, dst_img );
+	
+	log(LOG_LEVEL_DEBUG, "Creating Mat version RGB");
+	cvtColor(dst_img, rgb_img, CV_YCrCb2RGB);
+	
+	log(LOG_LEVEL_DEBUG, "Running filter");
+	int status = g_filter->filter( rgb_img, dst_img );
+	framenum++;
+	return status;
 }

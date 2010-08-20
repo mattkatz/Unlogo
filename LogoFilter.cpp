@@ -13,7 +13,6 @@ LogoFilter::LogoFilter() { }
 
 int LogoFilter::init(string detector_type, string descriptor_extractor_type, string descriptor_matcher_type)
 {
-	framenum=0;
 	ransacReprojThreshold = 2;
 	ransacMethod = CV_RANSAC;
 	
@@ -88,7 +87,10 @@ int LogoFilter::addLogo(string search, string replace)
 // out_img is the one to draw on
 int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 {
-	log(LOG_LEVEL_DEBUG, "Frame %d\n\n", framenum);
+	if(in_img.empty() || out_img.empty()) {
+		log(LOG_LEVEL_DEBUG, "Frame is empty.");
+		return -1;
+	}
 	
 	Mat gray_img; 
 	cvtColor(in_img, gray_img, CV_RGB2GRAY);
@@ -146,14 +148,8 @@ int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 			}
 			
 			center = Point2d(center.x/inliers.size(), center.y/inliers.size());
-			
 			circle(out_img, center, 10, logos[i].replace_color, 5, CV_AA);
-			
-			//Rect roi(center.x, center.y, logos[i].replace_img.cols, logos[i].replace_img.rows);
-			//Mat out_roi = out_img(roi);
-			//logos[i].replace_img.copyTo(out_roi);
-			
-			log(LOG_LEVEL_DEBUG, "%d inliers", inliers.size() );
+			log(LOG_LEVEL_DEBUG, "%d matches, %d inliers", matches.size(), inliers.size() );
 		}
 		
 		if(draw_matches)
@@ -165,6 +161,5 @@ int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 		}
 	}
 	
-	framenum++;
 	return 0;
 }
