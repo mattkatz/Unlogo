@@ -18,16 +18,6 @@
 #include <highgui.h>
 #include <cvaux.h>
 #include "ulUtils.h"
-enum MatImageColorspaces
-{
-	MATIMG_CSPACE_YCrCb,
-	MATIMG_CSPACE_RGB,
-	MATIMG_CSPACE_BGR,
-	MATIMG_CSPACE_GRAY,
-	MATIMG_CSPACE_RGBA,
-	MATIMG_CSPACE_BGRA,
-	MATIMG_CSPACE_HSV
-};
 
 using namespace cv;
 using namespace std;
@@ -37,11 +27,9 @@ public:
 	
 	MatImage();
 
-	int type;
-	Mat cvImage;
+	Mat cvImage;	
 	
-	
-	void	changeTo( int type );
+	void	convert( int conversion_code );
 	int		open( const char* filename );
 	void	show( const char* window_name );
 	void	drawIntoMe( MatImage &child, int x, int y );

@@ -12,7 +12,7 @@
 //--------------------------------------------------
 MatImage::MatImage()
 {
-	type = -1;
+
 }
 
 
@@ -31,35 +31,29 @@ void MatImage::show( const char* window_name )
 //--------------------------------------------------
 int MatImage::open( const char* path )
 {
+
 	cvImage = imread( path );
 	if( cvImage.empty() )
 	{
-		log(LOG_LEVEL_ERROR, "Can not read %s", path);
+		log(LOG_LEVEL_ERROR, "in open() Can not read %s", path);
 		return -1;
 	}
-	log(LOG_LEVEL_DEBUG, "Image has %d channels", cvImage.channels());
-	switch(cvImage.channels())
-	{
-		case 1:	type = MATIMG_CSPACE_GRAY;	break;
-		case 3:	type = MATIMG_CSPACE_RGB;	break;
-		case 4:	type = MATIMG_CSPACE_RGBA;	break;
-		default: log(LOG_LEVEL_DEBUG, "Warning:  unknown image type."); break;
-	}
+	log(LOG_LEVEL_DEBUG, "in open() Image has %d channels", cvImage.channels());
 	return 0;
 }
-
 
 //--------------------------------------------------
 void MatImage::drawIntoMe( MatImage &child, int x, int y )
 {
+	log(LOG_LEVEL_DEBUG, "in drawIntoMe() Mother %d channels, Child %d channels", cvImage.channels(), child.cvImage.channels());
 	if(cvImage.type() != child.cvImage.type())
 	{
-		log(LOG_LEVEL_ERROR, "Images must be of the same type. Mother=%d  Child=%d", cvImage.type(), child.cvImage.type());
+		log(LOG_LEVEL_ERROR, "in drawIntoMe() Images must be of the same type. Mother=%d  Child=%d", cvImage.type(), child.cvImage.type());
 		return;
 	}
 	if(cvImage.empty())
 	{
-		log(LOG_LEVEL_ERROR, "Target image is empty");
+		log(LOG_LEVEL_ERROR, "in drawIntoMe() Target image is empty");
 		return;
 	}
 	Rect roi(x, y, child.cvImage.cols, child.cvImage.rows);
@@ -68,24 +62,20 @@ void MatImage::drawIntoMe( MatImage &child, int x, int y )
 }
 
 //--------------------------------------------------
-void MatImage::changeTo( int new_type )
+void MatImage::convert( int conversion_code )
 {
 	if(cvImage.empty())
 	{
-		log(LOG_LEVEL_ERROR, "Image is empty."); 
-	}
-	if(type == -1)
-	{
-		log(LOG_LEVEL_WARNING, "Unknown image type!");
+		log(LOG_LEVEL_ERROR, "in convert() Image is empty.");
 		return;
 	}
-	if(type == new_type)
-	{
-		log(LOG_LEVEL_WARNING, "Trying to convert to same type.");
-		return;
-	}
+
+	Mat cvImageTemp;
+	cvtColor(cvImage, cvImageTemp, conversion_code);
+	cvImage = cvImageTemp;
 	
-	int code = -1;
+	
+	/*
 	switch(type) {
 		case MATIMG_CSPACE_YCrCb: switch(new_type) {
 			case MATIMG_CSPACE_RGB:		code = CV_YCrCb2RGB;	break;
@@ -130,16 +120,9 @@ void MatImage::changeTo( int new_type )
 			case MATIMG_CSPACE_BGR:		code = CV_HSV2BGR;		break;
 		} break;
 	}
-	if(code == -1)
-	{
-		log(LOG_LEVEL_ERROR, "The conversion you requested cannot be completed");
-	}
-	else
-	{
-		Mat cvImageTemp;
-		cvtColor(cvImage, cvImageTemp, code);
-		cvImage = cvImageTemp;
-	}
+	 */
+
+
 }
 
 
@@ -148,15 +131,6 @@ void MatImage::changeTo( int new_type )
 void MatImage::operator = ( VideoCapture &cap )
 {
 	cap >> cvImage;
-	if(cap.get(CV_CAP_PROP_CONVERT_RGB)==0)
-	{
-		type = MATIMG_CSPACE_BGR;
-	}
-	else
-	{
-		type = MATIMG_CSPACE_RGB;
-	}
-
 }
 
 //--------------------------------------------------
