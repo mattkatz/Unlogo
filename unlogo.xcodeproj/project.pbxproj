@@ -7,17 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F2A64FC121DD94600806631 /* MatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A64FB121DD94600806631 /* MatImage.cpp */; };
-		1F2A654D121DEAAF00806631 /* ulUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A654C121DEAAF00806631 /* ulUtils.cpp */; };
-		1FECFE0F1221A00800DF4C55 /* MatchableMatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FECFE0E1221A00800DF4C55 /* MatchableMatImage.cpp */; };
+		1F2E1A921221A0E100B7FED1 /* LogoFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A891221A0E100B7FED1 /* LogoFilter.cpp */; };
+		1F2E1A931221A0E100B7FED1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A8B1221A0E100B7FED1 /* main.cpp */; };
+		1F2E1A941221A0E100B7FED1 /* MatchableMatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A8C1221A0E100B7FED1 /* MatchableMatImage.cpp */; };
+		1F2E1A951221A0E100B7FED1 /* MatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A8E1221A0E100B7FED1 /* MatImage.cpp */; };
+		1F2E1A961221A0E100B7FED1 /* ulUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */; };
 		1FF04E6B121C8C210017E206 /* libopencv_calib3d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E65121C8C210017E206 /* libopencv_calib3d.dylib */; };
 		1FF04E6C121C8C210017E206 /* libopencv_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E66121C8C210017E206 /* libopencv_core.dylib */; };
 		1FF04E6D121C8C210017E206 /* libopencv_features2d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E67121C8C210017E206 /* libopencv_features2d.dylib */; };
 		1FF04E6E121C8C210017E206 /* libopencv_highgui.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E68121C8C210017E206 /* libopencv_highgui.dylib */; };
 		1FF04E6F121C8C210017E206 /* libopencv_imgproc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E69121C8C210017E206 /* libopencv_imgproc.dylib */; };
 		1FF04E70121C8C210017E206 /* libopencv_video.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E6A121C8C210017E206 /* libopencv_video.2.1.dylib */; };
-		1FF04F00121C94B90017E206 /* LogoFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FF04EFF121C94B90017E206 /* LogoFilter.cpp */; };
-		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
 		8DD76F6A0486A84900D96B5E /* unlogo.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* unlogo.1 */; };
 /* End PBXBuildFile section */
 
@@ -35,21 +35,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		1F2A64FA121DD94600806631 /* MatImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatImage.h; sourceTree = "<group>"; };
-		1F2A64FB121DD94600806631 /* MatImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatImage.cpp; sourceTree = "<group>"; };
-		1F2A654B121DEAAF00806631 /* ulUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ulUtils.h; sourceTree = "<group>"; };
-		1F2A654C121DEAAF00806631 /* ulUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ulUtils.cpp; sourceTree = "<group>"; };
-		1FECFE0D1221A00800DF4C55 /* MatchableMatImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchableMatImage.h; sourceTree = "<group>"; };
-		1FECFE0E1221A00800DF4C55 /* MatchableMatImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatchableMatImage.cpp; sourceTree = "<group>"; };
+		1F2E1A891221A0E100B7FED1 /* LogoFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LogoFilter.cpp; path = src/LogoFilter.cpp; sourceTree = SOURCE_ROOT; };
+		1F2E1A8A1221A0E100B7FED1 /* LogoFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoFilter.h; path = src/LogoFilter.h; sourceTree = SOURCE_ROOT; };
+		1F2E1A8B1221A0E100B7FED1 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
+		1F2E1A8C1221A0E100B7FED1 /* MatchableMatImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatchableMatImage.cpp; path = src/MatchableMatImage.cpp; sourceTree = SOURCE_ROOT; };
+		1F2E1A8D1221A0E100B7FED1 /* MatchableMatImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatchableMatImage.h; path = src/MatchableMatImage.h; sourceTree = SOURCE_ROOT; };
+		1F2E1A8E1221A0E100B7FED1 /* MatImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatImage.cpp; path = src/MatImage.cpp; sourceTree = SOURCE_ROOT; };
+		1F2E1A8F1221A0E100B7FED1 /* MatImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatImage.h; path = src/MatImage.h; sourceTree = SOURCE_ROOT; };
+		1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ulUtils.cpp; path = src/ulUtils.cpp; sourceTree = SOURCE_ROOT; };
+		1F2E1A911221A0E100B7FED1 /* ulUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ulUtils.h; path = src/ulUtils.h; sourceTree = SOURCE_ROOT; };
 		1FF04E65121C8C210017E206 /* libopencv_calib3d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.dylib; path = /usr/local/lib/libopencv_calib3d.dylib; sourceTree = "<absolute>"; };
 		1FF04E66121C8C210017E206 /* libopencv_core.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.dylib; path = /usr/local/lib/libopencv_core.dylib; sourceTree = "<absolute>"; };
 		1FF04E67121C8C210017E206 /* libopencv_features2d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_features2d.dylib; path = /usr/local/lib/libopencv_features2d.dylib; sourceTree = "<absolute>"; };
 		1FF04E68121C8C210017E206 /* libopencv_highgui.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.dylib; path = /usr/local/lib/libopencv_highgui.dylib; sourceTree = "<absolute>"; };
 		1FF04E69121C8C210017E206 /* libopencv_imgproc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.dylib; path = /usr/local/lib/libopencv_imgproc.dylib; sourceTree = "<absolute>"; };
 		1FF04E6A121C8C210017E206 /* libopencv_video.2.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.2.1.dylib; path = /usr/local/lib/libopencv_video.2.1.dylib; sourceTree = "<absolute>"; };
-		1FF04EFE121C94B90017E206 /* LogoFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoFilter.h; sourceTree = "<group>"; };
-		1FF04EFF121C94B90017E206 /* LogoFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogoFilter.cpp; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* unlogo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unlogo; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* unlogo.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = unlogo.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,15 +85,15 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				08FB7796FE84155DC02AAC07 /* main.cpp */,
-				1F2A64FA121DD94600806631 /* MatImage.h */,
-				1F2A64FB121DD94600806631 /* MatImage.cpp */,
-				1FECFE0D1221A00800DF4C55 /* MatchableMatImage.h */,
-				1FECFE0E1221A00800DF4C55 /* MatchableMatImage.cpp */,
-				1FF04EFE121C94B90017E206 /* LogoFilter.h */,
-				1FF04EFF121C94B90017E206 /* LogoFilter.cpp */,
-				1F2A654B121DEAAF00806631 /* ulUtils.h */,
-				1F2A654C121DEAAF00806631 /* ulUtils.cpp */,
+				1F2E1A891221A0E100B7FED1 /* LogoFilter.cpp */,
+				1F2E1A8A1221A0E100B7FED1 /* LogoFilter.h */,
+				1F2E1A8B1221A0E100B7FED1 /* main.cpp */,
+				1F2E1A8C1221A0E100B7FED1 /* MatchableMatImage.cpp */,
+				1F2E1A8D1221A0E100B7FED1 /* MatchableMatImage.h */,
+				1F2E1A8E1221A0E100B7FED1 /* MatImage.cpp */,
+				1F2E1A8F1221A0E100B7FED1 /* MatImage.h */,
+				1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */,
+				1F2E1A911221A0E100B7FED1 /* ulUtils.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -170,11 +170,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
-				1FF04F00121C94B90017E206 /* LogoFilter.cpp in Sources */,
-				1F2A64FC121DD94600806631 /* MatImage.cpp in Sources */,
-				1F2A654D121DEAAF00806631 /* ulUtils.cpp in Sources */,
-				1FECFE0F1221A00800DF4C55 /* MatchableMatImage.cpp in Sources */,
+				1F2E1A921221A0E100B7FED1 /* LogoFilter.cpp in Sources */,
+				1F2E1A931221A0E100B7FED1 /* main.cpp in Sources */,
+				1F2E1A941221A0E100B7FED1 /* MatchableMatImage.cpp in Sources */,
+				1F2E1A951221A0E100B7FED1 /* MatImage.cpp in Sources */,
+				1F2E1A961221A0E100B7FED1 /* ulUtils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="997.45px" height="841.89px" viewBox="-193.245 0 997.45 841.89" enable-background="new -193.245 0 997.45 841.89"
+	 xml:space="preserve">
+<g>
+	<rect x="-82.215" y="402.197" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.53" height="55.294"/>
+	<text transform="matrix(1 0 0 1 -61.2576 414.6479)" font-family="'MyriadPro-Regular'" font-size="12">matcher</text>
+	<rect x="-82.215" y="260.433" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.53" height="55.294"/>
+	<text transform="matrix(1 0 0 1 -61.7673 275.6479)" font-family="'MyriadPro-Regular'" font-size="12">detector</text>
+	<rect x="-82.215" y="331.315" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.53" height="55.295"/>
+	<text transform="matrix(1 0 0 1 -63.0754 341.8052)" font-family="'MyriadPro-Regular'" font-size="12">extractor</text>
+	<rect x="-36.371" y="118.668" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.529" height="55.294"/>
+	<text transform="matrix(1 0 0 1 -13.8 130.9624)" font-family="'MyriadPro-Regular'" font-size="12">capture</text>
+	<rect x="-136.722" y="189.55" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.53" height="55.294"/>
+	<text transform="matrix(1 0 0 1 -112.1003 201.7075)" font-family="'MyriadPro-Regular'" font-size="12">logo(s)</text>
+	<rect x="-36.505" y="189.55" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.528" height="55.294"/>
+	<text transform="matrix(1 0 0 1 -15.3313 201.7075)" font-family="'MyriadPro-Regular'" font-size="12">frame in</text>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-24.552" y1="286.314" x2="-24.552" y2="322.293"/>
+			<g>
+				<polygon points="-24.552,329.354 -28.617,319.404 -24.552,321.766 -20.487,319.404 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-24.552" y1="356.952" x2="-24.552" y2="393.411"/>
+			<g>
+				<polygon points="-24.552,400.472 -28.617,390.522 -24.552,392.884 -20.487,390.522 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="5.395" y1="146.315" x2="5.395" y2="179.294"/>
+			<g>
+				<polygon points="5.395,186.355 1.328,176.405 5.395,178.767 9.458,176.405 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="5.396" y1="214.002" x2="-20.62" y2="252.802"/>
+			<g>
+				<polygon points="-24.552,258.667 -22.387,248.139 -20.325,252.364 -15.635,252.667 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-94.959" y1="214.002" x2="-65.983" y2="253"/>
+			<g>
+				<polygon points="-61.772,258.667 -70.969,253.105 -66.298,252.576 -64.443,248.256 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-61.772" y1="287.961" x2="-61.773" y2="322.244"/>
+			<g>
+				<polygon points="-61.773,329.304 -65.839,319.355 -61.773,321.715 -57.709,319.355 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-61.772" y1="356.952" x2="-61.773" y2="393.411"/>
+			<g>
+				<polygon points="-61.773,400.472 -65.839,390.522 -61.773,392.884 -57.709,390.522 				"/>
+			</g>
+		</g>
+	</g>
+	<rect x="-82.215" y="473.082" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.53" height="55.293"/>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-40.449" y1="431.775" x2="-40.45" y2="467.234"/>
+			<g>
+				<polygon points="-40.45,474.294 -44.515,464.345 -40.45,466.707 -36.385,464.345 				"/>
+			</g>
+		</g>
+	</g>
+	<text transform="matrix(1 0 0 1 -64.9294 484.3149)" font-family="'MyriadPro-Regular'" font-size="12">match set</text>
+	<rect x="-82.215" y="543.962" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.53" height="55.295"/>
+	<text transform="matrix(1 0 0 1 -74.8416 559.6489)" font-family="'MyriadPro-Regular'" font-size="12">match tracker</text>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-40.449" y1="501.943" x2="-40.449" y2="539.402"/>
+			<g>
+				<polygon points="-40.449,546.462 -44.515,536.513 -40.449,538.875 -36.385,536.513 				"/>
+			</g>
+		</g>
+	</g>
+	<rect x="-82.215" y="614.003" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="83.53" height="55.295"/>
+	<g>
+		<g>
+			<polyline fill="none" stroke="#000000" stroke-miterlimit="10" points="27.471,217.197 27.471,608.63 7.72,612.609 			"/>
+			<g>
+				<polygon points="0.798,614.003 9.748,608.052 8.239,612.505 11.355,616.023 				"/>
+			</g>
+		</g>
+	</g>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-40.449" y1="579.964" x2="-40.449" y2="607.07"/>
+			<g>
+				<polygon points="-40.449,614.13 -44.515,604.181 -40.449,606.541 -36.385,604.181 				"/>
+			</g>
+		</g>
+	</g>
+	<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-108.295" y1="216.246" x2="-108.295" y2="607.679"/>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="-108.295" y1="607.679" x2="-88.544" y2="611.658"/>
+			<g>
+				<polygon points="-81.622,613.05 -92.177,615.072 -89.06,611.552 -90.572,607.101 				"/>
+			</g>
+		</g>
+	</g>
+	<text transform="matrix(1 0 0 1 -64.9294 627.6489)" font-family="'MyriadPro-Regular'" font-size="12">frame out</text>
+	<g>
+		<g>
+			<polyline fill="none" stroke="#000000" stroke-miterlimit="10" points="-40.45,669.298 -40.45,677.474 60.14,677.474 
+				60.14,102.474 5.26,102.474 5.26,112.633 			"/>
+			<g>
+				<path d="M5.26,118.668c-1.054-2.84-2.852-6.363-4.756-8.547l4.756,1.72l4.755-1.72C8.11,112.305,6.312,115.829,5.26,118.668z"/>
+			</g>
+		</g>
+	</g>
+</g>
+<g>
+	<rect x="204.034" y="102.474" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="129.154" height="154.881"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="204.034" y1="121.061" x2="333.189" y2="121.061"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="204.034" y1="177.641" x2="333.189" y2="177.641"/>
+	<text transform="matrix(1 0 0 1 225.3289 117.8252)" font-family="'MyriadPro-Regular'" font-size="12">MatchableImage</text>
+	<text transform="matrix(1 0 0 1 529.6194 282.2051)" font-family="'MyriadPro-Regular'" font-size="12">capture</text>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="548.814" y1="288.997" x2="548.815" y2="330.538"/>
+			<g>
+				<polygon points="548.815,337.599 544.748,327.648 548.815,330.01 552.878,327.648 				"/>
+			</g>
+		</g>
+	</g>
+	<rect x="339.387" y="102.474" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="129.154" height="154.881"/>
+	<text transform="matrix(1 0 0 1 383.3 116.8252)" font-family="'MyriadPro-Regular'" font-size="12">Matcher</text>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="339.387" y1="121.061" x2="468.541" y2="121.061"/>
+	<text transform="matrix(1 0 0 1 369.4407 282.2051)" font-family="'MyriadPro-Regular'" font-size="12">logos</text>
+	<text transform="matrix(1 0 0 1 318.0461 361.2217)" enable-background="new    "><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">MatchableImage[] logos;</tspan><tspan x="0" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">Dict replacements;</tspan></text>
+	<g>
+		<g>
+			<line fill="none" stroke="#000000" stroke-miterlimit="10" x1="383.175" y1="288.997" x2="383.175" y2="330.538"/>
+			<g>
+				<polygon points="383.175,337.599 379.109,327.648 383.175,330.01 387.24,327.648 				"/>
+			</g>
+		</g>
+	</g>
+	<text transform="matrix(1 0 0 1 344.3879 137.9551)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">FeatureDetector d</tspan><tspan x="0" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">DescriptorExtractor e</tspan><tspan x="0" y="28.8" font-family="'MyriadPro-Regular'" font-size="12">DescriptorMatcher m</tspan><tspan x="0" y="57.6" font-family="'MyriadPro-Regular'" font-size="12">static getInstance()</tspan></text>
+	<text transform="matrix(1 0 0 1 208.613 137.4502)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">KeyPoint[] k;</tspan><tspan x="0" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">Mat descriptors;</tspan><tspan x="0" y="28.8" font-family="'MyriadPro-Regular'" font-size="12">Point2f[] points;</tspan><tspan x="0" y="57.6" font-family="'MyriadPro-Regular'" font-size="12">Point[] matchTo()</tspan></text>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="339.387" y1="177.641" x2="468.541" y2="177.641"/>
+	<text transform="matrix(1 0 0 1 506.6399 361.2212)" font-family="'MyriadPro-Regular'" font-size="12">MatchableImage Frame;</text>
+	<text transform="matrix(1 0 0 1 403.9641 460.2749)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">foreach(Frames AS Frame)</tspan><tspan x="0" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">{</tspan><tspan x="0" y="28.8" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">	</tspan><tspan x="36" y="28.8" font-family="'MyriadPro-Regular'" font-size="12">foreach(Logos AS Logo)</tspan><tspan x="0" y="43.2" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">	</tspan><tspan x="36" y="43.2" font-family="'MyriadPro-Regular'" font-size="12">{</tspan><tspan x="0" y="57.6" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">		</tspan><tspan x="72" y="57.6" font-family="'MyriadPro-Regular'" font-size="12">MatchSet = Logo.matchTo(  Frame  )</tspan><tspan x="0" y="86.4" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">		</tspan><tspan x="72" y="86.4" font-family="'MyriadPro-Regular'" font-size="12">Homography = MatchSet.getHomography()</tspan><tspan x="0" y="115.2" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">		</tspan><tspan x="72" y="115.2" font-family="'MyriadPro-Regular'" font-size="12">MatchSet.filterOutliers(  )  // uses internal homography</tspan><tspan x="0" y="144" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">		</tspan><tspan x="72" y="144" font-family="'MyriadPro-Regular'" font-size="12">TheMatch = MatchTracker.track( MatchSet )</tspan><tspan x="0" y="158.4" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">	</tspan><tspan x="0" y="172.8" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">		</tspan><tspan x="72" y="172.8" font-family="'MyriadPro-Regular'" font-size="12">Image = Dict.getReplacement( Logo )</tspan><tspan x="0" y="187.2" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">		</tspan><tspan x="72" y="187.2" font-family="'MyriadPro-Regular'" font-size="12">Image.transform( Homography );</tspan><tspan x="0" y="216" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">		</tspan><tspan x="72" y="216" font-family="'MyriadPro-Regular'" font-size="12">Frame.drawIntoMe(Image, TheMatch);</tspan><tspan x="0" y="230.4" font-family="'MyriadPro-Regular'" font-size="12" letter-spacing="33">	</tspan><tspan x="36" y="230.4" font-family="'MyriadPro-Regular'" font-size="12">}</tspan><tspan x="0" y="244.8" font-family="'MyriadPro-Regular'" font-size="12">}</tspan></text>
+	<rect x="474.529" y="102.474" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="129.154" height="154.881"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="474.529" y1="121.061" x2="603.683" y2="121.061"/>
+	<text transform="matrix(1 0 0 1 515.425 116.8252)" font-family="'MyriadPro-Regular'" font-size="12">MatchSet</text>
+	<rect x="609.091" y="102.474" fill="#FFFFFF" stroke="#000000" stroke-miterlimit="10" width="129.154" height="154.881"/>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="609.091" y1="121.061" x2="738.245" y2="121.061"/>
+	<text transform="matrix(1 0 0 1 639.3 116.8252)" font-family="'MyriadPro-Regular'" font-size="12">MatchTracker</text>
+	<text transform="matrix(1 0 0 1 481.6516 137.4502)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">MatchableImage a;</tspan><tspan x="0" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">MatchableImage b;</tspan><tspan x="0" y="28.8" font-family="'MyriadPro-Regular'" font-size="12">int[] matches;</tspan><tspan x="0" y="57.6" font-family="'MyriadPro-Regular'" font-size="12">getHomography();</tspan><tspan x="0" y="72" font-family="'MyriadPro-Regular'" font-size="12">filterOutliers()</tspan></text>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="474.529" y1="177.641" x2="603.683" y2="177.641"/>
+	<text transform="matrix(1 0 0 1 616.2141 137.4502)" font-family="'MyriadPro-Regular'" font-size="12">MatchSet[] history;</text>
+	
+		<line fill="none" stroke="#000000" stroke-width="0.5" stroke-miterlimit="10" x1="609.091" y1="177.641" x2="738.245" y2="177.641"/>
+</g>
+<line fill="none" stroke="#000000" stroke-width="0.25" stroke-miterlimit="10" x1="138.14" y1="102.474" x2="138.14" y2="727.445"/>
+<text transform="matrix(1 0 0 1 -173.7454 21.5557)"><tspan x="0" y="0" font-family="'MyriadPro-Regular'" font-size="12">Unlogo Outline | Aug 22 2010</tspan><tspan x="0" y="14.4" font-family="'MyriadPro-Regular'" font-size="12">Jeff Crouse</tspan></text>
+<text transform="matrix(1 0 0 1 -136.7224 78.5527)" font-family="'MyriadPro-Regular'" font-size="12">Literal Process</text>
+<text transform="matrix(1 0 0 1 208.613 78.5527)" font-family="'MyriadPro-Regular'" font-size="12">Abstracted Process</text>
+</svg>
