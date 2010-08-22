@@ -1,0 +1,82 @@
+Index: modules/highgui/src/loadsave.cpp
+===================================================================
+--- modules/highgui/src/loadsave.cpp	(revision 3513)
++++ modules/highgui/src/loadsave.cpp	(working copy)
+@@ -219,7 +219,7 @@
+ 
+         if( (flags & CV_LOAD_IMAGE_COLOR) != 0 ||
+            ((flags & CV_LOAD_IMAGE_ANYCOLOR) != 0 && CV_MAT_CN(type) > 1) )
+-            type = CV_MAKETYPE(CV_MAT_DEPTH(type), 3);
++            type = CV_MAKETYPE(CV_MAT_DEPTH(type), CV_MAT_CN(type));
+         else
+             type = CV_MAKETYPE(CV_MAT_DEPTH(type), 1);
+     }
+Index: modules/highgui/src/grfmt_png.cpp
+===================================================================
+--- modules/highgui/src/grfmt_png.cpp	(revision 3513)
++++ modules/highgui/src/grfmt_png.cpp	(working copy)
+@@ -167,10 +167,15 @@
+                     if( bit_depth <= 8 || bit_depth == 16 )
+                     {
+                         m_type = color_type == PNG_COLOR_TYPE_RGB ||
+-                             color_type == PNG_COLOR_TYPE_RGB_ALPHA ||
+                              color_type == PNG_COLOR_TYPE_PALETTE ? CV_8UC3 : CV_8UC1;
++		
+                         if( bit_depth == 16 )
+                             m_type = CV_MAKETYPE(CV_16U, CV_MAT_CN(m_type));
++                        
++                        // Allow for PNG alpha channel here
++						if(color_type == PNG_COLOR_TYPE_RGB_ALPHA) {
++							m_type = CV_8UC4;
++						}
+                         result = true;
+                     }
+                 }
+@@ -217,7 +222,7 @@
+              * indicate that it is a good idea to always ask for
+              * stripping alpha..  18.11.2004 Axel Walthelm
+              */
+-            png_set_strip_alpha( png_ptr );
++            //png_set_strip_alpha( png_ptr );
+ 
+             if( m_color_type == PNG_COLOR_TYPE_PALETTE )
+                 png_set_palette_to_rgb( png_ptr );
+Index: modules/gpu/src/constantspacebp_gpu.cpp
+===================================================================
+--- modules/gpu/src/constantspacebp_gpu.cpp	(revision 3513)
++++ modules/gpu/src/constantspacebp_gpu.cpp	(working copy)
+@@ -52,7 +52,7 @@
+ cv::gpu::StereoConstantSpaceBP::StereoConstantSpaceBP(int, int, int, int, float, float, float, float, int, int) { throw_nogpu(); }
+ 
+ void cv::gpu::StereoConstantSpaceBP::operator()(const GpuMat&, const GpuMat&, GpuMat&) { throw_nogpu(); }
+-void cv::gpu::StereoConstantSpaceBP::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
++void cv::gpu::StereoConstantSpaceBP::operator()(const GpuMat&, const GpuMat&, GpuMat&, Stream&) { throw_nogpu(); }
+ 
+ #else /* !defined (HAVE_CUDA) */
+ 
+Index: modules/gpu/src/beliefpropagation_gpu.cpp
+===================================================================
+--- modules/gpu/src/beliefpropagation_gpu.cpp	(revision 3513)
++++ modules/gpu/src/beliefpropagation_gpu.cpp	(working copy)
+@@ -52,7 +52,7 @@
+ cv::gpu::StereoBeliefPropagation::StereoBeliefPropagation(int, int, int, float, float, float, float, int) { throw_nogpu(); }
+ 
+ void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&) { throw_nogpu(); }
+-void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
++void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, Stream&) { throw_nogpu(); }
+ 
+ #else /* !defined (HAVE_CUDA) */
+ 
+Index: modules/gpu/src/matrix_operations.cpp
+===================================================================
+--- modules/gpu/src/matrix_operations.cpp	(revision 3513)
++++ modules/gpu/src/matrix_operations.cpp	(working copy)
+@@ -68,7 +68,7 @@
+         void GpuMat::release() { throw_nogpu(); }
+ 
+         void MatPL::create(int /*_rows*/, int /*_cols*/, int /*_type*/, int /*type_alloc*/) { throw_nogpu(); }
+-        void MatPL::get_property_device() { throw_nogpu(); }
++        //void MatPL::get_property_device() { throw_nogpu(); }
+         void MatPL::release() { throw_nogpu(); }
+     }
+ 

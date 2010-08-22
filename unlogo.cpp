@@ -85,6 +85,8 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 {
 	log(LOG_LEVEL_DEBUG, "Frame %d\n\n", framenum);
 	log(LOG_LEVEL_DEBUG, "Copying frame to destination");
+	// TO DO:  Use OpenCV to copy the frame.
+	// Make a Mat with src[0] and then copy.  BRILLIANT!
 	for ( int i(0); i<3; ++i )
 	{
 		uint8_t* pdst = dst[i];

@@ -38,10 +38,14 @@ public:
 	//
 	void operator = ( VideoCapture &cap );
 	void operator = ( Mat &other );
+	
+	
 protected:
 	
-	
-	
 };
+
+
+
+
 
 #endif

@@ -6,6 +6,7 @@
  *  Copyright 2010 Eyebeam. All rights reserved.
  *
  */
+
 #include <iostream>
 #include "opencv2/core/core.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
@@ -21,9 +22,11 @@ using namespace cv;
 using namespace std;
 
 typedef struct Logo {
-	string search;
-	string replace;
-	Mat img;
+	string search;	// The path to the image to search for
+	Mat search_img;
+	
+	
+	string replace;	// The raw replace input (either hex color or image) 
 	Mat replace_img;
 	Scalar replace_color;
 	vector<KeyPoint> keypoints;	
@@ -36,6 +39,7 @@ public:
 	LogoFilter();
 	int init( string detector_type, string descriptor_extractor_type, string descriptor_matcher_type );
 	int filter(Mat &in_image, Mat &out_img, bool draw_matches=false);
+	int filter(MatImage &in_img, MatImage &out_img, bool draw_matches=false);
 	int addLogo(string search, string replace);
 
 protected:
@@ -47,6 +51,4 @@ protected:
 	int ransacReprojThreshold;
 	int ransacMethod;
 	vector<Logo> logos;
-	int framenum;
-	
 };

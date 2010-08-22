@@ -24,49 +24,17 @@ REQUIREMENTS
 
 	svn co https://code.ros.org/svn/opencv/trunk/opencv -r 3513
 	cd opencv
+	patch -p0 -i PATH_TO_UNLOGO/opencv_unlogo_fixes_rev3515.patch
 	sudo cmake -G "Unix Makefiles" .
 	sudo make
 	sudo make install
 
-	Note: We have also enabled alpha-channel in OpenCV as described here:
+	Note: The patch fixes 2 bugs in OpenCV, plus enabling alpha-loading in PNGs, as described here:
 	http://blog.developer.stylight.de/2010/05/how-to-load-alpha-channel-pngs-with.html
 
 - Boost - http://sourceforge.net/projects/boost/files/boost/1.44.0/
 
 - FFMPEG (fetched automatically with checkout.sh)
-
-
-
-OSX NOTES
-========================
-
-- If you are a developer, it helps to set the openCV CMAKE_BUILD_TYPE to 'Debug'.  You can change this by running the following:
-	
-	sudo cmake -i -G "Unix Makefiles" .
-
-- Unlogo uses a lot of bleeding-edge stuff. Update your MacPorts!
-
-	sudo port selfupdate
-	sudo port upgrade outdated
-
-- In OpenCV rev 3513, you might need to apply some changes.
-
-You can use 'patch' to apply the changes to OpenCV. Run the following
-command in the root of your OpenCV checkout:
-
-	patch -p0 -i PATH_TO_UNLOGO/osx_gpu_propagation_fix_opencv_rev3515.patch
-
-Or change line 55 in both opencv/modules/gpu/src/constantspacebp_gpu.cpp and opencv/modules/gpu/src/beliefpropagation_gpu.cpp from 
-
-	void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, const Stream&) { throw_nogpu(); }
-
-to
-
-	void cv::gpu::StereoBeliefPropagation::operator()(const GpuMat&, const GpuMat&, GpuMat&, Stream&) { throw_nogpu(); }
-
-- In OpenCV rev 3513 opencv/modules/gpu/src/matrix_operations.cpp, comment out line 71 -- the function doesn't exist.
-
-	//void MatPL::get_property_device() { throw_nogpu(); }
 
 
 
@@ -88,7 +56,6 @@ Note:  Libavfilter is only available in the 0.6 branch. Older version of FFMPEG 
 	make install
 
 - Now make logo.so by running 'make' from the root directory.  Make sure you've already installed the requirements listed above
-
 
 - You're done!  
 
@@ -118,15 +85,27 @@ Possible values as of OpenCV 3513 are:
 
 TROUBLESHOOTING
 ========================
+
+- If you are a developer, it helps to set the openCV CMAKE_BUILD_TYPE to 'Debug'.  You can change this by running the following:
+	
+	sudo cmake -i -G "Unix Makefiles" .
+
+- Unlogo uses a lot of bleeding-edge stuff. Update your MacPorts!
+
+	sudo port selfupdate
+	sudo port upgrade outdated
+
 - make logo.so
 On OS X 10.5 (gcc version 4.0.1) change the Makefile
 g++ -shared -o unlogo.so $(OBJS) $(LIBS)
 g++ -bundle -o unlogo.so $(OBJS) $(LIBS)
 (http://stackoverflow.com/questions/1494407/undefined-symbol-main-when-trying-to-build-shared-library-g-mac)
 
-If you get "error: boost/algorithm/string.hpp: No such file or directory" specify the path to your boost installation in the Makefile INCLUDES
--I/usr/bin/boost_1_44_0
+- If you get "error: boost/algorithm/string.hpp: No such file or directory" 
+	
+	specify the path to your boost installation in the Makefile INCLUDES
 
+	-I/usr/bin/boost_1_44_0
 
 
 TO DO

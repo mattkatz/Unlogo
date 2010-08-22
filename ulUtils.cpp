@@ -26,3 +26,5 @@ int log( int level, const char * format, ... )
 	va_end(args);
 	return status;
 }
+
+

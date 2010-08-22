@@ -36,14 +36,14 @@ int LogoFilter::addLogo(string search, string replace)
 {
 	Logo logo;
 	logo.search = search;
-	logo.img = imread( logo.search, CV_LOAD_IMAGE_GRAYSCALE );
-	if( logo.img.empty() )
+	logo.search_img = imread( logo.search, CV_LOAD_IMAGE_GRAYSCALE );
+	if( logo.search_img.empty() )
 	{
 		log(LOG_LEVEL_ERROR, "Can not read template image: %s\n", logo.search.c_str());
 		return -1;
 	}
 	
-	detector->detect( logo.img, logo.keypoints );
+	detector->detect( logo.search_img, logo.keypoints );
 	
 	if(logo.keypoints.size() > 0)
 	{
@@ -51,7 +51,7 @@ int LogoFilter::addLogo(string search, string replace)
 		{
 			KeyPoint::convert(logo.keypoints, logo.points);
 		}
-		descriptorExtractor->compute( logo.img, logo.keypoints, logo.descriptors );
+		descriptorExtractor->compute( logo.search_img, logo.keypoints, logo.descriptors );
 		
 		logo.replace = replace;
 		if( logo.replace.find_first_of("0x")==0 && logo.replace.length() == 8)
@@ -80,6 +80,11 @@ int LogoFilter::addLogo(string search, string replace)
 		return 0;
 	}
 	return -1;
+}
+
+int LogoFilter::filter(MatImage &in_img, MatImage &out_img, bool draw_matches)
+{
+	return filter(in_img.cvImage, out_img.cvImage);
 }
 
 
@@ -155,7 +160,7 @@ int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 		if(draw_matches)
 		{
 			Mat drawImg;
-			drawMatches(logos[i].img, logos[i].keypoints, gray_img, keypoints2, matches, drawImg, CV_RGB(0, 0, 255), CV_RGB(255, 0, 0), matchesMask,
+			drawMatches(logos[i].search_img, logos[i].keypoints, gray_img, keypoints2, matches, drawImg, CV_RGB(0, 0, 255), CV_RGB(255, 0, 0), matchesMask,
 						DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS | DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 			imshow( logos[i].search, drawImg );
 		}
