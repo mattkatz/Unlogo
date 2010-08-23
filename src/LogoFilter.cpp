@@ -82,7 +82,7 @@ int LogoFilter::addLogo(string search, string replace)
 	return -1;
 }
 
-int LogoFilter::filter(MatImage &in_img, MatImage &out_img, bool draw_matches)
+int LogoFilter::filter(Image &in_img, Image &out_img, bool draw_matches)
 {
 	return filter(in_img.cvImage, out_img.cvImage);
 }
@@ -99,7 +99,6 @@ int LogoFilter::filter(Mat &in_img, Mat &out_img, bool draw_matches)
 	
 	Mat gray_img; 
 	cvtColor(in_img, gray_img, CV_RGB2GRAY);
-	//blur(gray_img, gray_img, Size(3,3), Size(0,0));
 
     vector<KeyPoint> keypoints2;
     detector->detect( gray_img, keypoints2 );

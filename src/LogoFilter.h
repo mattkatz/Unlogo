@@ -14,12 +14,14 @@
 #include "opencv2/features2d/features2d.hpp"
 #include <highgui.h>
 #include <cvaux.h>
-#include "MatImage.h"
+#include "Image.h"
 #include "ulUtils.h"
 
 
 using namespace cv;
 using namespace std;
+using namespace unlogo;
+
 
 typedef struct Logo {
 	string search;	// The path to the image to search for
@@ -39,7 +41,7 @@ public:
 	LogoFilter();
 	int init( string detector_type, string descriptor_extractor_type, string descriptor_matcher_type );
 	int filter(Mat &in_image, Mat &out_img, bool draw_matches=false);
-	int filter(MatImage &in_img, MatImage &out_img, bool draw_matches=false);
+	int filter(Image &in_img, Image &out_img, bool draw_matches=false);
 	int addLogo(string search, string replace);
 
 protected:
