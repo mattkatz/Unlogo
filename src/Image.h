@@ -32,12 +32,17 @@ namespace unlogo {
 	public:
 		
 		Image();
+		Image(const Image& mother);
+		Image( Mat& matimg );
+		Image(int width, int height, int nChannels, uint8_t* src, int stride);
+		
 		void	convert( int conversion_code );
 		int		open( const char* filename );
 		void	drawIntoMe(Image* child, Point2f pos);
 		void	drawIntoMe( Image* child, int x, int y );
-		void	warp( Mat* homography );
+		void	warp( Mat& homography );
 		void	makeKeypointsAndDescriptors();
+		void	setFromMat( Mat &m );					// just points cvImage to new Mat
 		
 		// Operator Overloads
 		//
@@ -47,8 +52,7 @@ namespace unlogo {
 		
 	//protected:
 		Mat cvImage;
-		
-		
+
 		bool descriptorsAndKeypointsUpdated;
 		vector<KeyPoint> keypoints;	
 		Mat descriptors;

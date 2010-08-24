@@ -1,22 +1,69 @@
 
 
-#include "Matcher.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <iostream>
+#include <highgui.h>
+
+extern "C" {
+	int init( const char* argstr );
+	int uninit();
+	int process( uint8_t* dst[4], int dst_stride[4],
+				uint8_t* src[4], int src_stride[4],
+				int width, int height);
+} 
+
+using namespace std;
+
+int main(int argc, char * const argv[])
+{
+	
+	
+	// Open the video
+	cv::VideoCapture cap(argv[1]);
+    if(!cap.isOpened())  
+	{
+		cout << "Can not open video source" << endl;
+        return -1;
+	}
+	
+	init(argv[2]);
+	int width = cap.get(CV_CAP_PROP_FRAME_WIDTH);
+	int height = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
+	uint8_t* src[4];
+	uint8_t* dst[4];
+	int src_stride[4];
+	int dst_stride[4];
+	
+	
+	for(;;)
+    {
+		cv::Mat frame;
+        cap >> frame; // get a new frame from camera
+	
+		src[0] = frame.data;
+		src_stride[0] = width * 3;
+		
+		process(dst, dst_stride, src, src_stride, width, height);
+	}
+	
+	uninit();
+
+}
+
+
+/*
 #include "Image.h"
+#include "Matcher.h"
 #include "MatchSet.h"
 #include "MatchTracker.h"
-
+#include "Logo.h"
 
 using namespace cv;
 using namespace std;
 using namespace unlogo;
-
-
-typedef struct Logo {
-	const char* name;
-	Image logo;
-	Image replacement;
-	MatchTracker tracker;
-};
 
 int main (int argc, char * const argv[])
 {
@@ -34,7 +81,6 @@ int main (int argc, char * const argv[])
 	// Otherwise, the instance constructor will do the default.
 	Matcher::Instance("SURF", "SURF", "BruteForce");
 
-	
 	// Load in all of the logos from the arguments
 	vector<Logo> logos;
 	for(int i=2; i<argc; i+=2)
@@ -49,12 +95,14 @@ int main (int argc, char * const argv[])
 	
 	
 	Image frame;
-	for(int framenum=0; 1; framenum++)
+	for(int fn=0;1;fn++)
     {
-		cout << "===Frame " << framenum << "===" <<  endl;
+		cout << "=== Frame " << fn << " ===" <<  endl;
 		
 		frame << cap;
-		if(frame.cvImage.empty() || waitKey(10) == '\x1b') break;
+		
+		// escape or end of video exit program
+		if(frame.cvImage.empty() || waitKey(10) == '\x1b') break;  
 		
 		for(int i=0; i<logos.size(); i++)
 		{
@@ -68,12 +116,16 @@ int main (int argc, char * const argv[])
 			logos[i].tracker.track( ms );
 			
 			// What are we going to replace it with?
-			//Image replace = logos[i].replacement;
-			//replace.warp( &h12 );
+			Image replace = logos[i].replacement;
+			cout << "cols: " << ms->H12.cols << " rows: " << ms->H12.rows << endl;
+			replace.warp( ms->H12 );
+			imshow( logos[i].name, replace.cvImage );
+			
+			circle(frame.cvImage, ms->avgB(), 20, CV_RGB(255, 255, 255), 5);
 			
 			// Finally, draw the replacement
 			//Point2f loc = logos[i].tracker.avg();
-			//frame.drawIntoMe( &replace, loc );
+			frame.drawIntoMe( &replace, ms->avgB() );
 			
 			//imshow( logos[i].name, logos[i].logo.cvImage );
 		}
@@ -86,76 +138,4 @@ int main (int argc, char * const argv[])
 	return 0;
 }
 
-
-/*
-int main (int argc, char * const argv[])
-{
-	VideoCapture cap(argv[1]); // open the default camera
-    if(!cap.isOpened())  
-	{
-		cout << "Can not open video file." << endl;
-        return -1;
-	}
-	
-	LogoFilter g_filter;
-	g_filter.init( "SURF", "SURF", "BruteForce" );
-	for(int i=2; i<argc; i+=2)
-	{
-		g_filter.addLogo(argv[i], argv[i+1]);
-	}
-	
-	Image frame;
-	
-    for(int i=0; 1; i++)
-    {
-        frame = cap;
-		
-		g_filter.filter(frame, frame, true);
-		
-		frame.show( "out" );
-
-        char c = (char)cvWaitKey(5);
-        if( c == '\x1b' ) // esc
-        {
-            cout << "Exiting ..." << endl;
-            return 0;
-        }
-    }
-}
-
-
-
-int main (int argc, char * const argv[])
-{
-	VideoCapture cap(argv[1]);
-	cap.set(CV_CAP_PROP_CONVERT_RGB, 1);
-	
-    if(!cap.isOpened())  
-	{
-		cout << "Can not open video file." << endl;
-        return -1;
-	}
-	
-	Image head;
-	head.open("share/faces/Chanel.png");
-
-	Image frame;
-
-	
-	for(int i=0; 1; i++)
-    {
-        frame = cap;
-		frame.convert(CV_RGB2RGBA);
-		frame.drawIntoMe( head, 0, 0 );
-		
-		frame.show( "out" );
-		
-        char c = (char)cvWaitKey(5);
-        if( c == '\x1b' ) // esc
-        {
-            cout << "Exiting ..." << endl;
-            return 0;
-        }
-    }
-}
 */

@@ -15,7 +15,23 @@ namespace unlogo {
 		descriptorsAndKeypointsUpdated=false;
 	}
 
+	//--------------------------------------------------
+	Image::Image(const Image& mother)
+	{
+		mother.cvImage.copyTo(cvImage);
+		mother.descriptors.copyTo(descriptors);
+		keypoints = mother.keypoints;  // Is this a copy?
+		descriptorsAndKeypointsUpdated = false;
+	}
 
+	
+	//--------------------------------------------------
+	Image::Image( Mat& matimg )
+	{
+		cvImage = matimg;
+		descriptorsAndKeypointsUpdated=false;
+	}
+	
 	//--------------------------------------------------
 	int Image::open( const char* path )
 	{
@@ -37,6 +53,13 @@ namespace unlogo {
 		drawIntoMe(child, pos.x, pos.y);
 	}
 	
+	
+	//--------------------------------------------------
+	void Image::setFromMat( Mat &m )
+	{
+		cvImage = m;
+		descriptorsAndKeypointsUpdated=false;
+	}
 	
 	//--------------------------------------------------
 	void Image::drawIntoMe(Image* child, int x, int y )
@@ -71,8 +94,11 @@ namespace unlogo {
 
 	
 	//--------------------------------------------------
-	void Image::warp( Mat* m )
+	void Image::warp( Mat& m )
 	{
+		Mat cvImageTemp;
+		warpPerspective(cvImage, cvImageTemp, m, cvImage.size() );
+		cvImage = cvImageTemp;
 		descriptorsAndKeypointsUpdated=false;
 	}
 
@@ -85,6 +111,7 @@ namespace unlogo {
 			log(LOG_LEVEL_ERROR, "in convert() Image is empty.");
 			return;
 		}
+		
 
 		Mat cvImageTemp;
 		cvtColor(cvImage, cvImageTemp, conversion_code);

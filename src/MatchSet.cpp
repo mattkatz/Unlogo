@@ -11,6 +11,7 @@
 
 namespace unlogo {
 
+	//--------------------------------------------------
 	MatchSet::MatchSet(Image* _a, Image* _b, int ransacReprojThreshold)
 	{
 		a = _a;
@@ -24,7 +25,7 @@ namespace unlogo {
 
 		a->makeKeypointsAndDescriptors();
 		b->makeKeypointsAndDescriptors();
-		log(LOG_LEVEL_DEBUG, "a (kpts %d, dscts %d x %d) b (kpts %d, dscts %d x %d)", 
+		log(LOG_LEVEL_DEBUG, "a (kpts %d, dscrptrs %d x %d) b (kpts %d, dscrptrs %d x %d)", 
 			a->keypoints.size(), a->descriptors.rows, a->descriptors.cols, 
 			b->keypoints.size(), b->descriptors.rows, b->descriptors.cols);
 		
@@ -36,13 +37,13 @@ namespace unlogo {
 		matcher->descriptorMatcher->match( a->descriptors, matches );	// Find the best matches B for all points in A
 																		// ie: matches.size() == a->keypoints.size()
 		
-		// How many unique matches do we have?
+		// How many unique matches in B do we have?
 		vector<int> umatches( matches );
 		sort(umatches.begin(), umatches.end());
         umatches.erase(unique(umatches.begin(), umatches.end()), umatches.end());
 		float pct = umatches.size() / (float)matches.size();
 		
-		log(LOG_LEVEL_DEBUG, "in MatchSet(), %d unique matches in B for %f%% match", umatches.size(), pct); // matches.size will always equal A->keypoints.size
+		log(LOG_LEVEL_DEBUG, "in MatchSet(), %d unique matches in B for %0.2f%% match", umatches.size(), pct*100); // matches.size will always equal A->keypoints.size
 		
 		
 		
@@ -66,7 +67,7 @@ namespace unlogo {
 		
 		// If the corresponding point from Image B is less than 4 away (?), then it is an inlier
 		vector<int>::const_iterator mit = matches.begin();
-        for( size_t i = 0; i < pointsA.size(); i++ )
+        for(int i = 0; i < (int)pointsA.size(); i++ )
         {
             if( norm(pointsB[i] - pTransform.at<Point2f>(i,0)) < 4 ) // inlier
 			{
@@ -75,12 +76,13 @@ namespace unlogo {
         }
 	}
 	
-	void MatchSet::drawMatchesInA()
+	//--------------------------------------------------
+	void MatchSet::drawKeypointsInA()
 	{
 		vector<Point2f> points;
 		KeyPoint::convert(a->keypoints, points);
 		
-		for(int i=0; i<matches.size(); i++)
+		for(int i=0; i<(int)matches.size(); i++)
 		{
 			if(inlierMask[i]==0) {
 				circle(a->cvImage, points[i], a->keypoints[i].size/2., CV_RGB(0,255,0), 1);
@@ -90,12 +92,13 @@ namespace unlogo {
 		}
 	}
 	
+	//--------------------------------------------------
 	void MatchSet::drawMatchesInB()
 	{
 		vector<Point2f> points;
 		KeyPoint::convert(b->keypoints, points);
 		
-		for(int i=0; i<matches.size(); i++)
+		for(int i=0; i<(int)matches.size(); i++)
 		{
 			int match = matches[i];
 			if(inlierMask[match]==0) {
@@ -104,6 +107,34 @@ namespace unlogo {
 				circle(b->cvImage, points[match], b->keypoints[match].size/2., CV_RGB(255,0,0), 1);
 			}
 		}
+	}
+	
+	//--------------------------------------------------
+	Point2f MatchSet::avgA(bool includeOutliers)
+	{
+		Point2f avg;
+		vector<Point2f> points;
+		KeyPoint::convert(a->keypoints, points);
 		
+		for(int i=0; i<(int)points.size(); i++)
+		{
+			if(inlierMask[i]==1 || includeOutliers) avg += points[i];
+		}
+		return Point2f( avg.x / points.size(), avg.y / points.size() );
+	}
+	
+	
+	//--------------------------------------------------
+	Point2f MatchSet::avgB()
+	{		
+		Point2f avg;
+		vector<Point2f> points;
+		KeyPoint::convert(b->keypoints, points);
+		
+		for(int i=0; i<(int)matches.size(); i++)
+		{
+			avg += points[matches[i]];
+		}
+		return Point2f( avg.x / matches.size(), avg.y / matches.size() );
 	}
 }

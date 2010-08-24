@@ -19,9 +19,10 @@ namespace unlogo {
 	class MatchSet {
 	public:
 		MatchSet(Image* a, Image* b, int ransacReprojThreshold);
-		void drawMatchesInA();
+		void drawKeypointsInA();
 		void drawMatchesInB();
-		
+		Point2f avgA(bool includeOutliers=false);
+		Point2f avgB();
 		
 	//protected:
 		
@@ -31,6 +32,7 @@ namespace unlogo {
 		vector<int> matches;		// contains the best match in B for all keypoints in A
 									// ie: a->keypoints.size() == matches.size()
 		vector<char> inlierMask;	// ditto with inlierMask -- 1 for inlier, 0 for not
+		
 	};
 }
 

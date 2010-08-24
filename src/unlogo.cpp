@@ -13,31 +13,33 @@
 #include <stdint.h>
 #include <string.h>
 #include <iostream>
-#include "opencv2/core/core.hpp"
 #include <boost/algorithm/string.hpp>
 
-#include "LogoFilter.h"
-#include "MatImage.h"
-#include "ulUtils.h"
+#include "Image.h"
+#include "Matcher.h"
+#include "MatchSet.h"
+#include "MatchTracker.h"
+#include "Logo.h"
 
 using namespace cv;
 using namespace std;
 using namespace boost;
+using namespace unlogo;
 
 
-LogoFilter* g_filter = 0;
-Mat rgb_img;
-int framenum;
+vector<Logo> logos;
+int framenum=0;
 
 
 extern "C" int init( const char* argstr )
 {
 	try {
 		// Parse arguments.
-		vector<string> args;
-		split(args, argstr, is_any_of(":"));
+		vector<string> argv;
+		split(argv, argstr, is_any_of(":"));
+		int argc = argv.size();
 		
-		if(args.size()<5 || args.size()%2!=1)
+		if(argc<5 || argc%2!=1)
 		{
 			cout << "Usage" << endl;
 			cout << "[detector]:[descriptor]:[matcher]:[search:replace]..." << endl;
@@ -50,20 +52,23 @@ extern "C" int init( const char* argstr )
 			return -1;
 		}
 
-		g_filter = new LogoFilter( );
-		int init = g_filter->init( args[0], args[1], args[2] );
-		if(init != 0)
+		// Construct the matcher singleton the way we want it.
+		// Otherwise, the instance constructor will do the default.
+		Matcher::Instance(argv[0], argv[1], argv[2]);
+	
+		// Load in all of the logos from the arguments
+		for(int i=3; i<argc; i+=2)
 		{
-			return -1;
+			Logo l;
+			l.name = argv[i].c_str();
+			l.logo.open( l.name );
+			l.replacement.open( argv[i+1].c_str() );
+			l.tracker = MatchTracker();
+			logos.push_back( l );
+			log(LOG_LEVEL_DEBUG, "Loaded logo %s", l.name);
 		}
 		
-		// Add all of the search/replace pairs
-		for(size_t i=3; i<args.size(); i+=2)
-		{
-			g_filter->addLogo(args[i], args[i+1]);
-		}
-		
-		framenum=0;
+		namedWindow("dst", CV_WINDOW_AUTOSIZE);
 		return 0;
 	}
 	catch ( ... ) {
@@ -73,20 +78,18 @@ extern "C" int init( const char* argstr )
 
 extern "C" int uninit()
 {
-	delete g_filter;
-	g_filter = 0;
-    
 	return 0;
 }
 
+
+Image frame;
 extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 					   uint8_t* src[4], int src_stride[4],
 					   int width, int height)
 {
-	log(LOG_LEVEL_DEBUG, "Frame %d\n\n", framenum);
-	log(LOG_LEVEL_DEBUG, "Copying frame to destination");
-	// TO DO:  Use OpenCV to copy the frame.
-	// Make a Mat with src[0] and then copy.  BRILLIANT!
+	log(LOG_LEVEL_DEBUG, "=== Frame %d ===", framenum);
+	
+	// Copy src pixels to dest
 	for ( int i(0); i<3; ++i )
 	{
 		uint8_t* pdst = dst[i];
@@ -108,14 +111,40 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		}
 	}
 	
-	log(LOG_LEVEL_DEBUG, "Creating Mat version YUV");
-	Mat dst_img(width, height, CV_8UC3, dst[0], dst_stride[0]);
+	// Make a cv:Mat with the data.
+	Mat dst_img(height, width, CV_8UC3, dst[0], dst_stride[0]);  // why are w/h reversed here?
+	if(dst_img.empty()) return 1;
 	
-	log(LOG_LEVEL_DEBUG, "Creating Mat version RGB");
-	cvtColor(dst_img, rgb_img, CV_YCrCb2RGB);
+	frame.setFromMat( dst_img );
+
+	// Loop through all loaded logos
+	for(int i=0; i<(int)logos.size(); i++)
+	{
+		// Find all matches between the frame and the logo
+		// the logo is A and the frame is B
+		MatchSet* ms = new MatchSet(&logos[i].logo, &frame, 2);
+
+		ms->drawMatchesInB();
+		
+		// Keep track of the history of the matches so we can ease/average
+		//logos[i].tracker.track( ms );
+		
+		// What are we going to replace it with?
+		//Image replace = logos[i].replacement;
 	
-	log(LOG_LEVEL_DEBUG, "Running filter");
-	int status = g_filter->filter( rgb_img, dst_img );
+		//replace.warp( ms->H12 );
+		//imshow( logos[i].name, replace.cvImage );
+		
+		//circle(frame.cvImage, ms->avgB(), 20, CV_RGB(255, 255, 255), 5);
+		
+		// Finally, draw the replacement
+		//Point2f loc = logos[i].tracker.avg();
+		//frame.drawIntoMe( &replace, ms->avgB() );	
+	}
+
+	waitKey(1);
+	imshow( "dst", dst_img );
+
 	framenum++;
-	return status;
+	return 0;
 }

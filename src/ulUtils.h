@@ -67,7 +67,6 @@ void alphaBlendRGBA(const Mat& src1, const Mat& src2, Mat& dst)
         {
             float alpha = ptr1[j+3] / alpha_scale; //* inv_scale;
 			float beta	= ptr2[j+3] / alpha_scale; //* inv_scale;
-			
             dptr[j  ]	= saturate_cast<T>(ptr1[j  ] * alpha + ptr2[j  ] * beta);
             dptr[j+1]	= saturate_cast<T>(ptr1[j+1] * alpha + ptr2[j+1] * beta);
             dptr[j+2]	= saturate_cast<T>(ptr1[j+2] * alpha + ptr2[j+2] * beta);
