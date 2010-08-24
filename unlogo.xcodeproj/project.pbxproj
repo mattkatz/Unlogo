@@ -40,8 +40,8 @@
 		1F2E1A8B1221A0E100B7FED1 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		1F2E1A8E1221A0E100B7FED1 /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Image.cpp; path = src/Image.cpp; sourceTree = "<group>"; };
 		1F2E1A8F1221A0E100B7FED1 /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Image.h; path = src/Image.h; sourceTree = "<group>"; };
-		1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ulUtils.cpp; path = src/ulUtils.cpp; sourceTree = SOURCE_ROOT; };
-		1F2E1A911221A0E100B7FED1 /* ulUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ulUtils.h; path = src/ulUtils.h; sourceTree = SOURCE_ROOT; };
+		1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ulUtils.cpp; path = src/ulUtils.cpp; sourceTree = "<group>"; };
+		1F2E1A911221A0E100B7FED1 /* ulUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ulUtils.h; path = src/ulUtils.h; sourceTree = "<group>"; };
 		1F2E1A9A1221B96300B7FED1 /* MatchSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatchSet.h; path = src/MatchSet.h; sourceTree = "<group>"; };
 		1F2E1A9B1221B96300B7FED1 /* MatchSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatchSet.cpp; path = src/MatchSet.cpp; sourceTree = "<group>"; };
 		1F2E1AA91221BAD300B7FED1 /* Matcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Matcher.h; path = src/Matcher.h; sourceTree = "<group>"; };
@@ -92,18 +92,9 @@
 			isa = PBXGroup;
 			children = (
 				1F2E1A8B1221A0E100B7FED1 /* main.cpp */,
-				1FE9B21C12235CEE00155BCD /* unlogo.cpp */,
-				1F2E1A8F1221A0E100B7FED1 /* Image.h */,
-				1F2E1A8E1221A0E100B7FED1 /* Image.cpp */,
-				1F2E1AA91221BAD300B7FED1 /* Matcher.h */,
-				1F2E1AAA1221BAD300B7FED1 /* Matcher.cpp */,
-				1F2E1A9A1221B96300B7FED1 /* MatchSet.h */,
-				1F2E1A9B1221B96300B7FED1 /* MatchSet.cpp */,
-				1F2E1B021221C33F00B7FED1 /* MatchTracker.h */,
-				1F2E1B031221C33F00B7FED1 /* MatchTracker.cpp */,
-				1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */,
-				1F2E1A911221A0E100B7FED1 /* ulUtils.h */,
 				1FE9B1C712233CF800155BCD /* Logo.h */,
+				1FE9B21C12235CEE00155BCD /* unlogo.cpp */,
+				1F08A61B122374D400DE8879 /* Unlogo */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -114,6 +105,23 @@
 				8DD76F6C0486A84900D96B5E /* unlogo */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1F08A61B122374D400DE8879 /* Unlogo */ = {
+			isa = PBXGroup;
+			children = (
+				1F2E1A8F1221A0E100B7FED1 /* Image.h */,
+				1F2E1A8E1221A0E100B7FED1 /* Image.cpp */,
+				1F2E1AA91221BAD300B7FED1 /* Matcher.h */,
+				1F2E1AAA1221BAD300B7FED1 /* Matcher.cpp */,
+				1F2E1A9A1221B96300B7FED1 /* MatchSet.h */,
+				1F2E1A9B1221B96300B7FED1 /* MatchSet.cpp */,
+				1F2E1B021221C33F00B7FED1 /* MatchTracker.h */,
+				1F2E1B031221C33F00B7FED1 /* MatchTracker.cpp */,
+				1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */,
+				1F2E1A911221A0E100B7FED1 /* ulUtils.h */,
+			);
+			name = Unlogo;
 			sourceTree = "<group>";
 		};
 		1FF04E5C121C8BEF0017E206 /* Libraries */ = {

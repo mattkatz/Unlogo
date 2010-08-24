@@ -1,3 +1,13 @@
+/*
+ *  main.cpp
+ *  unlogo testing program
+ *
+ *  Created by Jeffrey Crouse on 8/18/10.
+ *  Copyright 2010 Eyebeam. All rights reserved.
+ *
+ *	This small program simply opens a cv::VideoCapture with the first argument
+ *	and then starts feeding the frames to the unlogo.cpp FFMPEG callbacks.
+ */
 
 
 #include <stdio.h>
@@ -7,6 +17,7 @@
 #include <iostream>
 #include <highgui.h>
 
+// Bring in the functions from unlogo.cpp
 extern "C" {
 	int init( const char* argstr );
 	int uninit();
@@ -15,29 +26,29 @@ extern "C" {
 				int width, int height);
 } 
 
-using namespace std;
+
+// Imitating the stuff that FFMPEG gives us.
+int width, height;
+uint8_t* src[4];
+uint8_t* dst[4];
+int src_stride[4];
+int dst_stride[4];
+
 
 int main(int argc, char * const argv[])
 {
-	
-	
 	// Open the video
 	cv::VideoCapture cap(argv[1]);
     if(!cap.isOpened())  
 	{
-		cout << "Can not open video source" << endl;
+		std::cout << "Can not open video source" << std::endl;
         return -1;
 	}
 	
-	init(argv[2]);
-	int width = cap.get(CV_CAP_PROP_FRAME_WIDTH);
-	int height = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
-	uint8_t* src[4];
-	uint8_t* dst[4];
-	int src_stride[4];
-	int dst_stride[4];
+	init(argv[2]);  // from unlogo.cpp
 	
-	
+	width = cap.get(CV_CAP_PROP_FRAME_WIDTH);
+	height = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
 	for(;;)
     {
 		cv::Mat frame;
@@ -46,10 +57,10 @@ int main(int argc, char * const argv[])
 		src[0] = frame.data;
 		src_stride[0] = width * 3;
 		
-		process(dst, dst_stride, src, src_stride, width, height);
+		process(dst, dst_stride, src, src_stride, width, height);  // from unlogo.cpp
 	}
 	
-	uninit();
+	uninit();  // from unlogo.cpp
 
 }
 
