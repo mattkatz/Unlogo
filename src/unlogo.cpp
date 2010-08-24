@@ -2,7 +2,7 @@
  *  unlogo.cpp
  *  unlogo
  *
- *  Created by Jeffrey Crouse on 8/18/10.
+ *  Created by Jeffrey Crouse and Kashif Balil
  *  Copyright 2010 Eyebeam. All rights reserved.
  *
  */
@@ -13,13 +13,14 @@
 #include <stdint.h>
 #include <string.h>
 #include <iostream>
-#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>  // Take this out eventually
 
 #include "Image.h"
 #include "Matcher.h"
 #include "MatchSet.h"
 #include "MatchTracker.h"
 #include "Logo.h"
+
 
 using namespace cv;
 using namespace std;
@@ -29,6 +30,7 @@ using namespace unlogo;
 
 vector<Logo> logos;
 int framenum=0;
+Image frame;
 
 
 extern "C" int init( const char* argstr )
@@ -43,9 +45,7 @@ extern "C" int init( const char* argstr )
 		{
 			cout << "Usage" << endl;
 			cout << "[detector]:[descriptor]:[matcher]:[search:replace]..." << endl;
-			cout << "where [search:replace] is a list of images to look for and either image " << endl;
-			cout << "or hex color to replace it with.  Hex colors must begin with 0x and be 6 digits" << endl;
-			cout << endl;
+			cout << "where [search:replace] is a list of images to look for and an image to replace it with. " << endl;
 			cout << "Detector Types: FAST, STAR, SIFT, SURF, MSER, GFTT, HARRIS" << endl;
 			cout << "Descriptor Types: SIFT, SURF" << endl;
 			cout << "Matcher Types: BruteForce, BruteForce-L1" << endl;
@@ -82,7 +82,7 @@ extern "C" int uninit()
 }
 
 
-Image frame;
+
 extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 					   uint8_t* src[4], int src_stride[4],
 					   int width, int height)
@@ -142,9 +142,10 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		//frame.drawIntoMe( &replace, ms->avgB() );	
 	}
 
-	waitKey(1);
+	
 	imshow( "dst", dst_img );
-
+	waitKey(1);
+	
 	framenum++;
 	return 0;
 }

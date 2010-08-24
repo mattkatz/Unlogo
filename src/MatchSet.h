@@ -10,12 +10,18 @@
 #ifndef MATCH_SET_H
 #define MATCH_SET_H
 
+#include "opencv2/core/core.hpp"
+#include "opencv2/calib3d/calib3d.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/features2d/features2d.hpp"
 #include "ulUtils.h"
 #include "Image.h"
 
 
 namespace unlogo {
+	
 	class Image;
+	
 	class MatchSet {
 	public:
 		MatchSet(Image* a, Image* b, int ransacReprojThreshold);
@@ -23,6 +29,7 @@ namespace unlogo {
 		void drawMatchesInB();
 		Point2f avgA(bool includeOutliers=false);
 		Point2f avgB();
+		static void drawKeypoint( Mat& img, const KeyPoint& p, const Scalar& color, int flags );
 		
 	//protected:
 		

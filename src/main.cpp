@@ -44,109 +44,33 @@ int main(int argc, char * const argv[])
 		std::cout << "Can not open video source" << std::endl;
         return -1;
 	}
+	//cap.set(CV_CAP_PROP_POS_FRAMES, 170);
+	//cap.set(CV_CAP_PROP_POS_MSEC, 5.0);
 	
-	init(argv[2]);  // from unlogo.cpp
+	init(argv[2]);													// from unlogo.cpp
 	
 	width = cap.get(CV_CAP_PROP_FRAME_WIDTH);
 	height = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
+	dst[0]= new uint8_t[ width* height * 3 ];
+	dst_stride[0] = width * 3;
+
+	cv::Mat frame;
 	for(;;)
     {
-		cv::Mat frame;
         cap >> frame; // get a new frame from camera
-	
+		if(frame.empty()) break;
+		
 		src[0] = frame.data;
-		src_stride[0] = width * 3;
+		src_stride[0] = frame.step;
 		
 		process(dst, dst_stride, src, src_stride, width, height);  // from unlogo.cpp
+
 	}
 	
-	uninit();  // from unlogo.cpp
-
-}
-
-
-/*
-#include "Image.h"
-#include "Matcher.h"
-#include "MatchSet.h"
-#include "MatchTracker.h"
-#include "Logo.h"
-
-using namespace cv;
-using namespace std;
-using namespace unlogo;
-
-int main (int argc, char * const argv[])
-{
-	const char* window_name = "output";
-	
-	// Open the video
-	VideoCapture cap(argv[1]);
-    if(!cap.isOpened())  
-	{
-		cout << "Can not open video source" << endl;
-        return -1;
-	}
-
-	// Construct the matcher singleton the way we want it.
-	// Otherwise, the instance constructor will do the default.
-	Matcher::Instance("SURF", "SURF", "BruteForce");
-
-	// Load in all of the logos from the arguments
-	vector<Logo> logos;
-	for(int i=2; i<argc; i+=2)
-	{
-		Logo l;
-		l.name = argv[i];
-		l.logo.open( argv[i] );
-		l.replacement.open( argv[i+1] );
-		l.tracker = MatchTracker();
-		logos.push_back( l );
-	}
+	uninit();														// from unlogo.cpp
 	
 	
-	Image frame;
-	for(int fn=0;1;fn++)
-    {
-		cout << "=== Frame " << fn << " ===" <<  endl;
-		
-		frame << cap;
-		
-		// escape or end of video exit program
-		if(frame.cvImage.empty() || waitKey(10) == '\x1b') break;  
-		
-		for(int i=0; i<logos.size(); i++)
-		{
-			// Find all matches between the frame and the logo
-			// the logo is A and the frame is B
-			MatchSet* ms = new MatchSet(&logos[i].logo, &frame, 2);
-
-			ms->drawMatchesInB();
-			
-			// Keep track of the history of the matches so we can ease/average
-			logos[i].tracker.track( ms );
-			
-			// What are we going to replace it with?
-			Image replace = logos[i].replacement;
-			cout << "cols: " << ms->H12.cols << " rows: " << ms->H12.rows << endl;
-			replace.warp( ms->H12 );
-			imshow( logos[i].name, replace.cvImage );
-			
-			circle(frame.cvImage, ms->avgB(), 20, CV_RGB(255, 255, 255), 5);
-			
-			// Finally, draw the replacement
-			//Point2f loc = logos[i].tracker.avg();
-			frame.drawIntoMe( &replace, ms->avgB() );
-			
-			//imshow( logos[i].name, logos[i].logo.cvImage );
-		}
-		
-		imshow( window_name, frame.cvImage );
-		
-	}
-	
-	cout << "Exiting ..." << endl;
+	std::cout << "Exiting ..." << std::endl;
 	return 0;
 }
 
-*/

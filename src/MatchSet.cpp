@@ -29,6 +29,11 @@ namespace unlogo {
 			a->keypoints.size(), a->descriptors.rows, a->descriptors.cols, 
 			b->keypoints.size(), b->descriptors.rows, b->descriptors.cols);
 		
+		if(a->descriptors.empty() || b->descriptors.empty())
+		{
+			log(LOG_LEVEL_ERROR, "one of the images has no descriptors");
+			return;
+		}
 		
 		// Load up the matcher with the "training" points from B
 		Matcher* matcher = Matcher::Instance();
@@ -54,7 +59,7 @@ namespace unlogo {
 		//! converts vector of keypoints to vector of points
         vector<Point2f> pointsB;
 		KeyPoint::convert(b->keypoints, pointsB, matches);
-		H12 = findHomography( Mat(pointsA), Mat(pointsB), CV_RANSAC, ransacReprojThreshold );
+		H12 = cv::findHomography( Mat(pointsA), Mat(pointsB), CV_RANSAC, ransacReprojThreshold );
 		
 		// Do a perspective transform on the points from Image A using the homography we calculated
 		Mat pTransform;
@@ -84,11 +89,8 @@ namespace unlogo {
 		
 		for(int i=0; i<(int)matches.size(); i++)
 		{
-			if(inlierMask[i]==0) {
-				circle(a->cvImage, points[i], a->keypoints[i].size/2., CV_RGB(0,255,0), 1);
-			} else {
-				circle(a->cvImage, points[i], a->keypoints[i].size/2., CV_RGB(255,0,0), 1);
-			}
+			Scalar c = (inlierMask[i]==0) ? CV_RGB(255,0,0) : CV_RGB(0,255,0);
+			MatchSet::drawKeypoint( b->cvImage, b->keypoints[i], c, DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
 		}
 	}
 	
@@ -101,11 +103,38 @@ namespace unlogo {
 		for(int i=0; i<(int)matches.size(); i++)
 		{
 			int match = matches[i];
-			if(inlierMask[match]==0) {
-				circle(b->cvImage, points[match], b->keypoints[match].size/2., CV_RGB(0,255,0), 1);
-			} else {
-				circle(b->cvImage, points[match], b->keypoints[match].size/2., CV_RGB(255,0,0), 1);
+			Scalar c = (inlierMask[match]==0) ? CV_RGB(255,0,0) : CV_RGB(0,255,0);
+			MatchSet::drawKeypoint( b->cvImage, b->keypoints[match], c, DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
+		}
+	}
+	
+	
+	//--------------------------------------------------
+	void MatchSet::drawKeypoint( Mat& img, const KeyPoint& p, const Scalar& color, int flags )
+	{
+		Point center( cvRound(p.pt.x), cvRound(p.pt.y) );
+		
+		if( flags & DrawMatchesFlags::DRAW_RICH_KEYPOINTS )
+		{
+			int radius = cvRound(p.size/2); // KeyPoint::size is a diameter
+			
+			// draw the circles around keypoints with the keypoints size
+			circle( img, center, radius, color, 1, CV_AA );
+			
+			// draw orientation of the keypoint, if it is applicable
+			if( p.angle != -1 )
+			{
+				float srcAngleRad = p.angle*(float)CV_PI/180.f;
+				Point orient(cvRound(cos(srcAngleRad)*radius), 
+							 cvRound(sin(srcAngleRad)*radius));
+				line( img, center, center+orient, color, 1, CV_AA );
 			}
+		}
+		else
+		{
+			// draw center with R=3
+			int radius = 3;
+			circle( img, center, radius, color, 1, CV_AA );
 		}
 	}
 	
