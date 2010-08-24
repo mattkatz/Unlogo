@@ -12,18 +12,19 @@
 int log( int level, const char * format, ... )
 {
 	using namespace std;	
-	string color;
+	cerr << set_bold( TRUE ) << "[unlogo] " << set_bold(FALSE); 
 	switch(level) {
 		default:
-		case LOG_LEVEL_DEBUG: 	color="\033[01;33m"; break;
-		case LOG_LEVEL_WARNING:	color="\033[01;34m"; break;
-		case LOG_LEVEL_ERROR:	color="\033[01;31m"; break;
+		case LOG_LEVEL_DEBUG: 	cout << set_colors(VT_DEFAULT,VT_DEFAULT); break;
+		case LOG_LEVEL_WARNING:	cout << set_colors(VT_YELLOW,VT_DEFAULT); break;
+		case LOG_LEVEL_ERROR:	cout << set_colors(VT_WHITE,VT_RED); break;
 	}
 	va_list args;
 	va_start(args, format);
-	string fstr(color+string("[unlogo] ")+format+"\n");
+	string fstr(format+string("\n"));
 	int status = vfprintf(stderr, fstr.c_str(), args);
 	va_end(args);
+	cout << finalize;
 	return status;
 }
 

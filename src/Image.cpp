@@ -64,7 +64,7 @@ namespace unlogo {
 	//--------------------------------------------------
 	void Image::drawIntoMe(Image* child, int x, int y )
 	{
-		log(LOG_LEVEL_DEBUG, "in drawIntoMe() Mother %d channels, Child %d channels", cvImage.channels(), child->cvImage.channels());
+		//log(LOG_LEVEL_DEBUG, "in drawIntoMe() Mother %d channels, Child %d channels", cvImage.channels(), child->cvImage.channels());
 		if(cvImage.type() != child->cvImage.type())
 		{
 			log(LOG_LEVEL_ERROR, "in drawIntoMe() Images must be of the same type. Mother=%d  Child=%d", cvImage.type(), child->cvImage.type());
@@ -87,6 +87,9 @@ namespace unlogo {
 		{
 			// How can you determine the type?  it won't always be uchar
 			alphaBlendRGBA<uchar>(out_roi, child->cvImage, out_roi);
+			
+			
+			
 		}
 		
 		descriptorsAndKeypointsUpdated=false;
@@ -108,14 +111,13 @@ namespace unlogo {
 	{
 		if(cvImage.empty())
 		{
-			log(LOG_LEVEL_ERROR, "in convert() Image is empty.");
+			log(LOG_LEVEL_ERROR, "in convert(), Image is empty.");
 			return;
 		}
 		
-
-		Mat cvImageTemp;
-		cvtColor(cvImage, cvImageTemp, conversion_code);
-		cvImage = cvImageTemp;
+		Mat cvImageTmp;
+		cvtColor(cvImage, cvImageTmp, conversion_code);
+		cvImage = cvImageTmp;
 	}
 
 

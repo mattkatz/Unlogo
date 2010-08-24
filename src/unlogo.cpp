@@ -18,7 +18,6 @@
 #include "Image.h"
 #include "Matcher.h"
 #include "MatchSet.h"
-#include "MatchTracker.h"
 #include "Logo.h"
 
 
@@ -63,7 +62,8 @@ extern "C" int init( const char* argstr )
 			l.name = argv[i].c_str();
 			l.logo.open( l.name );
 			l.replacement.open( argv[i+1].c_str() );
-			l.tracker = MatchTracker();
+			l.located = false;
+			l.pos = Point2f( -1, -1 );
 			logos.push_back( l );
 			log(LOG_LEVEL_DEBUG, "Loaded logo %s", l.name);
 		}
@@ -80,6 +80,7 @@ extern "C" int uninit()
 {
 	return 0;
 }
+
 
 
 
@@ -115,6 +116,11 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	Mat dst_img(height, width, CV_8UC3, dst[0], dst_stride[0]);  // why are w/h reversed here?
 	if(dst_img.empty()) return 1;
 	
+	// This should be put into an Image::convert function
+	Mat dst_tmp;
+	cvtColor(dst_img, dst_tmp, CV_BGR2BGRA);
+	dst_img = dst_tmp;
+
 	frame.setFromMat( dst_img );
 
 	// Loop through all loaded logos
@@ -124,28 +130,65 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		// the logo is A and the frame is B
 		MatchSet* ms = new MatchSet(&logos[i].logo, &frame, 2);
 
-		ms->drawMatchesInB();
+		//ms->drawMatchesInB();
 		
-		// Keep track of the history of the matches so we can ease/average
-		//logos[i].tracker.track( ms );
+		// Get the middle point of all of the keypoint matches.
+		// Then move the replacement towards that point.
+		Point2f pos_actual = ms->avgB();
+		if(logos[i].pos.x == -1 || logos[i].pos.y == -1)
+		{
+			logos[i].pos = pos_actual;
+			logos[i].located = true;
+		}
+		else
+		{
+			Point2f	diff = pos_actual - logos[i].pos;
+			Point2f move = Point2f(diff.x/10., diff.y/10.);
+			logos[i].pos += move;
+		}
+		
+		// Just for debugging.
+		circle(dst_img, logos[i].pos, 20, CV_RGB(255,255,255), 5, CV_AA);
+		
+		// Adjust so that it is center-based
+		Point2f p = logos[i].pos;
+		p.x -= (logos[i].replacement.cvImage.cols / 2.);
+		p.y -= (logos[i].replacement.cvImage.rows / 2.);
 		
 		// What are we going to replace it with?
-		//Image replace = logos[i].replacement;
-	
 		//replace.warp( ms->H12 );
-		//imshow( logos[i].name, replace.cvImage );
-		
-		//circle(frame.cvImage, ms->avgB(), 20, CV_RGB(255, 255, 255), 5);
+		//imshow( "replace", replace.cvImage );
+
 		
 		// Finally, draw the replacement
-		//Point2f loc = logos[i].tracker.avg();
-		//frame.drawIntoMe( &replace, ms->avgB() );	
+		Mat fg = logos[i].replacement.cvImage;
+		Mat bg = dst_img(Rect(p.x, p.y, fg.cols, fg.rows));
+		
+		// This should be put into Image:;drawIntoMe()
+
+		for( int i = 0; i < fg.rows; i++ )
+		{
+			uchar* ptr_bg = bg.ptr<uchar>(i);
+			uchar* ptr_fg = fg.ptr<uchar>(i);
+			
+			for( int j = 0; j < fg.step; j += fg.channels() )
+			{
+				float alpha	= ptr_fg[j+3] / (float)numeric_limits<uchar>::max();
+				float inv_alpha = 1.0-alpha;
+				
+				ptr_bg[j  ]	= saturate_cast<uchar>((ptr_bg[j  ] * inv_alpha) + (ptr_fg[j  ] * alpha));
+				ptr_bg[j+1]	= saturate_cast<uchar>((ptr_bg[j+1] * inv_alpha) + (ptr_fg[j+1] * alpha));
+				ptr_bg[j+2]	= saturate_cast<uchar>((ptr_bg[j+2] * inv_alpha) + (ptr_fg[j+2] * alpha));
+			}
+		}
 	}
 
 	
+	//imshow( "frame", frame.cvImage );
 	imshow( "dst", dst_img );
 	waitKey(1);
 	
 	framenum++;
 	return 0;
 }
+

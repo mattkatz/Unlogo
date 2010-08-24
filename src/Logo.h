@@ -9,7 +9,6 @@
  */
 
 #include "Image.h"
-#include "MatchTracker.h"
 
 namespace unlogo
 {
@@ -18,6 +17,7 @@ namespace unlogo
 		const char* name;  // Kept for convenience and debugging
 		Image logo;
 		Image replacement;
-		MatchTracker tracker;
+		Point2f pos;
+		bool located;
 	};
 }

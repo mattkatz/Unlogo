@@ -27,7 +27,8 @@ extern "C" {
 } 
 
 
-// Imitating the stuff that FFMPEG gives us.
+// Imitating the arguments that FFMPEG gives us through AVFilter.
+// see process() in unlogo.cpp
 int width, height;
 uint8_t* src[4];
 uint8_t* dst[4];
@@ -44,15 +45,13 @@ int main(int argc, char * const argv[])
 		std::cout << "Can not open video source" << std::endl;
         return -1;
 	}
-	//cap.set(CV_CAP_PROP_POS_FRAMES, 170);
-	//cap.set(CV_CAP_PROP_POS_MSEC, 5.0);
-	
-	init(argv[2]);													// from unlogo.cpp
-	
 	width = cap.get(CV_CAP_PROP_FRAME_WIDTH);
 	height = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
 	dst[0]= new uint8_t[ width* height * 3 ];
 	dst_stride[0] = width * 3;
+	
+	init(argv[2]);													// from unlogo.cpp
+	
 
 	cv::Mat frame;
 	for(;;)
@@ -64,8 +63,8 @@ int main(int argc, char * const argv[])
 		src_stride[0] = frame.step;
 		
 		process(dst, dst_stride, src, src_stride, width, height);  // from unlogo.cpp
-
 	}
+	
 	
 	uninit();														// from unlogo.cpp
 	

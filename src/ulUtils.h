@@ -20,6 +20,8 @@
 #include "opencv2/features2d/features2d.hpp"
 #include <highgui.h>
 #include <cvaux.h>
+#include "vt100.h"
+
 
 using namespace std;
 using namespace cv;
@@ -65,8 +67,8 @@ void alphaBlendRGBA(const Mat& src1, const Mat& src2, Mat& dst)
 		
         for( int j = 0; j < size.width; j += 4 )
         {
-            float alpha = ptr1[j+3] / alpha_scale; //* inv_scale;
-			float beta	= ptr2[j+3] / alpha_scale; //* inv_scale;
+            float alpha = ptr1[j+3] / alpha_scale; 
+			float beta	= ptr2[j+3] / alpha_scale;
             dptr[j  ]	= saturate_cast<T>(ptr1[j  ] * alpha + ptr2[j  ] * beta);
             dptr[j+1]	= saturate_cast<T>(ptr1[j+1] * alpha + ptr2[j+1] * beta);
             dptr[j+2]	= saturate_cast<T>(ptr1[j+2] * alpha + ptr2[j+2] * beta);
