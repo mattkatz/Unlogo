@@ -79,15 +79,13 @@ namespace unlogo {
 		Mat out_roi = cvImage(Rect(x, y, child->cvImage.cols, child->cvImage.rows));
 		
 		// Different operations depending on whether there is alpha involved
-		if(child->cvImage.channels()<4)
+		if(child->cvImage.channels()==out_roi.channels())
 		{
 			child->cvImage.copyTo(out_roi);
 		}
 		else
 		{
-			// How can you determine the type?  it won't always be uchar
-			alphaBlendRGBA<uchar>(out_roi, child->cvImage, out_roi);
-			
+
 			
 			
 		}

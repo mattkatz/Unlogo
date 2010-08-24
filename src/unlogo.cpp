@@ -130,7 +130,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		// the logo is A and the frame is B
 		MatchSet* ms = new MatchSet(&logos[i].logo, &frame, 2);
 
-		//ms->drawMatchesInB();
+		ms->drawMatchesInB();
 		
 		// Get the middle point of all of the keypoint matches.
 		// Then move the replacement towards that point.
@@ -164,8 +164,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		Mat fg = logos[i].replacement.cvImage;
 		Mat bg = dst_img(Rect(p.x, p.y, fg.cols, fg.rows));
 		
-		// This should be put into Image:;drawIntoMe()
-
+		// This should be put into Image::drawIntoMe()
 		for( int i = 0; i < fg.rows; i++ )
 		{
 			uchar* ptr_bg = bg.ptr<uchar>(i);
@@ -176,9 +175,9 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 				float alpha	= ptr_fg[j+3] / (float)numeric_limits<uchar>::max();
 				float inv_alpha = 1.0-alpha;
 				
-				ptr_bg[j  ]	= saturate_cast<uchar>((ptr_bg[j  ] * inv_alpha) + (ptr_fg[j  ] * alpha));
-				ptr_bg[j+1]	= saturate_cast<uchar>((ptr_bg[j+1] * inv_alpha) + (ptr_fg[j+1] * alpha));
-				ptr_bg[j+2]	= saturate_cast<uchar>((ptr_bg[j+2] * inv_alpha) + (ptr_fg[j+2] * alpha));
+				ptr_bg[j  ]	= saturate_cast<uchar>((ptr_bg[j  ]*inv_alpha) + (ptr_fg[j  ]*alpha));
+				ptr_bg[j+1]	= saturate_cast<uchar>((ptr_bg[j+1]*inv_alpha) + (ptr_fg[j+1]*alpha));
+				ptr_bg[j+2]	= saturate_cast<uchar>((ptr_bg[j+2]*inv_alpha) + (ptr_fg[j+2]*alpha));
 			}
 		}
 	}
