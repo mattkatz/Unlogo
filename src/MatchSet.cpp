@@ -17,14 +17,15 @@ namespace unlogo {
 		a = _a;
 		b = _b;
 		
-		if(a->cvImage.empty() || b->cvImage.empty())
+		if(a->empty() || b->empty())
 		{
 			log(LOG_LEVEL_ERROR, "one of the images is empty");
 			return;
 		}
 
-		a->makeKeypointsAndDescriptors();
-		b->makeKeypointsAndDescriptors();
+		a->findDescriptors();
+		b->findDescriptors();
+		
 		log(LOG_LEVEL_DEBUG, "a (kpts %d, dscrptrs %d x %d) b (kpts %d, dscrptrs %d x %d)", 
 			a->keypoints.size(), a->descriptors.rows, a->descriptors.cols, 
 			b->keypoints.size(), b->descriptors.rows, b->descriptors.cols);
@@ -41,17 +42,7 @@ namespace unlogo {
 		matcher->descriptorMatcher->add( b->descriptors ); // Add training points
 		matcher->descriptorMatcher->match( a->descriptors, matches );	// Find the best matches B for all points in A
 																		// ie: matches.size() == a->keypoints.size()
-		
-		// How many unique matches in B do we have?
-		vector<int> umatches( matches );
-		sort(umatches.begin(), umatches.end());
-        umatches.erase(unique(umatches.begin(), umatches.end()), umatches.end());
-		float pct = umatches.size() / (float)matches.size();
-		
-		log(LOG_LEVEL_DEBUG, "in MatchSet(), %d unique matches in B for %0.2f%% match", umatches.size(), pct*100); // matches.size will always equal A->keypoints.size
-		
-		
-		
+
 		//! converts vector of points to the vector of keypoints, where each keypoint is assigned the same size and the same orientation
 		vector<Point2f> pointsA;
 		KeyPoint::convert(a->keypoints, pointsA);
@@ -81,6 +72,20 @@ namespace unlogo {
         }
 	}
 	
+	
+	//--------------------------------------------------
+	float MatchSet::pctMatch()
+	{
+		// How many unique matches in B do we have?
+		vector<int> umatches( matches );
+		sort(umatches.begin(), umatches.end());
+        umatches.erase(unique(umatches.begin(), umatches.end()), umatches.end());
+		float pct = umatches.size() / (float)matches.size();
+		
+		log(LOG_LEVEL_DEBUG, "in MatchSet(), %d unique matches in B for %0.2f%% match", umatches.size(), pct*100); // matches.size will always equal A->keypoints.size
+		return pct;
+	}
+	
 	//--------------------------------------------------
 	void MatchSet::drawKeypointsInA()
 	{
@@ -99,7 +104,7 @@ namespace unlogo {
 	{
 		vector<Point2f> points;
 		KeyPoint::convert(b->keypoints, points);
-		
+		log(LOG_LEVEL_DEBUG, "Drawing %d keypoints", points.size());
 		for(int i=0; i<(int)matches.size(); i++)
 		{
 			int match = matches[i];

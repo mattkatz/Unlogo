@@ -25,37 +25,31 @@ namespace unlogo {
 
 	using namespace cv;
 	using namespace std;
-
-	class MatchSet;
 	
 	class Image {
 	public:
 		
 		Image();
-		Image(const Image& mother);
-		Image( Mat& matimg );
-		Image(int width, int height, int nChannels, uint8_t* src, int stride);
+		Image( int width, int height, uint8_t* data, int channels );
+		Image( const Image& other ); // The copy constructor is for creating a new object. It copies a existing object to a newly constructed object. 
+		void operator = ( const Image &other ); // The assignment operator is to deal with an already existing object. 
 		
-		void	convert( int conversion_code );
-		int		open( const char* filename );
-		void	drawIntoMe(Image* child, Point2f pos);
-		void	drawIntoMe( Image* child, int x, int y );
-		void	warp( Mat& homography );
-		void	makeKeypointsAndDescriptors();
-		void	setFromMat( Mat &m );					// just points cvImage to new Mat
+		void loadFromData(int width, int height, uint8_t* data, int channels);
+		int open( const char* path );
+		void copyto( Image &other );
+		void convert( int code );
+		void findDescriptors();
+		void drawIntoMe( const Image &other, Point2f loc );
 		
-		// Operator Overloads
-		//
-		void operator << ( VideoCapture &cap );
-		void operator = ( Mat &other );
-		
+		// cvImage accessor convenience methods
+		bool empty();
+		Size size();
 		
 	//protected:
 		Mat cvImage;
-
-		bool descriptorsAndKeypointsUpdated;
 		vector<KeyPoint> keypoints;	
 		Mat descriptors;
+		bool descriptorsCurrent;
 	};
 }
 

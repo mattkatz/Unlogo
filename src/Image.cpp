@@ -9,151 +9,137 @@
 
 #include "Image.h"
 namespace unlogo {
+	
+#pragma mark CONSTRUCTORS
+	
 	//--------------------------------------------------
 	Image::Image()
 	{
-		descriptorsAndKeypointsUpdated=false;
-	}
-
-	//--------------------------------------------------
-	Image::Image(const Image& mother)
-	{
-		mother.cvImage.copyTo(cvImage);
-		mother.descriptors.copyTo(descriptors);
-		keypoints = mother.keypoints;  // Is this a copy?
-		descriptorsAndKeypointsUpdated = false;
-	}
-
-	
-	//--------------------------------------------------
-	Image::Image( Mat& matimg )
-	{
-		cvImage = matimg;
-		descriptorsAndKeypointsUpdated=false;
-	}
-	
-	//--------------------------------------------------
-	int Image::open( const char* path )
-	{
-		cvImage = imread( path );
-		log(LOG_LEVEL_DEBUG, "in open() image has %d channels", cvImage.channels());
-		if( cvImage.empty() )
-		{
-			log(LOG_LEVEL_ERROR, "in open() Can not read %s", path);
-			return -1;
-		}
-		descriptorsAndKeypointsUpdated=false;
-		return 0;
-	}
-
-	
-	//--------------------------------------------------
-	void Image::drawIntoMe(Image* child, Point2f pos)
-	{
-		drawIntoMe(child, pos.x, pos.y);
+		descriptorsCurrent=false;
 	}
 	
 	
 	//--------------------------------------------------
-	void Image::setFromMat( Mat &m )
+	Image::Image(int width, int height, uint8_t* data, int channels)
 	{
-		cvImage = m;
-		descriptorsAndKeypointsUpdated=false;
+		loadFromData(width, height, data, channels);
+		descriptorsCurrent=false;
+	}
+	
+	
+	//--------------------------------------------------
+	Image::Image(const Image& other)
+	{
+		other.cvImage.copyTo(cvImage);
+		descriptorsCurrent=false;
+	}
+	
+	
+#pragma mark ASSIGNMENT
+	
+	//--------------------------------------------------
+	void Image::copyto( Image &other )
+	{
+		cvImage.copyTo( other.cvImage );
 	}
 	
 	//--------------------------------------------------
-	void Image::drawIntoMe(Image* child, int x, int y )
+	void Image::loadFromData(int width, int height, uint8_t* data, int stride)
 	{
-		//log(LOG_LEVEL_DEBUG, "in drawIntoMe() Mother %d channels, Child %d channels", cvImage.channels(), child->cvImage.channels());
-		if(cvImage.type() != child->cvImage.type())
-		{
-			log(LOG_LEVEL_ERROR, "in drawIntoMe() Images must be of the same type. Mother=%d  Child=%d", cvImage.type(), child->cvImage.type());
-			return;
-		}
-		if(cvImage.empty())
-		{
-			log(LOG_LEVEL_ERROR, "in drawIntoMe() Target image is empty");
-			return;
-		}
-		// Make a Mat that points to the child-sized region of the image, starting at x,y
-		Mat out_roi = cvImage(Rect(x, y, child->cvImage.cols, child->cvImage.rows));
-		
-		// Different operations depending on whether there is alpha involved
-		if(child->cvImage.channels()==out_roi.channels())
-		{
-			child->cvImage.copyTo(out_roi);
-		}
-		else
-		{
-
-			
-			
-		}
-		
-		descriptorsAndKeypointsUpdated=false;
+		cvImage = Mat(width, height, CV_8UC3, data, stride);
+		descriptorsCurrent=false;
 	}
-
 	
 	//--------------------------------------------------
-	void Image::warp( Mat& m )
+	void Image::operator = ( const Image& other )
 	{
-		Mat cvImageTemp;
-		warpPerspective(cvImage, cvImageTemp, m, cvImage.size() );
-		cvImage = cvImageTemp;
-		descriptorsAndKeypointsUpdated=false;
+		cvImage = other.cvImage;
+		descriptorsCurrent=false;
 	}
+	
 
-
+#pragma mark MATCHING
+	
 	//--------------------------------------------------
-	void Image::convert( int conversion_code )
+	void Image::findDescriptors()
 	{
-		if(cvImage.empty())
-		{
-			log(LOG_LEVEL_ERROR, "in convert(), Image is empty.");
-			return;
-		}
-		
-		Mat cvImageTmp;
-		cvtColor(cvImage, cvImageTmp, conversion_code);
-		cvImage = cvImageTmp;
-	}
-
-
-	//--------------------------------------------------
-	void Image::operator << ( VideoCapture &cap )
-	{
-		cap >> cvImage;
-		descriptorsAndKeypointsUpdated=false;
-	}
-
-	//--------------------------------------------------
-	void Image::operator = ( Mat &other )
-	{
-		other.copyTo( cvImage );
-		descriptorsAndKeypointsUpdated=false;
-	}
-
-	//--------------------------------------------------
-	void Image::makeKeypointsAndDescriptors()
-	{
-		if(descriptorsAndKeypointsUpdated) return;
+		if(descriptorsCurrent) return;
 		
 		Matcher* matcher = Matcher::Instance();
-		if(cvImage.empty())
+		if(empty())
 		{
-			log(LOG_LEVEL_ERROR, "in makeKeypointsAndDescriptors(), image is empty");
+			log(LOG_LEVEL_ERROR, "in findDescriptors(), image is empty");
+			return;
 		}
 		
 		Mat cvImageGray;
 		cvtColor(cvImage, cvImageGray, CV_RGB2GRAY);
 		
 		matcher->detector->detect( cvImageGray, keypoints );
-		//log(LOG_LEVEL_DEBUG, "in makeKeypointsAndDescriptors(), Found %d keypoints", keypoints.size());
-		
 		matcher->descriptorExtractor->compute( cvImageGray, keypoints, descriptors );
-		//log(LOG_LEVEL_DEBUG, "in makeKeypointsAndDescriptors(), Descriptors: %d x %d", descriptors.rows, descriptors.cols);
+		//log(LOG_LEVEL_DEBUG, "in findDescriptors(), %d keypoints, %d x %ddescriptors", 
+		//	keypoints.size(), descriptors.rows, descriptors.cols);
+		descriptorsCurrent=true;
+	}
+	
+	//--------------------------------------------------
+	void Image::convert(int code) 
+	{
+		Mat tmp;
+		cvtColor(cvImage, tmp, CV_BGR2BGRA);
+		cvImage = tmp;	
+	}
+	
+	//--------------------------------------------------
+	int Image::open( const char* path )
+	{
+		cvImage = imread( path );
+		if( cvImage.empty() ) {
+			log(LOG_LEVEL_ERROR, "in open() Can not read %s", path);
+			return -1;
+		}
+		descriptorsCurrent=false;
+		return 0;
+	}
+	
+	//--------------------------------------------------
+	void Image::drawIntoMe( const Image &other, Point2f loc )
+	{
+		Mat fg = other.cvImage;
+		Mat bg = cvImage(Rect(loc.x, loc.y, fg.cols, fg.rows));
 		
-		descriptorsAndKeypointsUpdated=true;
+		// This should be put into Image::drawIntoMe()
+		for( int i = 0; i < fg.rows; i++ )
+		{
+			uchar* ptr_bg = bg.ptr<uchar>(i);
+			const uchar* ptr_fg = fg.ptr<uchar>(i);
+			
+			for( int j = 0; j < fg.step; j += fg.channels() )
+			{
+				float alpha	= ptr_fg[j+3] / (float)numeric_limits<uchar>::max();
+				float inv_alpha = 1.0-alpha;
+				
+				ptr_bg[j  ]	= saturate_cast<uchar>((ptr_bg[j  ]*inv_alpha) + (ptr_fg[j  ]*alpha));
+				ptr_bg[j+1]	= saturate_cast<uchar>((ptr_bg[j+1]*inv_alpha) + (ptr_fg[j+1]*alpha));
+				ptr_bg[j+2]	= saturate_cast<uchar>((ptr_bg[j+2]*inv_alpha) + (ptr_fg[j+2]*alpha));
+			}
+		}
+	}
+	
+	
+	
+#pragma mark CV_IMAGE_ACCESSOR_METHODS
+	
+	//--------------------------------------------------
+	bool Image::empty()
+	{
+		return cvImage.empty();
+	}
+	
+	//--------------------------------------------------
+	Size Image::size()
+	{
+		return cvImage.size();
 	}
 	
 }

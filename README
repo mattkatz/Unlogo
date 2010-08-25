@@ -51,7 +51,7 @@ Note:  Libavfilter is only available in the 0.6 branch. Older version of FFMPEG 
 - Configure and build FFMPEG as you normally would. Google is full of tutorials of how to build FFMPEG on your particular platform.  This works for me:
 
 	cd ffmpeg
-	./configure --arch=x86 --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-gpl --enable-shared --disable-doc --prefix=../
+	./configure --arch=x86 --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-gpl --enable-shared --disable-doc --prefix=..
 	make
 	make install
 

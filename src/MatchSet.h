@@ -29,7 +29,12 @@ namespace unlogo {
 		void drawMatchesInB();
 		Point2f avgA(bool includeOutliers=false);
 		Point2f avgB();
+		float pctMatch();
+		
+		
 		static void drawKeypoint( Mat& img, const KeyPoint& p, const Scalar& color, int flags );
+		
+		
 		
 	//protected:
 		
