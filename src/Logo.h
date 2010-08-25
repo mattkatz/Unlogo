@@ -18,6 +18,7 @@ namespace unlogo
 		Image logo;
 		Image replacement;
 		Point2f pos;
-		bool located;
+		int ghostFrames;
+		Mat homography;
 	};
 }

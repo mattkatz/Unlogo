@@ -13,6 +13,7 @@
 		1F2E1A9C1221B96300B7FED1 /* MatchSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1A9B1221B96300B7FED1 /* MatchSet.cpp */; };
 		1F2E1AAB1221BAD300B7FED1 /* Matcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2E1AAA1221BAD300B7FED1 /* Matcher.cpp */; };
 		1FB356F2122382020036B1A9 /* libopencv_calib3d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB356F1122382020036B1A9 /* libopencv_calib3d.dylib */; };
+		1FB71E4A1225BF79007137C1 /* OpticalFlow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FB71E491225BF79007137C1 /* OpticalFlow.cpp */; };
 		1FE9B21D12235CEE00155BCD /* unlogo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FE9B21C12235CEE00155BCD /* unlogo.cpp */; };
 		1FF04E6C121C8C210017E206 /* libopencv_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E66121C8C210017E206 /* libopencv_core.dylib */; };
 		1FF04E6D121C8C210017E206 /* libopencv_features2d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FF04E67121C8C210017E206 /* libopencv_features2d.dylib */; };
@@ -46,6 +47,8 @@
 		1F2E1AA91221BAD300B7FED1 /* Matcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Matcher.h; path = src/Matcher.h; sourceTree = "<group>"; };
 		1F2E1AAA1221BAD300B7FED1 /* Matcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Matcher.cpp; path = src/Matcher.cpp; sourceTree = "<group>"; };
 		1FB356F1122382020036B1A9 /* libopencv_calib3d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.dylib; path = /usr/local/lib/libopencv_calib3d.dylib; sourceTree = "<absolute>"; };
+		1FB71E481225BF79007137C1 /* OpticalFlow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpticalFlow.h; path = src/OpticalFlow.h; sourceTree = "<group>"; };
+		1FB71E491225BF79007137C1 /* OpticalFlow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OpticalFlow.cpp; path = src/OpticalFlow.cpp; sourceTree = "<group>"; };
 		1FC5F1F412243D8900015C45 /* vt100.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vt100.h; path = src/vt100.h; sourceTree = "<group>"; };
 		1FE9B1C712233CF800155BCD /* Logo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logo.h; path = src/Logo.h; sourceTree = "<group>"; };
 		1FE9B21C12235CEE00155BCD /* unlogo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unlogo.cpp; path = src/unlogo.cpp; sourceTree = SOURCE_ROOT; };
@@ -114,6 +117,8 @@
 				1F2E1AAA1221BAD300B7FED1 /* Matcher.cpp */,
 				1F2E1A9A1221B96300B7FED1 /* MatchSet.h */,
 				1F2E1A9B1221B96300B7FED1 /* MatchSet.cpp */,
+				1FB71E481225BF79007137C1 /* OpticalFlow.h */,
+				1FB71E491225BF79007137C1 /* OpticalFlow.cpp */,
 				1F2E1A901221A0E100B7FED1 /* ulUtils.cpp */,
 				1F2E1A911221A0E100B7FED1 /* ulUtils.h */,
 				1FC5F1F412243D8900015C45 /* vt100.h */,
@@ -191,6 +196,7 @@
 				1F2E1A9C1221B96300B7FED1 /* MatchSet.cpp in Sources */,
 				1F2E1AAB1221BAD300B7FED1 /* Matcher.cpp in Sources */,
 				1FE9B21D12235CEE00155BCD /* unlogo.cpp in Sources */,
+				1FB71E4A1225BF79007137C1 /* OpticalFlow.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

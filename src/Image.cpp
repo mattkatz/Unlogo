@@ -30,17 +30,19 @@ namespace unlogo {
 	//--------------------------------------------------
 	Image::Image(const Image& other)
 	{
-		other.cvImage.copyTo(cvImage);
-		descriptorsCurrent=false;
+		loadFromImage( other );
 	}
 	
 	
 #pragma mark ASSIGNMENT
 	
 	//--------------------------------------------------
-	void Image::copyto( Image &other )
+	void Image::loadFromImage( const Image &other )
 	{
-		cvImage.copyTo( other.cvImage );
+		other.cvImage.copyTo( cvImage );
+		keypoints = other.keypoints;	
+		other.descriptors.copyTo( descriptors );
+		descriptorsCurrent = other.descriptorsCurrent;
 	}
 	
 	//--------------------------------------------------
@@ -56,7 +58,6 @@ namespace unlogo {
 		cvImage = other.cvImage;
 		descriptorsCurrent=false;
 	}
-	
 
 #pragma mark MATCHING
 	
@@ -77,8 +78,8 @@ namespace unlogo {
 		
 		matcher->detector->detect( cvImageGray, keypoints );
 		matcher->descriptorExtractor->compute( cvImageGray, keypoints, descriptors );
-		//log(LOG_LEVEL_DEBUG, "in findDescriptors(), %d keypoints, %d x %ddescriptors", 
-		//	keypoints.size(), descriptors.rows, descriptors.cols);
+		log(LOG_LEVEL_DEBUG, "in findDescriptors(), %d keypoints, %d x %d descriptors", 
+			keypoints.size(), descriptors.rows, descriptors.cols);
 		descriptorsCurrent=true;
 	}
 	
@@ -86,7 +87,7 @@ namespace unlogo {
 	void Image::convert(int code) 
 	{
 		Mat tmp;
-		cvtColor(cvImage, tmp, CV_BGR2BGRA);
+		cvtColor(cvImage, tmp, code);
 		cvImage = tmp;	
 	}
 	
@@ -103,18 +104,48 @@ namespace unlogo {
 	}
 	
 	//--------------------------------------------------
-	void Image::drawIntoMe( const Image &other, Point2f loc )
+	// TO DO:  this only works with 4-channel images
+	// This should be fixed at some point.
+	void Image::drawIntoMe( Image &other, Point2f loc )
 	{
-		Mat fg = other.cvImage;
-		Mat bg = cvImage(Rect(loc.x, loc.y, fg.cols, fg.rows));
+		if(loc.x>width() || loc.y > height()) return;
 		
+		int roi_w = 0;
+		int roi_h = 0;
+		Point2f fgroipos = Point2f(0, 0);
+		
+		if(loc.x < 0)
+		{
+			roi_w = other.width() + loc.x;
+			loc.x = 0;
+			fgroipos.x = other.width() - roi_w;
+		}
+		else
+		{
+			roi_w = std::min(other.width(), (int) std::abs(width() - loc.x));
+		}
+		
+		if(loc.y < 0)
+		{
+			roi_h = (int) std::abs(other.height() + loc.y);
+			loc.y = 0;
+			fgroipos.y = other.height() - roi_h;
+		}
+		else
+		{
+			roi_h = std::min(other.height(), (int) std::abs(height() - loc.y));
+		}
+		
+		Mat fg = other.cvImage(Rect(fgroipos.x, fgroipos.x, roi_w, roi_h));
+		Mat bg = cvImage(Rect(loc.x, loc.y, roi_w, roi_h));
+
 		// This should be put into Image::drawIntoMe()
-		for( int i = 0; i < fg.rows; i++ )
+		for( int i = 0; i < roi_h; i++ )
 		{
 			uchar* ptr_bg = bg.ptr<uchar>(i);
 			const uchar* ptr_fg = fg.ptr<uchar>(i);
 			
-			for( int j = 0; j < fg.step; j += fg.channels() )
+			for( int j = 0; j < roi_w * fg.channels(); j += fg.channels() )
 			{
 				float alpha	= ptr_fg[j+3] / (float)numeric_limits<uchar>::max();
 				float inv_alpha = 1.0-alpha;
@@ -127,6 +158,12 @@ namespace unlogo {
 	}
 	
 	
+	//--------------------------------------------------
+	void Image::show(const char* win_name)
+	{
+		imshow( win_name, cvImage );	
+	}
+
 	
 #pragma mark CV_IMAGE_ACCESSOR_METHODS
 	
@@ -142,4 +179,19 @@ namespace unlogo {
 		return cvImage.size();
 	}
 	
+	//--------------------------------------------------
+	int Image::channels()
+	{
+		return cvImage.channels();
+	}
+	
+	int Image::width()
+	{
+		return cvImage.cols;
+	}
+	
+	int Image::height() 
+	{
+		return cvImage.rows;
+	}
 }

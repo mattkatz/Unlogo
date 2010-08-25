@@ -35,15 +35,23 @@ namespace unlogo {
 		void operator = ( const Image &other ); // The assignment operator is to deal with an already existing object. 
 		
 		void loadFromData(int width, int height, uint8_t* data, int channels);
+		void loadFromImage( const Image &other );
 		int open( const char* path );
-		void copyto( Image &other );
 		void convert( int code );
 		void findDescriptors();
-		void drawIntoMe( const Image &other, Point2f loc );
+		void drawIntoMe( Image &other, Point2f loc );
+		void show(const char* win_name);
+		Point2f opticalFlowAvg( const Image& prev, Point2f thresh );
+		Point2f opticalFlowAt( const Image& prev, Point2f pos );
+		void opticalFlow( const Image& prev, Mat& flow );
+		
 		
 		// cvImage accessor convenience methods
 		bool empty();
 		Size size();
+		int channels();
+		int width();
+		int height();
 		
 	//protected:
 		Mat cvImage;

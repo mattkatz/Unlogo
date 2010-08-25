@@ -13,30 +13,35 @@
 #include <stdint.h>
 #include <string.h>
 #include <iostream>
-#include <boost/algorithm/string.hpp>  // Take this out eventually
 
 #include "Image.h"
 #include "Matcher.h"
 #include "MatchSet.h"
+#include "OpticalFlow.h"
 #include "Logo.h"
 
 
-using namespace cv;
-using namespace std;
-using namespace boost;
+#define MATCHING_DELAY 10
+#define MATCHING_PCT_THRESHOLD 0.1
+#define GHOST_FRAMES_ALLOWED 50
+#define RANSAC_PROJECTION_THRESH 2
+
 using namespace unlogo;
-
-
 vector<Logo> logos;
+vector<Logo*> detected_logos;
+Image input, output, prev;
 int framenum=0;
 
 
 extern "C" int init( const char* argstr )
 {
 	try {
+		/* print a welcome message, and the OpenCV version */
+		printf ("Welcome to unlogo, using OpenCV version %s (%d.%d.%d)\n",
+				CV_VERSION, CV_MAJOR_VERSION, CV_MINOR_VERSION, CV_SUBMINOR_VERSION);
+		
 		// Parse arguments.
-		vector<string> argv;
-		split(argv, argstr, is_any_of(":"));
+		vector<string> argv = split(argstr, ":");
 		int argc = argv.size();
 		
 		if(argc<5 || argc%2!=1)
@@ -61,13 +66,19 @@ extern "C" int init( const char* argstr )
 			l.name = argv[i].c_str();
 			l.logo.open( l.name );
 			l.replacement.open( argv[i+1].c_str() );
-			l.located = false;
+			l.ghostFrames=0;
 			l.pos = Point2f(-1,-1);
 			logos.push_back( l );
 			log(LOG_LEVEL_DEBUG, "Loaded logo %s", l.name);
 		}
 		
-		namedWindow("dst", CV_WINDOW_AUTOSIZE);
+		
+		cvNamedWindow("input");
+		cvMoveWindow("input", 0, 0);
+		
+		cvNamedWindow("output");
+		cvMoveWindow("output", 0, 510);
+		
 		return 0;
 	}
 	catch ( ... ) {
@@ -82,61 +93,98 @@ extern "C" int uninit()
 
 
 
-
-void lerp(Point2f& current, const Point2f& desired, float ease)
-{
-	if(current.x == -1 || current.y == -1) {
-		current = desired;
-	} else {
-		Point2f	diff = desired - current;
-		current += Point2f(diff.x/ease, diff.y/ease);
-	}
-}
-
 extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 					   uint8_t* src[4], int src_stride[4],
 					   int width, int height)
 {
 	log(LOG_LEVEL_DEBUG, "=== Frame %d ===", framenum);
 
-	// Point some Image objects at the data being passed in
-	Image input( height, width, src[0], src_stride[0]); // Why are width and height reversed?
-	Image output( height, width, dst[0], dst_stride[0]);
+	input.loadFromData( height, width, src[0], src_stride[0]); // Why are width and height reversed?
+	output.loadFromData( height, width, dst[0], dst_stride[0]);
 	input.convert(CV_BGR2BGRA);
-	if(input.empty() || output.empty()) return 1;
-
+	output = Image(input);										// copy input into the output memory
 	
-	// Loop through all loaded logos
-	// TO DO:  All matches should be kept until the end and then drawn after we have looked for all logos.
-	for(int i=0; i<(int)logos.size(); i++)
+	
+	if(input.empty() || output.empty()) return 1;
+	
+	
+	// Doing matching is expensive. So we only do it every X frames
+	// The rest of the time we just calculate the Optical Flow and 
+	// move any matched logos accordingly
+	bool doMatching = (framenum>0 && framenum%MATCHING_DELAY==0) || detected_logos.size()==0;
+	if( doMatching )
 	{
-		// Find all matches between the logo (A) and the frame (B)
-		MatchSet ms = MatchSet(&logos[i].logo, &input, 2);
+		detected_logos.clear();
 		
-		//ms.drawMatchesInB();  // for debugging
-		
-		if(ms.pctMatch() > 0.2)
+		// Make a MatchSet for each frame/logo pair
+		for(int i=0; i<(int)logos.size(); i++)
 		{
-			// Get the middle point of all of the keypoint matches.
-			// Then move the replacement towards that point.
-			lerp(logos[i].pos,  ms.avgB(), 10.f);
-			
-			Point2f draw_loc = logos[i].pos;
-			Size s = logos[i].replacement.size();
-			draw_loc.x -= (s.width / 2.);
-			draw_loc.y -= (s.height / 2.);
-		
-			// use ms.H12 to warp the replacement image...
-			
-			input.drawIntoMe( logos[i].replacement, draw_loc );
+			MatchSet ms = MatchSet(&logos[i].logo, &output, RANSAC_PROJECTION_THRESH);
+	
+			// If thet are a match, reset the ghost frames counter
+			// Otherwise, increase the ghost frames counter
+			if(ms.pctMatch() > MATCHING_PCT_THRESHOLD)
+			{
+				logos[i].ghostFrames=0;
+				logos[i].homography = ms.H12.clone();
+				lerp(logos[i].pos, ms.avgB(), 4.f);
+				detected_logos.push_back( &logos[i] );
+			}
+			else if(logos[i].ghostFrames<GHOST_FRAMES_ALLOWED)
+			{
+				logos[i].ghostFrames += MATCHING_DELAY;
+				detected_logos.push_back( &logos[i] );
+			}
+			else
+			{
+				// Don't put it into the detected_logos set
+			}
 		}
 		
+		// At this point, detected_logos is updated
+		
+	}
+	else // do optical flow
+	{
+		// Do optical flow. Then just move detected_logos according to that.
+		Image next( input );
+		next.convert( CV_BGRA2GRAY );
+		prev.convert( CV_BGRA2GRAY );
+		
+		OpticalFlow flow = OpticalFlow(prev, next);
+		
+		Point2f offset = flow.avg( Point2f(6,6), 16 );
+		for(int i=0; i<(int)detected_logos.size(); i++)
+		{
+			log(LOG_LEVEL_DEBUG, "offset = (%f,%f)", offset.x, offset.y);
+			detected_logos[i]->pos += offset;
+		}
 	}
 	
-	input.copyto( output );
-	imshow( "input", input.cvImage );
-	imshow( "output", output.cvImage );
-
+	
+	// Now draw detected_logos into input
+	for(int i=0; i<(int)detected_logos.size(); i++)
+	{
+		// Make it center-based.
+		Point2f draw_loc = detected_logos[i]->pos;
+		Size s = detected_logos[i]->replacement.size();
+		draw_loc.x -= (s.width / 2.);
+		draw_loc.y -= (s.height / 2.);
+		
+		// TO DO: Use logos[i].homography to warp the image...
+		
+		output.drawIntoMe( detected_logos[i]->replacement, draw_loc );
+	}
+	
+	
+	// Debugging windows
+	input.show("input");
+	output.show("output");
+	//if(framenum>0) prev.show("prev");
+	
+	// Keep a copy of this frame for optical flow detection
+	prev = Image( input );
+	
 	waitKey(1);
 	framenum++;
 	return 0;

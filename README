@@ -32,8 +32,6 @@ REQUIREMENTS
 	Note: The patch fixes 2 bugs in OpenCV, plus enabling alpha-loading in PNGs, as described here: 
 	http://blog.developer.stylight.de/2010/05/how-to-load-alpha-channel-pngs-with.html
 
-- Boost (temporary) - http://sourceforge.net/projects/boost/files/boost/1.44.0/
-
 - FFMPEG (use checkout.sh to fetch and patch)
 
 

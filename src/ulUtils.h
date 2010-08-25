@@ -32,7 +32,8 @@ using namespace cv;
 
 
 int log( int level, const char* format, ... );
-
+void lerp(Point2f& current, const Point2f& desired, float ease=10.);
+vector<string> split(const string& str, const string& delimiters = " ");
 
 template<typename T>
 void alphaBlendRGBA(const Mat& src1, const Mat& src2, Mat& dst)
