@@ -48,6 +48,7 @@ namespace unlogo {
 			for(int x = 0; x < next.width(); x += step)
 			{
 				const Point2f& fxy = flow.at<Point2f>(y, x);
+
 				line(next.cvImage, Point(x,y), Point(cvRound(x+fxy.x), cvRound(y+fxy.y)), CV_RGB(0,255,255));
 				circle(next.cvImage, Point(x,y), 2, CV_RGB(0,255,255), -1);
 			}
@@ -55,9 +56,9 @@ namespace unlogo {
 	}
 	
 	//--------------------------------------------------
-	Point2f OpticalFlow::avg( Point2f thresh, int sampling )
+	Point2f OpticalFlow::avg( Point2f thresh)
 	{
-		return inRegion(Rect(0,0,flow.cols,flow.rows), thresh, sampling);
+		return inRegion(Rect(0,0,flow.cols,flow.rows), thresh);
 	}
 	
 
@@ -69,42 +70,25 @@ namespace unlogo {
 	
 	
 	//--------------------------------------------------
-	Point2f OpticalFlow::inRegion( Rect region, Point2f thresh, int sampling )
+	Point2f OpticalFlow::inRegion( Rect region, Point2f thresh)
 	{
-		region = region & Rect(0,0,flow.size().width,flow.size().height);
 		
-		int max_x = region.x+region.width;
-		int max_y = region.y+region.height;
+		Mat roi = flow(region & Rect(Point(0,0), flow.size()));
 		
-		if(region.x<0) region.x=0;
-		if(region.y<0) region.y=0;
-		if(max_x > flow.cols) region.width=flow.cols-region.x-1;
-		if(max_y > flow.rows) region.height=flow.rows-region.y-1;
-			
-		Mat roi = flow( region );
+		// calculation of the threshold mask for x and y seperatly
+		// it the same a doing: for every point
+		// abs(point.x) > thresh.x OR abs(point.y) > thresh.y
 		
-		// TO DO:  use Mat::inrange and Mat::mean instead of stuff below
+		Mat threshholdMask;
+		Mat thresholdMaskX;
+		Mat thresholdMaskY;
+		Mat absRoi = abs(Mat(roi));
+		inRange(absRoi, Scalar(thresh.x, 0, 0, 0), Scalar::all(1000), thresholdMaskX);
+		inRange(absRoi, Scalar(0, thresh.y, 0, 0), Scalar::all(1000), thresholdMaskY);
+		threshholdMask = thresholdMaskX + thresholdMaskY;
+		Scalar avg = mean(roi, threshholdMask);
 		
-		Point2f total;
-		int nPts=0;
-		for(int y = 0; y < roi.size().height; y += sampling)
-			for(int x = 0; x < roi.size().width; x += sampling)
-			{
-				const Point2f& fxy = roi.at<Point2f>(y,x);
-				if(fxy.x > thresh.x || fxy.y > thresh.y)
-				{
-					total += fxy;
-					nPts++;
-				}
-			}
+		return Point2f(avg[0], avg[1]);
 		
-		if(nPts>0)
-		{
-			return Point2f( total.x/nPts, total.y/nPts );
-		}
-		else
-		{
-			return Point2f(0,0);
-		}
 	}
 }

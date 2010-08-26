@@ -151,8 +151,10 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 			
 			flow.draw("flow");
 			
-			//Rect region = Rect(detected_logos[i]->pos.x-20, detected_logos[i]->pos.y-20, 40, 40);
-			detected_logos[i]->pos += flow.avg( Point2f(6,6), 8 );
+			Rect region = Rect(detected_logos[i]->pos.x-20, detected_logos[i]->pos.y-20, 40, 40);
+			
+			detected_logos[i]->pos += flow.inRegion(region, Point2f(2,2));
+			//detected_logos[i]->pos += flow.avg( Point2f(6,6), 8 );
 		}
 	}
 	input.show("input");

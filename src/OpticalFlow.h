@@ -16,9 +16,9 @@ namespace unlogo {
 	class OpticalFlow {
 	public:
 		OpticalFlow(Image& prev, Image& next);
-		Point2f avg( Point2f thresh, int sampling );
+		Point2f avg( Point2f thresh);
 		Point2f at( Point2f pos );
-		Point2f inRegion( Rect roi, Point2f thresh, int sampling );
+		Point2f inRegion( Rect roi, Point2f thresh);
 		void draw(const char* win_name);
 		
 		
