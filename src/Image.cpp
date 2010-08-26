@@ -122,35 +122,23 @@ namespace unlogo {
 	// This should be fixed at some point.
 	void Image::drawIntoMe( Image &other, Point2f loc )
 	{
-		if(loc.x>width() || loc.y > height()) return;
+		if(loc.x > width() || loc.y > height()) return;
 		
 		// Get intersection of 2 images
-		Rect roi = Rect(loc, other.size()) & Rect(Point(0,0), size()); 
-
-		Point2f fgroipos = Point2f(0, 0);
-		
-		if(loc.x < 0)
-		{
-			fgroipos.x = other.width() - roi.width;
-		}
-		
-		if(loc.y < 0)
-		{
-			fgroipos.y = other.height() - roi.height;
-		}
-		
+		Rect intersection = Rect(loc, other.size()) & Rect(Point(0,0), size());
+								   
 		// Get the sub-section of each image that can be written to.
-		Mat fg = other.cvImage(Rect(fgroipos.x, fgroipos.y, roi.width, roi.height));
-		Mat bg = cvImage(Rect(max(0, (int)loc.x), max(0, (int)loc.y), roi.width, roi.height));
+		Mat fg = other.cvImage(Rect(abs(intersection.x - loc.x), abs(intersection.y - loc.y), intersection.width, intersection.height));
+		Mat bg = cvImage(intersection);
 		
 		
 		// This should be put into Image::drawIntoMe()
-		for( int i = 0; i < roi.height; i++ )
+		for( int i = 0; i < intersection.height; i++ )
 		{
 			uchar* ptr_bg = bg.ptr<uchar>(i);
 			const uchar* ptr_fg = fg.ptr<uchar>(i);
 			
-			for( int j = 0; j < roi.width * fg.channels(); j += fg.channels() )
+			for( int j = 0; j < intersection.width * fg.channels(); j += fg.channels() )
 			{
 				float alpha	= ptr_fg[j+3] / (float)numeric_limits<uchar>::max();
 				float inv_alpha = 1.0-alpha;
