@@ -20,25 +20,37 @@ namespace unlogo {
 	
 	
 	//--------------------------------------------------
-	Image::Image(int width, int height, uint8_t* data, int channels)
+	Image::Image(int width, int height, uint8_t* data, int stride)
 	{
-		loadFromData(width, height, data, channels);
+		setData(width, height, data, stride);
 		descriptorsCurrent=false;
 	}
-	
 	
 	//--------------------------------------------------
 	Image::Image(const Image& other)
 	{
-		loadFromImage( other );
+		copyFromImage( other );
 	}
 	
 	
 #pragma mark ASSIGNMENT
-	
+
 	//--------------------------------------------------
-	void Image::loadFromImage( const Image &other )
+	void Image::copyFromImage( const Image &other )
 	{
+		if(cvImage.channels()!=other.cvImage.channels() )
+		{
+			log(LOG_LEVEL_ERROR, "in copyFromImage(), WARNING: channels are different. Mat being reallocated.");
+			log(LOG_LEVEL_ERROR, "in copyFromImage(), this.channels=%d other.channels=%d", cvImage.channels(), other.cvImage.channels());
+		}
+		
+		if(cvImage.size()!=other.cvImage.size())
+		{
+			log(LOG_LEVEL_ERROR, "in copyFromImage(), WARNING: size are different. Mat may be reallocated.");
+			log(LOG_LEVEL_ERROR, "in copyFromImage(), this.size=%dx%d other.size=%dx%d", 
+				cvImage.size().width, cvImage.size().height, other.cvImage.size().width, other.cvImage.size().height);
+		}
+		
 		other.cvImage.copyTo( cvImage );
 		keypoints = other.keypoints;	
 		other.descriptors.copyTo( descriptors );
@@ -46,9 +58,11 @@ namespace unlogo {
 	}
 	
 	//--------------------------------------------------
-	void Image::loadFromData(int width, int height, uint8_t* data, int stride)
+	void Image::setData(int width, int height, uint8_t* data, int stride)
 	{
-		cvImage = Mat(width, height, CV_8UC3, data, stride);
+		
+		cvImage = Mat(Size(width, height), CV_8UC3, data, stride);
+		//cvImage = Mat(width, height, CV_8UC3, data, stride);
 		descriptorsCurrent=false;
 	}
 	
@@ -108,10 +122,12 @@ namespace unlogo {
 	// This should be fixed at some point.
 	void Image::drawIntoMe( Image &other, Point2f loc )
 	{
+		
 		if(loc.x>width() || loc.y > height()) return;
 		
 		int roi_w = 0;
 		int roi_h = 0;
+
 		Point2f fgroipos = Point2f(0, 0);
 		
 		if(loc.x < 0)
@@ -139,6 +155,7 @@ namespace unlogo {
 		Mat fg = other.cvImage(Rect(fgroipos.x, fgroipos.x, roi_w, roi_h));
 		Mat bg = cvImage(Rect(loc.x, loc.y, roi_w, roi_h));
 
+		
 		// This should be put into Image::drawIntoMe()
 		for( int i = 0; i < roi_h; i++ )
 		{
@@ -157,6 +174,14 @@ namespace unlogo {
 		}
 	}
 	
+
+	//--------------------------------------------------
+	void Image::text(const char* text, int x, int y, double scale, Scalar color )
+	{
+		int thickness=1;
+		int lineType=8;
+		putText(cvImage, text, Point(x,y), FONT_HERSHEY_SIMPLEX, scale, color, thickness, lineType);
+	}
 	
 	//--------------------------------------------------
 	void Image::show(const char* win_name)
@@ -187,11 +212,11 @@ namespace unlogo {
 	
 	int Image::width()
 	{
-		return cvImage.cols;
+		return cvImage.size().width;
 	}
 	
 	int Image::height() 
 	{
-		return cvImage.rows;
+		return cvImage.size().height;
 	}
 }

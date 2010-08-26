@@ -66,18 +66,15 @@ extern "C" int init( const char* argstr )
 			l.name = argv[i].c_str();
 			l.logo.open( l.name );
 			l.replacement.open( argv[i+1].c_str() );
+			l.replacement.convert( CV_RGBA2BGRA );
 			l.ghostFrames=0;
 			l.pos = Point2f(-1,-1);
 			logos.push_back( l );
 			log(LOG_LEVEL_DEBUG, "Loaded logo %s", l.name);
 		}
-		
-		
-		cvNamedWindow("input");
-		cvMoveWindow("input", 0, 0);
-		
-		cvNamedWindow("output");
-		cvMoveWindow("output", 0, 510);
+
+		cvNamedWindow("input");		cvMoveWindow("input", 0, 0);
+		cvNamedWindow("output");	cvMoveWindow("output", 0, 510);
 		
 		return 0;
 	}
@@ -98,20 +95,18 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 					   int width, int height)
 {
 	log(LOG_LEVEL_DEBUG, "=== Frame %d ===", framenum);
+	
+	input.setData( width, height, src[0], src_stride[0]);
 
-	input.loadFromData( height, width, src[0], src_stride[0]); // Why are width and height reversed?
-	output.loadFromData( height, width, dst[0], dst_stride[0]);
-	input.convert(CV_BGR2BGRA);
-	output = Image(input);										// copy input into the output memory
+	if(input.empty()) return 1;
 	
 	
-	if(input.empty() || output.empty()) return 1;
+	input.show("input");
 	
-	
-	// Doing matching is expensive. So we only do it every X frames
+	// Doing matching is expensive. So we only do it every MATCHING_DELAY frames
 	// The rest of the time we just calculate the Optical Flow and 
 	// move any matched logos accordingly
-	bool doMatching = (framenum>0 && framenum%MATCHING_DELAY==0) || detected_logos.size()==0;
+	bool doMatching = framenum==0 || framenum%MATCHING_DELAY==0 || detected_logos.size()==0;
 	if( doMatching )
 	{
 		detected_logos.clear();
@@ -119,7 +114,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		// Make a MatchSet for each frame/logo pair
 		for(int i=0; i<(int)logos.size(); i++)
 		{
-			MatchSet ms = MatchSet(&logos[i].logo, &output, RANSAC_PROJECTION_THRESH);
+			MatchSet ms = MatchSet(&logos[i].logo, &input, RANSAC_PROJECTION_THRESH);
 	
 			// If thet are a match, reset the ghost frames counter
 			// Otherwise, increase the ghost frames counter
@@ -127,7 +122,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 			{
 				logos[i].ghostFrames=0;
 				logos[i].homography = ms.H12.clone();
-				lerp(logos[i].pos, ms.avgB(), 4.f);
+				lerp(logos[i].pos, ms.avgB(), 6.f);
 				detected_logos.push_back( &logos[i] );
 			}
 			else if(logos[i].ghostFrames<GHOST_FRAMES_ALLOWED)
@@ -140,16 +135,13 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 				// Don't put it into the detected_logos set
 			}
 		}
-		
-		// At this point, detected_logos is updated
-		
 	}
 	else // do optical flow
 	{
 		// Do optical flow. Then just move detected_logos according to that.
 		Image next( input );
-		next.convert( CV_BGRA2GRAY );
-		prev.convert( CV_BGRA2GRAY );
+		next.convert( CV_BGR2GRAY );
+		prev.convert( CV_BGR2GRAY );
 		
 		OpticalFlow flow = OpticalFlow(prev, next);
 		
@@ -160,9 +152,14 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 			detected_logos[i]->pos += offset;
 		}
 	}
+
+	// Before we draw onto it, keep a copy of this frame for optical flow detection next frame
+	prev = Image( input );
 	
 	
 	// Now draw detected_logos into input
+	// We need to add alpha channel for drawing.
+	input.convert(CV_BGR2BGRA);
 	for(int i=0; i<(int)detected_logos.size(); i++)
 	{
 		// Make it center-based.
@@ -173,18 +170,22 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		
 		// TO DO: Use logos[i].homography to warp the image...
 		
-		output.drawIntoMe( detected_logos[i]->replacement, draw_loc );
+		input.drawIntoMe( detected_logos[i]->replacement, draw_loc );
 	}
+	input.convert( CV_BGRA2BGR );  // Convert back
 	
 	
-	// Debugging windows
-	input.show("input");
+	// TO DO:  Something weird happening here.
+	//			setData() is not changing the size of the cvImage inside (it stays 0x0)
+	//			and this is setting off an alarm in copyFromImage
+	output.setData( width, height, dst[0], dst_stride[0] );
+	output.copyFromImage(input);								// copy input into the output memory
+	output.text("unlogo", 10, height-10, .5);
+	
+	CV_Assert(&output.cvImage.data[0]==&dst[0][0]);				// Make sure output still points to dst
+	
+	
 	output.show("output");
-	//if(framenum>0) prev.show("prev");
-	
-	// Keep a copy of this frame for optical flow detection
-	prev = Image( input );
-	
 	waitKey(1);
 	framenum++;
 	return 0;
