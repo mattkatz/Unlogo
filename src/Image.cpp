@@ -46,9 +46,10 @@ namespace unlogo {
 		
 		if(cvImage.size()!=other.cvImage.size())
 		{
+			Size s = cvImage.size();
 			log(LOG_LEVEL_ERROR, "in copyFromImage(), WARNING: size are different. Mat may be reallocated.");
 			log(LOG_LEVEL_ERROR, "in copyFromImage(), this.size=%dx%d other.size=%dx%d", 
-				cvImage.size().width, cvImage.size().height, other.cvImage.size().width, other.cvImage.size().height);
+				s.width, s.height, other.cvImage.size().width, other.cvImage.size().height);
 		}
 		
 		other.cvImage.copyTo( cvImage );

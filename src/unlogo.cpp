@@ -62,15 +62,15 @@ extern "C" int init( const char* argstr )
 		// Load in all of the logos from the arguments
 		for(int i=3; i<argc; i+=2)
 		{
-			Logo l;
-			l.name = argv[i].c_str();
-			l.logo.open( l.name );
-			l.replacement.open( argv[i+1].c_str() );
-			l.replacement.convert( CV_RGBA2BGRA );
-			l.ghostFrames=0;
-			l.pos = Point2f(-1,-1);
-			logos.push_back( l );
-			log(LOG_LEVEL_DEBUG, "Loaded logo %s", l.name);
+			logos.push_back( Logo() );
+			logos.back().name = argv[i].c_str();
+			logos.back().logo.open( argv[i].c_str() );
+			logos.back().replacement.open( argv[i+1].c_str() );
+			logos.back().replacement.convert( CV_RGBA2BGRA );
+			logos.back().ghostFrames=0;
+			logos.back().pos = Point2f(-1,-1);
+
+			log(LOG_LEVEL_DEBUG, "Loaded logo %s", argv[i].c_str());
 		}
 
 		cvNamedWindow("input");		cvMoveWindow("input", 0, 0);
@@ -158,6 +158,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	input.show("input");
 	
 	// Before we draw onto it, keep a copy of this frame for optical flow detection next frame
+	prev.convert( CV_GRAY2BGR );
 	prev = Image( input );
 	
 	

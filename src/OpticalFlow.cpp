@@ -48,8 +48,6 @@ namespace unlogo {
 			for(int x = 0; x < next.width(); x += step)
 			{
 				const Point2f& fxy = flow.at<Point2f>(y, x);
-				printf("flow at %d %d:  %f, %f\n", x, y, fxy.x, fxy.y);
-				
 				line(next.cvImage, Point(x,y), Point(cvRound(x+fxy.x), cvRound(y+fxy.y)), CV_RGB(0,255,255));
 				circle(next.cvImage, Point(x,y), 2, CV_RGB(0,255,255), -1);
 			}
