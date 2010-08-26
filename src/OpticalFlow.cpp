@@ -40,6 +40,23 @@ namespace unlogo {
 
 	
 	//--------------------------------------------------
+	void OpticalFlow::draw(const char* win_name)
+	{
+		
+		int step=16;
+		for(int y = 0; y < next.height(); y += step)
+			for(int x = 0; x < next.width(); x += step)
+			{
+				const Point2f& fxy = flow.at<Point2f>(y, x);
+				printf("flow at %d %d:  %f, %f\n", x, y, fxy.x, fxy.y);
+				
+				line(next.cvImage, Point(x,y), Point(cvRound(x+fxy.x), cvRound(y+fxy.y)), CV_RGB(0,255,255));
+				circle(next.cvImage, Point(x,y), 2, CV_RGB(0,255,255), -1);
+			}
+		imshow(win_name, next.cvImage);
+	}
+	
+	//--------------------------------------------------
 	Point2f OpticalFlow::avg( Point2f thresh, int sampling )
 	{
 		return inRegion(Rect(0,0,flow.cols,flow.rows), thresh, sampling);
@@ -56,6 +73,8 @@ namespace unlogo {
 	//--------------------------------------------------
 	Point2f OpticalFlow::inRegion( Rect region, Point2f thresh, int sampling )
 	{
+		region = region & Rect(0,0,flow.size().width,flow.size().height);
+		
 		int max_x = region.x+region.width;
 		int max_y = region.y+region.height;
 		
@@ -68,8 +87,8 @@ namespace unlogo {
 		
 		Point2f total;
 		int nPts=0;
-		for(int y = 0; y < prev.height(); y += sampling)
-			for(int x = 0; x < prev.width(); x += sampling)
+		for(int y = 0; y < roi.size().height; y += sampling)
+			for(int x = 0; x < roi.size().width; x += sampling)
 			{
 				const Point2f& fxy = roi.at<Point2f>(y,x);
 				if(fxy.x > thresh.x || fxy.y > thresh.y)

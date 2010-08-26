@@ -7,6 +7,7 @@
  *
  *	This small program simply opens a cv::VideoCapture with the first argument
  *	and then starts feeding the frames to the unlogo.cpp FFMPEG callbacks.
+ *	It is used only for testing
  */
 
 
@@ -40,6 +41,8 @@ int main(int argc, char * const argv[])
 {
 	// Open the video
 	cv::VideoCapture cap(argv[1]);
+	cap.set(CV_CAP_PROP_CONVERT_RGB, 1);
+	
     if(!cap.isOpened())  
 	{
 		std::cout << "Can not open video source" << std::endl;

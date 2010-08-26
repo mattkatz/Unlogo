@@ -19,6 +19,8 @@ namespace unlogo {
 		Point2f avg( Point2f thresh, int sampling );
 		Point2f at( Point2f pos );
 		Point2f inRegion( Rect roi, Point2f thresh, int sampling );
+		void draw(const char* win_name);
+		
 		
 		Mat flow;
 		Image prev, next;

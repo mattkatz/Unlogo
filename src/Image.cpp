@@ -122,47 +122,35 @@ namespace unlogo {
 	// This should be fixed at some point.
 	void Image::drawIntoMe( Image &other, Point2f loc )
 	{
-		
 		if(loc.x>width() || loc.y > height()) return;
 		
-		int roi_w = 0;
-		int roi_h = 0;
+		// Get intersection of 2 images
+		Rect roi = Rect(loc, other.size()) & Rect(Point(0,0), size()); 
 
 		Point2f fgroipos = Point2f(0, 0);
 		
 		if(loc.x < 0)
 		{
-			roi_w = other.width() + loc.x;
-			loc.x = 0;
-			fgroipos.x = other.width() - roi_w;
-		}
-		else
-		{
-			roi_w = std::min(other.width(), (int) std::abs(width() - loc.x));
+			fgroipos.x = other.width() - roi.width;
 		}
 		
 		if(loc.y < 0)
 		{
-			roi_h = (int) std::abs(other.height() + loc.y);
-			loc.y = 0;
-			fgroipos.y = other.height() - roi_h;
-		}
-		else
-		{
-			roi_h = std::min(other.height(), (int) std::abs(height() - loc.y));
+			fgroipos.y = other.height() - roi.height;
 		}
 		
-		Mat fg = other.cvImage(Rect(fgroipos.x, fgroipos.x, roi_w, roi_h));
-		Mat bg = cvImage(Rect(loc.x, loc.y, roi_w, roi_h));
-
+		// Get the sub-section of each image that can be written to.
+		Mat fg = other.cvImage(Rect(fgroipos.x, fgroipos.y, roi.width, roi.height));
+		Mat bg = cvImage(Rect(max(0, (int)loc.x), max(0, (int)loc.y), roi.width, roi.height));
+		
 		
 		// This should be put into Image::drawIntoMe()
-		for( int i = 0; i < roi_h; i++ )
+		for( int i = 0; i < roi.height; i++ )
 		{
 			uchar* ptr_bg = bg.ptr<uchar>(i);
 			const uchar* ptr_fg = fg.ptr<uchar>(i);
 			
-			for( int j = 0; j < roi_w * fg.channels(); j += fg.channels() )
+			for( int j = 0; j < roi.width * fg.channels(); j += fg.channels() )
 			{
 				float alpha	= ptr_fg[j+3] / (float)numeric_limits<uchar>::max();
 				float inv_alpha = 1.0-alpha;

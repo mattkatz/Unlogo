@@ -101,7 +101,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	if(input.empty()) return 1;
 	
 	
-	input.show("input");
+	
 	
 	// Doing matching is expensive. So we only do it every MATCHING_DELAY frames
 	// The rest of the time we just calculate the Optical Flow and 
@@ -116,6 +116,8 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		{
 			MatchSet ms = MatchSet(&logos[i].logo, &input, RANSAC_PROJECTION_THRESH);
 	
+			ms.drawMatchesInB();
+			
 			// If thet are a match, reset the ghost frames counter
 			// Otherwise, increase the ghost frames counter
 			if(ms.pctMatch() > MATCHING_PCT_THRESHOLD)
@@ -142,17 +144,19 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		Image next( input );
 		next.convert( CV_BGR2GRAY );
 		prev.convert( CV_BGR2GRAY );
-		
-		OpticalFlow flow = OpticalFlow(prev, next);
-		
-		Point2f offset = flow.avg( Point2f(6,6), 16 );
+
 		for(int i=0; i<(int)detected_logos.size(); i++)
 		{
-			log(LOG_LEVEL_DEBUG, "offset = (%f,%f)", offset.x, offset.y);
-			detected_logos[i]->pos += offset;
+			OpticalFlow flow = OpticalFlow(prev, next);
+			
+			flow.draw("flow");
+			
+			//Rect region = Rect(detected_logos[i]->pos.x-20, detected_logos[i]->pos.y-20, 40, 40);
+			detected_logos[i]->pos += flow.avg( Point2f(6,6), 8 );
 		}
 	}
-
+	input.show("input");
+	
 	// Before we draw onto it, keep a copy of this frame for optical flow detection next frame
 	prev = Image( input );
 	
