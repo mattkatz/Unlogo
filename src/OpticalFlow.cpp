@@ -85,6 +85,8 @@ namespace unlogo {
 			
 		Mat roi = flow( region );
 		
+		// TO DO:  use Mat::inrange and Mat::mean instead of stuff below
+		
 		Point2f total;
 		int nPts=0;
 		for(int y = 0; y < roi.size().height; y += sampling)
