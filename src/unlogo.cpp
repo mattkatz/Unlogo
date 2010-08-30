@@ -159,8 +159,9 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	}
 	input.show("input");
 	
+	
+	
 	// Before we draw onto it, keep a copy of this frame for optical flow detection next frame
-	prev.convert( CV_GRAY2BGR );
 	prev = Image( input );
 	
 	

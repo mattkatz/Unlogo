@@ -38,7 +38,7 @@ namespace unlogo {
 		
 	//protected:
 		
-		Mat H12;
+		Mat H12;					// 3x3 transformation matrix
 		Image* a;
 		Image* b;
 		vector<int> matches;		// contains the best match in B for all keypoints in A
