@@ -16,6 +16,8 @@ namespace unlogo {
 	Image::Image()
 	{
 		descriptorsCurrent=false;
+		featuresCurrent=false;
+		matcherTrained=false;
 	}
 	
 	
@@ -24,6 +26,8 @@ namespace unlogo {
 	{
 		setData(width, height, data, stride);
 		descriptorsCurrent=false;
+		featuresCurrent=false;
+		matcherTrained=false;
 	}
 	
 	//--------------------------------------------------
@@ -53,9 +57,10 @@ namespace unlogo {
 		}
 		
 		other.cvImage.copyTo( cvImage );
-		keypoints = other.keypoints;	
+		features = other.features;	
 		other.descriptors.copyTo( descriptors );
 		descriptorsCurrent = other.descriptorsCurrent;
+		featuresCurrent = other.featuresCurrent;
 	}
 	
 	//--------------------------------------------------
@@ -65,6 +70,8 @@ namespace unlogo {
 		cvImage = Mat(Size(width, height), CV_8UC3, data, stride);
 		//cvImage = Mat(width, height, CV_8UC3, data, stride);
 		descriptorsCurrent=false;
+		featuresCurrent=false;
+		matcherTrained=false;
 	}
 	
 	//--------------------------------------------------
@@ -72,30 +79,262 @@ namespace unlogo {
 	{
 		cvImage = other.cvImage;
 		descriptorsCurrent=false;
+		featuresCurrent=false;
+		matcherTrained=false;
 	}
 
 #pragma mark MATCHING
 	
 	//--------------------------------------------------
-	void Image::findDescriptors()
+	Mat Image::findDescriptors()
 	{
-		if(descriptorsCurrent) return;
-		
-		Matcher* matcher = Matcher::Instance();
-		if(empty())
+		if(descriptorAlgUsed.empty())
 		{
-			log(LOG_LEVEL_ERROR, "in findDescriptors(), image is empty");
-			return;
+			log(LOG_LEVEL_DEBUG, "Warning: default findDescriptors() called and no previous algorithm set.  Using SURF!");
+			return findDescriptors("SURF");
+		}
+		else
+		{
+			return findDescriptors(descriptorAlgUsed);
+		}
+		
+	}
+	
+	//--------------------------------------------------
+	// As of writing this, you can use:
+	// SIFT, SURF
+	Mat Image::findDescriptors(string alg_name)
+	{
+		if(descriptorsCurrent && descriptorAlgUsed.compare(alg_name)==0) return descriptors;
+		if(!featuresCurrent) findFeatures();
+
+		if(empty() || features.size()==0)
+		{
+			log(LOG_LEVEL_ERROR, "in findDescriptors(), image is empty or there are no features in image");
 		}
 		
 		Mat cvImageGray;
 		cvtColor(cvImage, cvImageGray, CV_RGB2GRAY);
 		
-		matcher->detector->detect( cvImageGray, keypoints );
-		matcher->descriptorExtractor->compute( cvImageGray, keypoints, descriptors );
-		log(LOG_LEVEL_DEBUG, "in findDescriptors(), %d keypoints, %d x %d descriptors", 
-			keypoints.size(), descriptors.rows, descriptors.cols);
+		Ptr<DescriptorExtractor> descriptorExtractor = createDescriptorExtractor(alg_name);
+		if(descriptorExtractor==0)
+		{
+			log(LOG_LEVEL_ERROR, "Detector not found!");
+		}
+		
+		descriptorExtractor->compute( cvImageGray, features, descriptors );
+		log(LOG_LEVEL_DEBUG, "in findDescriptors(), %d x %d descriptors", descriptors.rows, descriptors.cols);
+		
+		descriptorAlgUsed = alg_name;
 		descriptorsCurrent=true;
+		matcherTrained=false;
+		return descriptors;
+	}
+	
+	//--------------------------------------------------
+	vector<KeyPoint> Image::findFeatures()
+	{
+		if(featureAlgUsed.empty())
+		{
+			log(LOG_LEVEL_DEBUG, "Warning: default findFeatures() called and no previous algorithm set.  Using SURF!");
+			return findFeatures("SURF");
+		}
+		else
+		{
+			return findFeatures(featureAlgUsed);
+		}
+		
+	}
+	
+	//--------------------------------------------------
+	// As of writing this, you can use:
+	// FAST, STAR, SIFT, SURF, MSER, GFTT, HARRIS, L
+	vector<KeyPoint> Image::findFeatures(string alg_name)
+	{
+		log(LOG_LEVEL_DEBUG, "finding features using %s", alg_name.c_str());
+		
+		
+		if(featuresCurrent && featureAlgUsed.compare(alg_name)==0) return features;
+
+		if(empty())
+		{
+			log(LOG_LEVEL_ERROR, "in findFeatures(), image is empty");
+		}
+		
+
+		// "L" isn't in the "createDetector" thingie.
+		// TO DO:  Figure out what these vars do & how to pass them in!
+		// For that matter, how to pass in parameters to any of the other feature detectors?
+		if(alg_name.compare("L")==0)
+		{
+			Size patchSize(32, 32);
+			int radius = 7;
+			int threshold = 20;
+			int nOctaves=2;
+			int nViews=2000;
+			int clusteringDistance = 2;
+			ldetector = LDetector(radius, threshold, nOctaves, nViews, patchSize.width, clusteringDistance);
+			ldetector.setVerbose(true);
+			
+			double backgroundMin=0;
+			double backgroundMax=256;
+			double noiseRange=5;
+			bool randomBlur=true;
+			double lambdaMin=0.8;
+			double lambdaMax=1.2;
+			double thetaMin=-CV_PI/2;
+			double thetaMax=CV_PI/2;
+			double phiMin=-CV_PI/2;
+			double phiMax=CV_PI/2;
+			gen = PatchGenerator(backgroundMin, backgroundMax, noiseRange, randomBlur, 
+							   lambdaMin, lambdaMax, thetaMin, thetaMax, phiMin, phiMax);
+			int maxPoints=100;
+			ldetector.getMostStable2D(bw(), features, maxPoints, gen);
+		}
+		else 
+		{
+			Ptr<FeatureDetector> detector = createDetector( alg_name );
+			if(detector==0)
+			{
+				log(LOG_LEVEL_ERROR, "Feature detector %s not found!", alg_name.c_str());
+			}
+			
+			detector->detect( bw(), features );
+		}
+		
+		log(LOG_LEVEL_DEBUG, "in findFeatures(), %d features", features.size());
+		featuresCurrent = true;
+		descriptorsCurrent = false;
+		matcherTrained=false;
+		featureAlgUsed=alg_name;
+		return features;
+	}
+	
+	//--------------------------------------------------
+	void Image::trainMatcher()
+	{
+		if(matchAlgUsed.empty())
+		{
+			log(LOG_LEVEL_DEBUG, "Warning: default trainMatcher() called and no previous algorithm set.  Using BruteForce!");
+			return trainMatcher("BruteForce");
+		}
+		else
+		{
+			return trainMatcher(matchAlgUsed);
+		}
+	}
+	
+	
+	//--------------------------------------------------
+	// As of writing this, you can use:
+	// ONEWAY, FERN, BruteForce, BruteForce-L1, Planar
+	void Image::trainMatcher(string alg_name)
+	{
+		if(matcherTrained && matchAlgUsed.compare(alg_name)==0) return;
+		
+		log(LOG_LEVEL_DEBUG, "Training matcher %s", alg_name.c_str());
+		
+		// These don't require descriptors.  It's all rolled up in the matcher.
+		if(!alg_name.compare("FERN")||!alg_name.compare("ONEWAY")||!alg_name.compare("CALONDER"))
+		{
+			findFeatures();
+			genericDescriptorMatch = createGenericDescriptorMatch(alg_name, "fern_params.xml");
+
+			log(LOG_LEVEL_DEBUG, "training matcher");
+			Mat img = bw();
+			genericDescriptorMatch->add( img, features );
+			
+		}
+		
+		if(!alg_name.compare("BruteForce")||!alg_name.compare("BruteForce-L1"))
+		{
+			findDescriptors();
+			descriptorMatcher = createDescriptorMatcher(alg_name.c_str());
+			descriptorMatcher->clear();
+			descriptorMatcher->add( descriptors ); 
+		}
+		
+		if(!alg_name.compare("Planar"))
+		{
+			if(featureAlgUsed.compare("L")!=0)
+			{
+				log(LOG_LEVEL_DEBUG, "Planar detector works best with L detector.  Switching!");
+				findFeatures("L");
+			}
+			
+			Size patchSize(32, 32);
+			planarDetector.setVerbose(true);
+			planarDetector.train(pyramid(ldetector.nOctaves-1), features, patchSize.width, 100, 11, 10000, ldetector, gen);
+			
+		}
+		matchAlgUsed = alg_name;
+	}
+	
+		
+		
+	//--------------------------------------------------
+	void Image::matchTo(Image &b, vector<int>& featureMatchesAtoB)
+	{
+		trainMatcher();
+		
+		log(LOG_LEVEL_DEBUG, "attempting to match using %s", matchAlgUsed.c_str());
+		
+		// These don't require descriptors.  It's all rolled up in the matcher.
+		if(!matchAlgUsed.compare("FERN")||!matchAlgUsed.compare("ONEWAY")||!matchAlgUsed.compare("CALONDER"))
+		{
+			if(b.descriptorsCurrent)
+			{
+				log(LOG_LEVEL_DEBUG, "Helpful tip: You don't have to calculate descriptors in B if you are using %s", matchAlgUsed.c_str());
+			}
+			
+			b.findFeatures();
+			
+			log(LOG_LEVEL_DEBUG, "performing match");
+			genericDescriptorMatch->match( b.bw(), b.features, featureMatchesAtoB);
+		}
+		
+		// These require descriptors
+		if(!matchAlgUsed.compare("BruteForce")||!matchAlgUsed.compare("BruteForce-L1"))
+		{
+			b.findDescriptors();
+			descriptorMatcher->match( b.descriptors, featureMatchesAtoB );
+		}
+		
+		if(!matchAlgUsed.compare("Planar"))
+		{
+			if(b.featuresCurrent)
+			{
+				log(LOG_LEVEL_DEBUG, "Helpful Tip:  When using Planar matcher, don't findFeatures on image B.  It will be done again, wasting resources.");
+			}
+			if(b.descriptorsCurrent)
+			{
+				log(LOG_LEVEL_DEBUG, "Helpful tip: You don't have to calculate descriptors if you are using %s", matchAlgUsed.c_str());
+			}
+			
+			vector<Mat> bpyr = b.pyramid(ldetector.nOctaves-1);
+			ldetector(bpyr, b.features, 300);
+
+			planarDetector(bpyr, b.features, H, dst_corners, &featureMatchesAtoB);
+			
+		}
+	}
+	
+	vector<Mat> Image::pyramid(int maxLevel) 
+	{
+		vector<Mat> imagePyr;
+		buildPyramid(cvImage, imagePyr, maxLevel);
+		return imagePyr;
+	}
+	
+	//--------------------------------------------------
+	Mat Image::bw()
+	{
+		if(cvImage.channels()==1) return cvImage;
+		else {
+			Mat bwImage;
+			cvtColor(cvImage, bwImage, CV_RGB2GRAY);
+			return bwImage;
+		}
 	}
 	
 	//--------------------------------------------------
@@ -115,6 +354,8 @@ namespace unlogo {
 			return -1;
 		}
 		descriptorsCurrent=false;
+		featuresCurrent=false;
+
 		return 0;
 	}
 	

@@ -15,8 +15,6 @@
 #include <iostream>
 
 #include "Image.h"
-#include "Matcher.h"
-#include "MatchSet.h"
 #include "OpticalFlow.h"
 #include "Logo.h"
 
@@ -51,20 +49,19 @@ extern "C" int init( const char* argstr )
 			cout << "where [search:replace] is a list of images to look for and an image to replace it with. " << endl;
 			cout << "Detector Types: FAST, STAR, SIFT, SURF, MSER, GFTT, HARRIS" << endl;
 			cout << "Descriptor Types: SIFT, SURF" << endl;
-			cout << "Matcher Types: BruteForce, BruteForce-L1" << endl;
+			cout << "Matcher Types: BruteForce, BruteForce-L1, FERN, ONEWAY, <CALONDER>" << endl;
 			return -1;
 		}
 
-		// Construct the matcher singleton the way we want it.
-		// Otherwise, the instance constructor will do the default.
-		Matcher::Instance(argv[0], argv[1], argv[2]);
-	
 		// Load in all of the logos from the arguments
 		for(int i=3; i<argc; i+=2)
 		{
 			logos.push_back( Logo() );
 			logos.back().name = argv[i].c_str();
 			logos.back().logo.open( argv[i].c_str() );
+			logos.back().logo.findFeatures("SIFT");
+			logos.back().logo.trainMatcher("ONEWAY");
+			
 			logos.back().replacement.open( argv[i+1].c_str() );
 			logos.back().replacement.convert( CV_RGBA2BGRA );
 			logos.back().ghostFrames=0;
@@ -99,9 +96,9 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	input.setData( width, height, src[0], src_stride[0]);
 
 	if(input.empty()) return 1;
-	
-	
-	
+
+	input.findFeatures("SURF");
+	input.findDescriptors("SIFT");
 	
 	// Doing matching is expensive. So we only do it every MATCHING_DELAY frames
 	// The rest of the time we just calculate the Optical Flow and 
@@ -114,8 +111,14 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		// Make a MatchSet for each frame/logo pair
 		for(int i=0; i<(int)logos.size(); i++)
 		{
-			MatchSet ms = MatchSet(&logos[i].logo, &input, RANSAC_PROJECTION_THRESH);
-	
+			vector<int> matches;
+			logos[i].logo.matchTo( input, matches );
+
+			Mat img_corr;
+			drawMatches(input.bw(), input.features, logos[i].logo.bw(), logos[i].logo.features, matches, img_corr);
+			imshow(logos[i].name, img_corr);
+			
+			/*
 			ms.drawMatchesInB();
 			
 			// If thet are a match, reset the ghost frames counter
@@ -136,6 +139,12 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 			{
 				// Don't put it into the detected_logos set
 			}
+			 */
+		}
+		
+		if(detected_logos.size()==0)
+		{
+			log(LOG_LEVEL_DEBUG, "Casual warning: Matchers ran and found no logos.");
 		}
 	}
 	else // do optical flow
