@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef MATIMG_H
-#define MATIMG_H
+#ifndef FHIMAGE_H
+#define FHIMAGE_H
 
 #include <iostream>
 #include <highgui.h>
@@ -17,10 +17,10 @@
 #include "opencv2/calib3d/calib3d.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/features2d/features2d.hpp"
-#include "ulUtils.h"
+#include "fhUtils.h"
 
 
-namespace unlogo {
+namespace fh {
 
 	using namespace cv;
 	using namespace std;
@@ -29,17 +29,23 @@ namespace unlogo {
 	public:
 		
 		Image();
+		Image(Mat& _cvImage);
 		Image( int width, int height, uint8_t* data, int channels );
-		Image( const Image& other ); // The copy constructor is for creating a new object. It copies a existing object to a newly constructed object. 
+		//Image( const Image& other ); // The copy constructor is for creating a new object. It copies a existing object to a newly constructed object. 
 		void operator = ( const Image &other ); // The assignment operator is to deal with an already existing object. 
+		Image operator()(const Rect roi);
 		
 		void setData(int width, int height, uint8_t* data, int stride);
 		void copyFromImage( const Image &other );
 		int open( const char* path );
 		void convert( int code );
+		void equalizeHist();
+		
 		
 		vector<KeyPoint> findFeatures(string alg_name);
+		vector<KeyPoint> findFeatures(string alg_name, Mat &bounds);
 		vector<KeyPoint> findFeatures();
+		vector<KeyPoint> updateFeatures( Image& previous, Mat& H ); // use optical flow to move features
 		Mat findDescriptors(string alg_name);
 		Mat findDescriptors();
 		void trainMatcher(string alg_name);
@@ -51,12 +57,14 @@ namespace unlogo {
 		Point2f opticalFlowAt( const Image& prev, Point2f pos );
 		void opticalFlow( const Image& prev, Mat& flow );
 		void text( const char* text, int x, int y, double scale=1, Scalar color=CV_RGB(255,255,255) );
-		
-		
+		static void drawFeature( Mat& img, const KeyPoint& p, const Scalar& color, int flags );
+		void drawFeatures();
 
 		void matchTo(Image &b, vector<int>& featureMatchesAtoB);
 		vector<Mat> pyramid(int maxLevel);
 		Mat bw();
+		
+		void save(const char* filename);
 		
 		// cvImage accessor convenience methods
 		bool empty();

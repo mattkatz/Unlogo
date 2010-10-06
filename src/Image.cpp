@@ -1,6 +1,6 @@
 /*
  *  Image.cpp
- *  unlogo
+ *  framehack
  *
  *  Created by Jeffrey Crouse on 8/19/10.
  *  Copyright 2010 Eyebeam. All rights reserved.
@@ -8,7 +8,8 @@
  */
 
 #include "Image.h"
-namespace unlogo {
+
+namespace fh {
 	
 #pragma mark CONSTRUCTORS
 	
@@ -31,11 +32,12 @@ namespace unlogo {
 	}
 	
 	//--------------------------------------------------
+	/*
 	Image::Image(const Image& other)
 	{
 		copyFromImage( other );
 	}
-	
+	*/
 	
 #pragma mark ASSIGNMENT
 
@@ -357,6 +359,13 @@ namespace unlogo {
 		featuresCurrent=false;
 
 		return 0;
+	}
+	
+	
+	//--------------------------------------------------
+	void Image::equalizeHist() 
+	{
+		cv::equalizeHist(cvImage, cvImage);
 	}
 	
 	//--------------------------------------------------
