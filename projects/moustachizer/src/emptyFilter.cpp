@@ -49,7 +49,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	log(LOG_LEVEL_DEBUG, "=== Frame %d ===", framenum);
 	
 	input.setData( width, height, src[0], src_stride[0]);
-	
+	input.convert( CV_RGB2BGR );
 #ifdef FHDEBUG
 	input.show("input");
 #endif
@@ -94,8 +94,11 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		{
 			Point2f pos = center;
 			pos.x -= moustache.width() / 2.;
-			pos.y += 25;
-			input.drawIntoMe(moustache, pos);
+			pos.y += radius/4.0;
+			Image scaledMoustache;
+			
+			resize(moustache.cvImage, scaledMoustache.cvImage, Size(radius, radius/2.));
+			input.drawIntoMe(scaledMoustache, pos);
 		}
 		
         for(vector<Rect>::const_iterator eye = eyes.begin(); eye != eyes.end(); eye++ )
@@ -107,20 +110,16 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
         }
     }
 	
-	
-	
 	input.convert(CV_RGBA2RGB);	
-	
 	
 	output.setData( width, height, dst[0], dst_stride[0] );
 	output.copyFromImage(input);								// copy input into the output memory
-	output.text("sample", 10, height-10, .5);					// A very simple modification to the frame
+	output.text("moustachizer", 10, height-10, .5);					// A very simple modification to the frame
 	
 #ifdef FHDEBUG
 	output.show( "output" );
 	waitKey(1);													// required to update highgi windows
 #endif
-	
 	
 	CV_Assert(&output.cvImage.data[0]==&dst[0][0]);				// Make sure output still points to dst
 	framenum++;
