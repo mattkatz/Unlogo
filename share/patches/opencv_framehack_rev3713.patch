@@ -1,0 +1,22 @@
+Index: modules/video/src/lkpyramid.cpp
+===================================================================
+--- modules/video/src/lkpyramid.cpp	(revision 3713)
++++ modules/video/src/lkpyramid.cpp	(working copy)
+@@ -714,7 +714,7 @@
+ #define ICV_DEF_GET_QUADRANGLE_SUB_PIX_FUNC( flavor, srctype, dsttype,      \
+ worktype, cast_macro, cvt )    \
+ CvStatus CV_STDCALL                                                         \
+-icvGetQuadrangleSubPix_##flavor##_C1R                                       \
++vid_icvGetQuadrangleSubPix_##flavor##_C1R                                       \
+ ( const srctype * src, int src_step, CvSize src_size,                       \
+ dsttype *dst, int dst_step, CvSize win_size, const float *matrix )        \
+ {                                                                           \
+@@ -1438,7 +1438,7 @@
+ 
+                 if( Av[2] < -eps || Av[2] >= levelSize.width+eps ||
+                     Av[5] < -eps || Av[5] >= levelSize.height+eps ||
+-                    icvGetQuadrangleSubPix_8u32f_C1R( imgJ[l], levelStep,
++                   vid_icvGetQuadrangleSubPix_8u32f_C1R( imgJ[l], levelStep,
+                     levelSize, patchJ, patchStep, patchSize, Av ) < 0 )
+                 {
+                     pt_status = 0;

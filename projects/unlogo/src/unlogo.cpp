@@ -48,7 +48,6 @@ extern "C" int init( const char* argstr )
 		targetframe = atol(argv[0].c_str());
 		contour = Mat(4, 1, CV_32FC2);  // 4row 1col 2channel matrix
 		int i,j;
-		float x, y;
 		float total=0;
 		for(i=0,j=1; i<4; i++,j+=2)
 		{

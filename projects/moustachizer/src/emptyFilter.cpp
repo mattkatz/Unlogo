@@ -114,7 +114,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	
 	output.setData( width, height, dst[0], dst_stride[0] );
 	output.copyFromImage(input);								// copy input into the output memory
-	output.text("moustachizer", 10, height-10, .5);					// A very simple modification to the frame
+	output.text("moustachizer", 10, height-10, .5);				// A very simple modification to the frame
 	
 #ifdef FHDEBUG
 	output.show( "output" );

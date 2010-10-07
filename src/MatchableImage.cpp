@@ -27,8 +27,7 @@ namespace fh {
 		matcherTrained=false;
 	}
 
-#pragma mark IMAGE
-	
+#pragma mark UTILITY_METHODS
 	
 	//--------------------------------------------------
 	int MatchableImage::open( const char* path )
@@ -262,6 +261,7 @@ namespace fh {
 			
 		}
 		*/
+		
 		if(!alg_name.compare("BruteForce")||!alg_name.compare("BruteForce-L1"))
 		{
 			findDescriptors();

@@ -103,8 +103,8 @@ echo "Checking out and Building OpenCV"
 echo -------------------------
 svn co -r 3713 https://code.ros.org/svn/opencv/trunk/opencv 
 cd opencv
-#patch -p0 -i ../../share/patches/opencv_unlogo_fixes_rev3515.patch
-cmake -G "Unix Makefiles" -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
+patch -p0 -i ../../share/patches/opencv_framehack_rev3713.patch
+cmake -G "Unix Makefiles" -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make; make install
 cd ..
 
