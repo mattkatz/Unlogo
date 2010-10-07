@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F04A979125D1C21008DC151 /* MatchableImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F04A978125D1C21008DC151 /* MatchableImage.cpp */; };
+		1F3333C4125D2731004F6077 /* libopencv_video.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3333C3125D2731004F6077 /* libopencv_video.a */; };
+		1F3333CF125D2783004F6077 /* libopencv_imgproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3333CE125D2783004F6077 /* libopencv_imgproc.a */; };
 		1FB8615A125670A90016344C /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86150125670A90016344C /* libpng.a */; };
 		1FB8615B125670A90016344C /* libjasper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86151125670A90016344C /* libjasper.a */; };
 		1FB8615C125670A90016344C /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86152125670A90016344C /* libtiff.a */; };
@@ -14,7 +17,6 @@
 		1FB8615E125670A90016344C /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86154125670A90016344C /* libopencv_highgui.a */; };
 		1FB8615F125670A90016344C /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86155125670A90016344C /* libopencv_core.a */; };
 		1FB86160125670A90016344C /* libopencv_calib3d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86156125670A90016344C /* libopencv_calib3d.a */; };
-		1FB86161125670A90016344C /* libopencv_imgproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86157125670A90016344C /* libopencv_imgproc.a */; };
 		1FB86162125670A90016344C /* libopencv_features2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86158125670A90016344C /* libopencv_features2d.a */; };
 		1FB86163125670A90016344C /* libopencv_objdetect.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86159125670A90016344C /* libopencv_objdetect.a */; };
 		1FB86169125670BA0016344C /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FB86165125670BA0016344C /* Image.cpp */; };
@@ -31,6 +33,10 @@
 
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1F04A977125D1C21008DC151 /* MatchableImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatchableImage.h; path = ../../src/MatchableImage.h; sourceTree = SOURCE_ROOT; };
+		1F04A978125D1C21008DC151 /* MatchableImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatchableImage.cpp; path = ../../src/MatchableImage.cpp; sourceTree = SOURCE_ROOT; };
+		1F3333C3125D2731004F6077 /* libopencv_video.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_video.a; path = ../../lib/libopencv_video.a; sourceTree = SOURCE_ROOT; };
+		1F3333CE125D2783004F6077 /* libopencv_imgproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_imgproc.a; path = ../../lib/libopencv_imgproc.a; sourceTree = SOURCE_ROOT; };
 		1FB86150125670A90016344C /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = ../../lib/libpng.a; sourceTree = SOURCE_ROOT; };
 		1FB86151125670A90016344C /* libjasper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper.a; path = ../../lib/libjasper.a; sourceTree = SOURCE_ROOT; };
 		1FB86152125670A90016344C /* libtiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtiff.a; path = ../../lib/libtiff.a; sourceTree = SOURCE_ROOT; };
@@ -38,7 +44,6 @@
 		1FB86154125670A90016344C /* libopencv_highgui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_highgui.a; path = ../../lib/libopencv_highgui.a; sourceTree = SOURCE_ROOT; };
 		1FB86155125670A90016344C /* libopencv_core.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_core.a; path = ../../lib/libopencv_core.a; sourceTree = SOURCE_ROOT; };
 		1FB86156125670A90016344C /* libopencv_calib3d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_calib3d.a; path = ../../lib/libopencv_calib3d.a; sourceTree = SOURCE_ROOT; };
-		1FB86157125670A90016344C /* libopencv_imgproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_imgproc.a; path = ../../lib/libopencv_imgproc.a; sourceTree = SOURCE_ROOT; };
 		1FB86158125670A90016344C /* libopencv_features2d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_features2d.a; path = ../../lib/libopencv_features2d.a; sourceTree = SOURCE_ROOT; };
 		1FB86159125670A90016344C /* libopencv_objdetect.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_objdetect.a; path = ../../lib/libopencv_objdetect.a; sourceTree = SOURCE_ROOT; };
 		1FB86165125670BA0016344C /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Image.cpp; path = ../../src/Image.cpp; sourceTree = SOURCE_ROOT; };
@@ -52,7 +57,6 @@
 		1FB8616F125670D40016344C /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
 		1FB86170125670D40016344C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /Developer/SDKs/MacOSX10.6.sdk/usr/lib/libz.dylib; sourceTree = "<absolute>"; };
 		1FB8621512567A430016344C /* unlogo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unlogo.cpp; path = src/unlogo.cpp; sourceTree = "<group>"; };
-		1FB8641C125686470016344C /* Logo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Logo.h; path = src/Logo.h; sourceTree = SOURCE_ROOT; };
 		8D576316048677EA00EA77CD /* unlogo.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = unlogo.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,7 +73,6 @@
 				1FB8615E125670A90016344C /* libopencv_highgui.a in Frameworks */,
 				1FB8615F125670A90016344C /* libopencv_core.a in Frameworks */,
 				1FB86160125670A90016344C /* libopencv_calib3d.a in Frameworks */,
-				1FB86161125670A90016344C /* libopencv_imgproc.a in Frameworks */,
 				1FB86162125670A90016344C /* libopencv_features2d.a in Frameworks */,
 				1FB86163125670A90016344C /* libopencv_objdetect.a in Frameworks */,
 				1FB86171125670D40016344C /* Cocoa.framework in Frameworks */,
@@ -78,6 +81,8 @@
 				1FB86174125670D40016344C /* QTKit.framework in Frameworks */,
 				1FB86175125670D40016344C /* vecLib.framework in Frameworks */,
 				1FB86176125670D40016344C /* libz.dylib in Frameworks */,
+				1F3333C4125D2731004F6077 /* libopencv_video.a in Frameworks */,
+				1F3333CF125D2783004F6077 /* libopencv_imgproc.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,7 +128,6 @@
 			isa = PBXGroup;
 			children = (
 				1FB8621512567A430016344C /* unlogo.cpp */,
-				1FB8641C125686470016344C /* Logo.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -143,10 +147,11 @@
 				1FB86151125670A90016344C /* libjasper.a */,
 				1FB86152125670A90016344C /* libtiff.a */,
 				1FB86153125670A90016344C /* libjpeg.a */,
+				1F3333CE125D2783004F6077 /* libopencv_imgproc.a */,
 				1FB86154125670A90016344C /* libopencv_highgui.a */,
 				1FB86155125670A90016344C /* libopencv_core.a */,
 				1FB86156125670A90016344C /* libopencv_calib3d.a */,
-				1FB86157125670A90016344C /* libopencv_imgproc.a */,
+				1F3333C3125D2731004F6077 /* libopencv_video.a */,
 				1FB86158125670A90016344C /* libopencv_features2d.a */,
 				1FB86159125670A90016344C /* libopencv_objdetect.a */,
 			);
@@ -160,6 +165,8 @@
 				1FB86166125670BA0016344C /* Image.h */,
 				1FB86167125670BA0016344C /* fhUtils.cpp */,
 				1FB86168125670BA0016344C /* fhUtils.h */,
+				1F04A977125D1C21008DC151 /* MatchableImage.h */,
+				1F04A978125D1C21008DC151 /* MatchableImage.cpp */,
 			);
 			name = framehack;
 			sourceTree = "<group>";
@@ -228,6 +235,7 @@
 				1FB86169125670BA0016344C /* Image.cpp in Sources */,
 				1FB8616A125670BA0016344C /* fhUtils.cpp in Sources */,
 				1FB8621612567A430016344C /* unlogo.cpp in Sources */,
+				1F04A979125D1C21008DC151 /* MatchableImage.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

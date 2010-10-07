@@ -4,11 +4,23 @@
 #include <stdint.h>
 #include <string.h>
 #include <iostream>
-#include "Image.h"
+#include "MatchableImage.h"
 
 using namespace fh;
 
-Image prev;						// The last frame -- for optical flow.
+
+typedef struct Logo
+{
+	const char* name;  // Kept for convenience and debugging
+	Image logo;
+	Image replacement;
+	Point2f pos;
+	int ghostFrames;
+	Mat homography;
+};
+
+
+MatchableImage prev;						// The last frame -- for optical flow.
 int framenum=0;					// Current frame number
 int targetframe;				// The frame number on which the target logo appears
 int inititalFeatures;			// The number of feaatures in the target frame/bounds
@@ -84,7 +96,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 					   int width, int height)
 {
 	cout << "(frame " << framenum << ")  ";
-	Image input( width, height, src[0], src_stride[0]);
+	MatchableImage input( width, height, src[0], src_stride[0]);
 	if(input.empty()) return 1;
 	
 	

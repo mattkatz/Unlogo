@@ -41,26 +41,13 @@ namespace fh {
 		void convert( int code );
 		void equalizeHist();
 		
-		
-		vector<KeyPoint> findFeatures(string alg_name);
-		vector<KeyPoint> findFeatures(string alg_name, Mat &bounds);
-		vector<KeyPoint> findFeatures();
-		vector<KeyPoint> updateFeatures( Image& previous, Mat& H ); // use optical flow to move features
-		Mat findDescriptors(string alg_name);
-		Mat findDescriptors();
-		void trainMatcher(string alg_name);
-		void trainMatcher();
-		
 		void drawIntoMe( Image &other, Point2f loc );
 		void show(const char* win_name);
 		Point2f opticalFlowAvg( const Image& prev, Point2f thresh );
 		Point2f opticalFlowAt( const Image& prev, Point2f pos );
 		void opticalFlow( const Image& prev, Mat& flow );
 		void text( const char* text, int x, int y, double scale=1, Scalar color=CV_RGB(255,255,255) );
-		static void drawFeature( Mat& img, const KeyPoint& p, const Scalar& color, int flags );
-		void drawFeatures();
 
-		void matchTo(Image &b, vector<int>& featureMatchesAtoB);
 		vector<Mat> pyramid(int maxLevel);
 		Mat bw();
 		
@@ -73,29 +60,9 @@ namespace fh {
 		int width();
 		int height();
 		
-	//protected:
+		
 		Mat cvImage;
-		vector<KeyPoint> features;	
-		Mat descriptors;
-		
-		bool featuresCurrent;
-		bool descriptorsCurrent;
-		bool matcherTrained;
-		
-		string featureAlgUsed;
-		string descriptorAlgUsed;
-		string matchAlgUsed;
-		
-	// Stuff used for matching
-		// stuff used specifically for Planar matching
-		LDetector ldetector;
-		PatchGenerator gen;
-		PlanarObjectDetector planarDetector;
-		Mat H;
-		vector<Point2f> dst_corners;
-		// Other matchers
-		Ptr<GenericDescriptorMatch> genericDescriptorMatch;
-		Ptr<DescriptorMatcher> descriptorMatcher;
+
 	};
 }
 
