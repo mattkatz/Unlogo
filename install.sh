@@ -22,7 +22,7 @@ clear
 echo -------------------------
 echo "Downloading and Building Jasper"
 echo -------------------------
-wget http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
+curl -O http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
 unzip jasper-1.900.1.zip
 cd jasper-1.900.1
 ./configure --prefix=$PREFIX
@@ -35,7 +35,7 @@ clear
 echo -------------------------
 echo "Downloading and Building JPEG"
 echo -------------------------
-wget http://www.ijg.org/files/jpegsrc.v8b.tar.gz
+curl -O http://www.ijg.org/files/jpegsrc.v8b.tar.gz
 tar -xvf jpegsrc.v8b.tar.gz
 cd jpeg-8b
 ./configure --enable-shared=no --prefix=$PREFIX
@@ -48,7 +48,7 @@ clear
 echo -------------------------
 echo "Downloading and Building PNG"
 echo -------------------------
-wget http://downloads.sourceforge.net/project/libpng/01-libpng-master/1.4.4/libpng-1.4.4.tar.gz
+curl -O http://downloads.sourceforge.net/project/libpng/01-libpng-master/1.4.4/libpng-1.4.4.tar.gz
 tar -xvf libpng-1.4.4.tar.gz
 cd libpng-1.4.4
 ./configure --enable-shared=no --prefix=$PREFIX
@@ -61,7 +61,7 @@ clear
 echo -------------------------
 echo "Downloading and Building TIFF"
 echo -------------------------
-wget ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
+curl -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
 tar -xvf tiff-3.9.4.tar.gz
 cd tiff-3.9.4
 ./configure --enable-shared=no --prefix=$PREFIX
@@ -74,7 +74,7 @@ clear
 echo -------------------------
 echo "Downloading and Building LAME"
 echo -------------------------
-wget http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
+curl -O http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
 tar -xvf lame-3.98.4.tar.gz
 cd lame-3.98.4
 ./configure --enable-shared=no --prefix=$PREFIX
