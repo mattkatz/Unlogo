@@ -178,7 +178,7 @@ echo -------------------------
 curl -L -O ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20100922-2245.tar.bz2
 tar -xvf x264-snapshot-20100922-2245.tar.bz2
 cd x264-snapshot-20100922-2245
-./configure --enable-shared=no --prefix=$PREFIX
+./configure --prefix=$PREFIX
 make && make install clean
 cd $PREFIX/dist
 
