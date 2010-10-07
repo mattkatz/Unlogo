@@ -66,7 +66,7 @@ clear
 echo -------------------------
 echo "Downloading and Building TIFF"
 echo -------------------------
-curl -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
+curl -L -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
 tar -xvf tiff-3.9.4.tar.gz
 cd tiff-3.9.4
 ./configure --enable-shared=no --prefix=$PREFIX
@@ -80,7 +80,7 @@ clear
 echo -------------------------
 echo "Downloading and Building LAME"
 echo -------------------------
-curl -O http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
+curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
 tar -xvf lame-3.98.4.tar.gz
 cd lame-3.98.4
 ./configure --enable-shared=no --prefix=$PREFIX
