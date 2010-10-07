@@ -94,7 +94,7 @@ echo -------------------------
 curl -L -O http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
 tar -xvf lame-3.98.4.tar.gz
 cd lame-3.98.4
-./configure --prefix=$PREFIX
+./configure --prefix=$PREFIX -enable-shared=no
 make && make install
 cd $PREFIX/dist
 
@@ -111,22 +111,18 @@ make && make install
 cd $PREFIX/dist
 
 
-
 clear
 echo -------------------------
 echo "Downloading and building FAAC"
 echo -------------------------
-cd ..
 curl -L -O http://downloads.sourceforge.net/faac/faac-1.28.tar.gz
 tar -xf faac-1.28.tar.gz
 cd faac-1.28
-./configure --prefix=$PREFIX
+./configure --prefix=$PREFIX --enable-shared=no
 make && make install
 cd $PREFIX/dist
 
 
-#
-#
 clear
 echo -------------------------
 echo "Downloading and building opencore-arm"
@@ -137,9 +133,8 @@ cd opencore-amr-0.1.2
 ./configure --enable-shared=no --prefix=$PREFIX
 make && make install clean
 cd $PREFIX/dist
-#
-#
-#
+
+
 clear
 echo -------------------------
 echo "Downloading and building libogg"
@@ -195,7 +190,7 @@ echo -------------------------
 curl -L -O http://downloads.xvid.org/downloads/xvidcore-1.2.2.tar.gz
 tar -xf xvidcore-1.2.2.tar.gz
 cd xvidcore/build/generic
-./configure --enable-shared=no --prefix=$PREFIX
+./configure --prefix=$PREFIX
 make && make install clean
 cd $PREFIX/dist
 
