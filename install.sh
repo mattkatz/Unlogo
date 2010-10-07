@@ -198,6 +198,20 @@ cd $PREFIX/dist
 
 clear
 echo -------------------------
+echo "Checking out and building CMake"
+echo -------------------------
+curl -L -O http://www.cmake.org/files/v2.8/cmake-2.8.2.tar.gz
+tar -xf cmake-2.8.2.tar.gz
+cd cmake-2.8.2
+./configure --prefix=$PREFIX
+make && make install clean
+cd $PREFIX/dist
+
+
+
+
+clear
+echo -------------------------
 echo "Checking out and building FFMPEG"
 echo -------------------------
 svn co -r 25296 svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg 
@@ -216,7 +230,7 @@ echo -------------------------
 svn co -r 3713 https://code.ros.org/svn/opencv/trunk/opencv 
 cd opencv
 patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
-cmake -G "Unix Makefiles" -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_INSTALL_PREFIX=$PREFIX .
+$PREFIX/bin/cmake -G "Unix Makefiles" -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make && make install
 cd $PREFIX/dist
 
