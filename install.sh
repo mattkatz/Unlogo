@@ -89,6 +89,20 @@ make install
 cd $PREFIX/dist
 
 
+clear
+echo -------------------------
+echo "Downloading and Building YASM"
+echo -------------------------
+curl -L -O http://www.tortall.net/projects/yasm/releases/yasm-1.1.0.tar.gz
+tar -xvf yasm-1.1.0.tar.gz
+cd yasm-1.1.0
+./configure --enable-shared=no --prefix=$PREFIX
+make
+make install
+cd $PREFIX/dist
+
+
+
 
 clear
 echo -------------------------
