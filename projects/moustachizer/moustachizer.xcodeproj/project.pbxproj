@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1FB8615A125670A90016344C /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86150125670A90016344C /* libpng.a */; };
-		1FB8615B125670A90016344C /* libjasper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86151125670A90016344C /* libjasper.a */; };
-		1FB8615C125670A90016344C /* libtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86152125670A90016344C /* libtiff.a */; };
-		1FB8615D125670A90016344C /* libjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86153125670A90016344C /* libjpeg.a */; };
+		1F33348F125E804A004F6077 /* liblibjasper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F33348B125E804A004F6077 /* liblibjasper.a */; };
+		1F333490125E804A004F6077 /* liblibjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F33348C125E804A004F6077 /* liblibjpeg.a */; };
+		1F333491125E804A004F6077 /* liblibpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F33348D125E804A004F6077 /* liblibpng.a */; };
+		1F333492125E804A004F6077 /* liblibtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F33348E125E804A004F6077 /* liblibtiff.a */; };
 		1FB8615E125670A90016344C /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86154125670A90016344C /* libopencv_highgui.a */; };
 		1FB8615F125670A90016344C /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86155125670A90016344C /* libopencv_core.a */; };
 		1FB86160125670A90016344C /* libopencv_calib3d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FB86156125670A90016344C /* libopencv_calib3d.a */; };
@@ -31,10 +31,10 @@
 
 /* Begin PBXFileReference section */
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1FB86150125670A90016344C /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = ../../lib/libpng.a; sourceTree = SOURCE_ROOT; };
-		1FB86151125670A90016344C /* libjasper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjasper.a; path = ../../lib/libjasper.a; sourceTree = SOURCE_ROOT; };
-		1FB86152125670A90016344C /* libtiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtiff.a; path = ../../lib/libtiff.a; sourceTree = SOURCE_ROOT; };
-		1FB86153125670A90016344C /* libjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libjpeg.a; path = ../../lib/libjpeg.a; sourceTree = SOURCE_ROOT; };
+		1F33348B125E804A004F6077 /* liblibjasper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibjasper.a; path = ../../dist/opencv/3rdparty/lib/liblibjasper.a; sourceTree = SOURCE_ROOT; };
+		1F33348C125E804A004F6077 /* liblibjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibjpeg.a; path = ../../dist/opencv/3rdparty/lib/liblibjpeg.a; sourceTree = SOURCE_ROOT; };
+		1F33348D125E804A004F6077 /* liblibpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibpng.a; path = ../../dist/opencv/3rdparty/lib/liblibpng.a; sourceTree = SOURCE_ROOT; };
+		1F33348E125E804A004F6077 /* liblibtiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibtiff.a; path = ../../dist/opencv/3rdparty/lib/liblibtiff.a; sourceTree = SOURCE_ROOT; };
 		1FB86154125670A90016344C /* libopencv_highgui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_highgui.a; path = ../../lib/libopencv_highgui.a; sourceTree = SOURCE_ROOT; };
 		1FB86155125670A90016344C /* libopencv_core.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_core.a; path = ../../lib/libopencv_core.a; sourceTree = SOURCE_ROOT; };
 		1FB86156125670A90016344C /* libopencv_calib3d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_calib3d.a; path = ../../lib/libopencv_calib3d.a; sourceTree = SOURCE_ROOT; };
@@ -61,10 +61,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FB8615A125670A90016344C /* libpng.a in Frameworks */,
-				1FB8615B125670A90016344C /* libjasper.a in Frameworks */,
-				1FB8615C125670A90016344C /* libtiff.a in Frameworks */,
-				1FB8615D125670A90016344C /* libjpeg.a in Frameworks */,
 				1FB8615E125670A90016344C /* libopencv_highgui.a in Frameworks */,
 				1FB8615F125670A90016344C /* libopencv_core.a in Frameworks */,
 				1FB86160125670A90016344C /* libopencv_calib3d.a in Frameworks */,
@@ -77,6 +73,10 @@
 				1FB86174125670D40016344C /* QTKit.framework in Frameworks */,
 				1FB86175125670D40016344C /* vecLib.framework in Frameworks */,
 				1FB86176125670D40016344C /* libz.dylib in Frameworks */,
+				1F33348F125E804A004F6077 /* liblibjasper.a in Frameworks */,
+				1F333490125E804A004F6077 /* liblibjpeg.a in Frameworks */,
+				1F333491125E804A004F6077 /* liblibpng.a in Frameworks */,
+				1F333492125E804A004F6077 /* liblibtiff.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,10 +137,10 @@
 		1FB8614F125670A90016344C /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				1FB86150125670A90016344C /* libpng.a */,
-				1FB86151125670A90016344C /* libjasper.a */,
-				1FB86152125670A90016344C /* libtiff.a */,
-				1FB86153125670A90016344C /* libjpeg.a */,
+				1F33348B125E804A004F6077 /* liblibjasper.a */,
+				1F33348C125E804A004F6077 /* liblibjpeg.a */,
+				1F33348D125E804A004F6077 /* liblibpng.a */,
+				1F33348E125E804A004F6077 /* liblibtiff.a */,
 				1FB86154125670A90016344C /* libopencv_highgui.a */,
 				1FB86155125670A90016344C /* libopencv_core.a */,
 				1FB86156125670A90016344C /* libopencv_calib3d.a */,
@@ -258,6 +258,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../lib\"",
+					"\"$(SRCROOT)/../../dist/opencv/3rdparty/lib\"",
 				);
 				PRODUCT_NAME = moustachizer;
 				WRAPPER_EXTENSION = bundle;
@@ -276,6 +277,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../lib\"",
+					"\"$(SRCROOT)/../../dist/opencv/3rdparty/lib\"",
 				);
 				PRODUCT_NAME = emptyFilter;
 				WRAPPER_EXTENSION = bundle;
