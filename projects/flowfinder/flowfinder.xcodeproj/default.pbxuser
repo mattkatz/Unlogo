@@ -75,9 +75,9 @@
 			YES,
 		);
 		argumentStrings = (
-			"-i resources/videos/",
+			"-i resources/videos/IMG_0076.MOV",
 			"-qscale 2",
-			"-vf plugin=build/Debug/unlogo.bundle/Contents/MacOS/unlogo:blah",
+			"-vf plugin=build/Debug/flowfinder.bundle/Contents/MacOS/flowfinder:5:262:111:447:92:449:209:261:240",
 			"-y out.mov",
 		);
 		autoAttachOnCrash = 1;

@@ -57,7 +57,7 @@
 		1FB8616E125670D40016344C /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		1FB8616F125670D40016344C /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/vecLib.framework; sourceTree = "<absolute>"; };
 		1FB86170125670D40016344C /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = /Developer/SDKs/MacOSX10.6.sdk/usr/lib/libz.dylib; sourceTree = "<absolute>"; };
-		8D576316048677EA00EA77CD /* unlogo.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = unlogo.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D576316048677EA00EA77CD /* flowfinder.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flowfinder.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D576317048677EA00EA77CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,7 +135,7 @@
 		19C28FB6FE9D52B211CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D576316048677EA00EA77CD /* unlogo.bundle */,
+				8D576316048677EA00EA77CD /* flowfinder.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -189,7 +189,7 @@
 			name = flowfinder;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = emptyFilter;
-			productReference = 8D576316048677EA00EA77CD /* unlogo.bundle */;
+			productReference = 8D576316048677EA00EA77CD /* flowfinder.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -274,7 +274,7 @@
 					"-DDEBUG",
 					"$(OTHER_CFLAGS)",
 				);
-				PRODUCT_NAME = unlogo;
+				PRODUCT_NAME = flowfinder;
 				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
