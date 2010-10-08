@@ -4,6 +4,8 @@ set -e
 set -o pipefail
 SCRIPT=$(cd ${0%/*} && echo $PWD/${0##*/})
 PREFIX=`dirname $SCRIPT`
+
+
 PATH=$PREFIX/bin:$PATH
 LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
 CFLAGS="-I$PREFIX/include"
@@ -31,7 +33,6 @@ mkdir -p $PREFIX/dist
 cd $PREFIX/dist
 
 
-# 
 # clear
 # echo -------------------------
 # echo "Downloading and building Jasper"
@@ -43,7 +44,6 @@ cd $PREFIX/dist
 # make
 # make install
 # cd $PREFIX/dist
-# 
 # 
 # 
 # clear
@@ -59,7 +59,6 @@ cd $PREFIX/dist
 # cd $PREFIX/dist
 # 
 # 
-# 
 # clear
 # echo -------------------------
 # echo "Downloading and building PNG"
@@ -73,7 +72,6 @@ cd $PREFIX/dist
 # cd $PREFIX/dist
 # 
 # 
-# 
 # clear
 # echo -------------------------
 # echo "Downloading and building TIFF"
@@ -84,7 +82,6 @@ cd $PREFIX/dist
 # ./configure --enable-shared=no --prefix=$PREFIX
 # make && make install
 # cd $PREFIX/dist
-# 
 
 
 clear
@@ -230,7 +227,7 @@ echo -------------------------
 svn co -r 3713 https://code.ros.org/svn/opencv/trunk/opencv 
 cd opencv
 patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
-$PREFIX/bin/cmake -G "Unix Makefiles" -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=RelWithDebInfo -D CMAKE_INSTALL_PREFIX=$PREFIX .
+$PREFIX/bin/cmake -G "Unix Makefiles" -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make && make install
 cd $PREFIX/dist
 

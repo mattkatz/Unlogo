@@ -1,0 +1,295 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 1F3336A6125F9BEA004F6077 /* filterTest */;
+		activeTarget = 1FFD9854125FD08C0047A8CB /* newFilter */;
+		addToTargets = (
+			8DD76F620486A84900D96B5E /* filterTest */,
+		);
+		codeSenseManager = 1F3336B4125F9BF5004F6077 /* Code sense */;
+		executables = (
+			1F3336A6125F9BEA004F6077 /* filterTest */,
+			1FFD97A8125FBC950047A8CB /* ffmpeg */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					519,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					631,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFindDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFindDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					200,
+					645,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFindDataSource_MessageID,
+					PBXFindDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					591,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 308256993;
+			PBXWorkspaceStateSaveDate = 308256993;
+		};
+		perUserProjectItems = {
+			1FFD9836125FCF9B0047A8CB /* PBXTextBookmark */ = 1FFD9836125FCF9B0047A8CB /* PBXTextBookmark */;
+			1FFD9936125FD0B90047A8CB /* PBXTextBookmark */ = 1FFD9936125FD0B90047A8CB /* PBXTextBookmark */;
+			1FFD9958125FD19C0047A8CB /* PBXTextBookmark */ = 1FFD9958125FD19C0047A8CB /* PBXTextBookmark */;
+		};
+		sourceControlManager = 1F3336B3125F9BF5004F6077 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	08FB7796FE84155DC02AAC07 /* newFilter.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {852, 1599}}";
+			sepNavSelRange = "{986, 0}";
+			sepNavVisRange = "{1669, 1035}";
+		};
+	};
+	1F3336A6125F9BEA004F6077 /* filterTest */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+			"PBXLSLaunchAction-0" = {
+				PBXLSLaunchAction = 0;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
+				displayName = "Executable Runner";
+				environment = {
+				};
+				identifier = com.apple.Xcode.launch.runConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = filterTest;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		startupPath = "<<ProjectDirectory>>";
+	};
+	1F3336B3125F9BF5004F6077 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	1F3336B4125F9BF5004F6077 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	1F3336D2125F9C5A004F6077 /* fhUtils.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1227, 1833}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1351}";
+			sepNavWindowFrame = "{{15, 105}, {1286, 918}}";
+		};
+	};
+	1F3336D3125F9C5A004F6077 /* fhUtils.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {809, 1209}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1093}";
+		};
+	};
+	1F3336D4125F9C5A004F6077 /* Image.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1016, 2418}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 252}";
+		};
+	};
+	1F3336D5125F9C5A004F6077 /* Image.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1076, 936}}";
+			sepNavSelRange = "{185, 0}";
+			sepNavVisRange = "{0, 1169}";
+		};
+	};
+	1FFD97A8125FBC950047A8CB /* ffmpeg */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			YES,
+			YES,
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			"-qscale 2",
+			"-i resources/FullHouse.mp4",
+			"-vf plugin=build/Debug/libdynamicLib.dylib:blah",
+			"-y out.mov",
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+			"PBXLSLaunchAction-0" = {
+				PBXLSLaunchAction = 0;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
+				displayName = "Executable Runner";
+				environment = {
+				};
+				identifier = com.apple.Xcode.launch.runConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		launchableReference = 1FFD97A9125FBC950047A8CB /* ffmpeg */;
+		libgmallocEnabled = 0;
+		name = ffmpeg;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		startupPath = "<<ProjectDirectory>>";
+	};
+	1FFD97A9125FBC950047A8CB /* ffmpeg */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = "compiled.mach-o.executable";
+		name = ffmpeg;
+		path = ../../bin/ffmpeg;
+		sourceTree = SOURCE_ROOT;
+	};
+	1FFD9836125FCF9B0047A8CB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1F3336D4125F9C5A004F6077 /* Image.cpp */;
+		name = "Image.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1211;
+		vrLoc = 0;
+	};
+	1FFD9854125FD08C0047A8CB /* newFilter */ = {
+		activeExec = 0;
+	};
+	1FFD9936125FD0B90047A8CB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* newFilter.cpp */;
+		name = "newFilter.cpp: 51";
+		rLen = 0;
+		rLoc = 986;
+		rType = 0;
+		vrLen = 1070;
+		vrLoc = 586;
+	};
+	1FFD9958125FD19C0047A8CB /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 08FB7796FE84155DC02AAC07 /* newFilter.cpp */;
+		name = "newFilter.cpp: 51";
+		rLen = 0;
+		rLoc = 986;
+		rType = 0;
+		vrLen = 1035;
+		vrLoc = 1669;
+	};
+	8DD76F620486A84900D96B5E /* filterTest */ = {
+		activeExec = 0;
+		executables = (
+			1F3336A6125F9BEA004F6077 /* filterTest */,
+		);
+	};
+}
