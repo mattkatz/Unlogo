@@ -8,19 +8,7 @@
 
 using namespace fh;
 
-
-typedef struct Logo
-{
-	const char* name;  // Kept for convenience and debugging
-	Image logo;
-	Image replacement;
-	Point2f pos;
-	int ghostFrames;
-	Mat homography;
-};
-
-
-MatchableImage prev;						// The last frame -- for optical flow.
+MatchableImage prev;			// The last frame -- for optical flow.
 int framenum=0;					// Current frame number
 int targetframe;				// The frame number on which the target logo appears
 int inititalFeatures;			// The number of feaatures in the target frame/bounds
