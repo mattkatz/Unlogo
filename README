@@ -24,6 +24,14 @@ REQUIREMENTS
 BUILDING
 ========================
 
+An Unlogo filter is simply a BSD C Library that contains 3 functions: 
+
+int init(const char* argstr)
+int uninit()
+int process(uint8_t* dst[4], int dst_stride[4],
+					   uint8_t* src[4], int src_stride[4],
+					   int width, int height)
+
 UNLOGO filter uses the 'plugin' AVFilter for FFMPEG written by Michael Droese.  This greatly simplifies and speeds up the process of making a filter by allowing the user to reference a shared object when running FFMPEG rather than having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.   
 
 

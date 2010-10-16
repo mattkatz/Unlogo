@@ -70,12 +70,13 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 308938888;
-			PBXWorkspaceStateSaveDate = 308938888;
+			PBXPerProjectTemplateStateSaveDate = 308939709;
+			PBXWorkspaceStateSaveDate = 308939709;
 		};
 		perUserProjectItems = {
-			1FA77BB9126A088E001517EA /* PBXTextBookmark */ = 1FA77BB9126A088E001517EA /* PBXTextBookmark */;
-			1FA77BE4126A09A4001517EA /* PBXTextBookmark */ = 1FA77BE4126A09A4001517EA /* PBXTextBookmark */;
+			1FA77C13126A0C84001517EA /* PBXTextBookmark */ = 1FA77C13126A0C84001517EA /* PBXTextBookmark */;
+			1FA77C14126A0C84001517EA /* PBXTextBookmark */ = 1FA77C14126A0C84001517EA /* PBXTextBookmark */;
+			1FA77C15126A0C84001517EA /* PBXTextBookmark */ = 1FA77C15126A0C84001517EA /* PBXTextBookmark */;
 		};
 		sourceControlManager = 1F2927F71264186100792190 /* Source Control */;
 		userBuildSettings = {
@@ -102,6 +103,13 @@
 		isa = PBXCodeSenseManager;
 		indexTemplatePath = "";
 	};
+	1F2928E7126418FC00792190 /* Image.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1076, 936}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{164, 1527}";
+		};
+	};
 	1F292C4C1266279300792190 /* ffmpeg */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -111,7 +119,7 @@
 			YES,
 		);
 		argumentStrings = (
-			"-i resources/Foucault.mp4",
+			"-i data/Foucault.mp4",
 			"-qscale 2",
 			"-vf plugin=build/Debug/libpixelize.dylib:blah",
 			"-y out.mov",
@@ -164,25 +172,35 @@
 		path = ../../bin/ffmpeg;
 		sourceTree = SOURCE_ROOT;
 	};
-	1FA77BB9126A088E001517EA /* PBXTextBookmark */ = {
+	1FA77C13126A0C84001517EA /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 1F2927F41264186100792190 /* pixelize.cpp */;
-		name = "pixelize.cpp: 51";
+		name = "pixelize.cpp: 63";
 		rLen = 0;
-		rLoc = 900;
-		rType = 0;
-		vrLen = 415;
-		vrLoc = 748;
-	};
-	1FA77BE4126A09A4001517EA /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 1F2927F41264186100792190 /* pixelize.cpp */;
-		name = "pixelize.cpp: 51";
-		rLen = 0;
-		rLoc = 900;
+		rLoc = 1199;
 		rType = 0;
 		vrLen = 1368;
 		vrLoc = 228;
+	};
+	1FA77C14126A0C84001517EA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1F2928E7126418FC00792190 /* Image.h */;
+		name = "Image.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1653;
+		vrLoc = 0;
+	};
+	1FA77C15126A0C84001517EA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1F2928E7126418FC00792190 /* Image.h */;
+		name = "Image.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1527;
+		vrLoc = 164;
 	};
 	D2AAC0620554660B00DB518D /* pixelize */ = {
 		activeExec = 0;
