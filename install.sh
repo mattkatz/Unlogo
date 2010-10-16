@@ -9,15 +9,17 @@ PREFIX=`dirname $SCRIPT`
 export PATH=$PREFIX/bin:$PATH
 export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
 export CFLAGS="-I$PREFIX/include"
+export CPPFLAGS="-I$PREFIX/include"
 export LDFLAGS="-L$PREFIX/lib"
 
 clear
 echo -------------------------
 echo "Welcome to the Framehack Installer"
 echo "Install location: $PREFIX"
-echo "LD_LIBRARY_PATH $LD_LIBRARY_PATH"
 echo "PATH $PATH"
+echo "LD_LIBRARY_PATH $LD_LIBRARY_PATH"
 echo "CFLAGS $CFLAGS"
+echo "CPPFLAGS $CFLAGS"
 echo "LDFLAGS $LDFLAGS"
 echo -------------------------
 
@@ -28,55 +30,55 @@ mkdir -p $PREFIX/dist
 cd $PREFIX/dist
 
 
-clear
-echo -------------------------
-echo "Downloading and building Jasper"
-echo -------------------------
-curl -O http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
-unzip jasper-1.900.1.zip
-cd jasper-1.900.1
-./configure --prefix=$PREFIX
-make
-make install
-cd $PREFIX/dist
-
-
-clear
-echo -------------------------
-echo "Downloading and building JPEG"
-echo -------------------------
-curl -O http://www.ijg.org/files/jpegsrc.v8b.tar.gz
-tar -xvf jpegsrc.v8b.tar.gz
-cd jpeg-8b
-./configure --enable-shared=no --prefix=$PREFIX
-make
-make install
-cd $PREFIX/dist
-
-
-clear
-echo -------------------------
-echo "Downloading and building PNG"
-echo -------------------------
-curl -O ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.4.tar.gz
-tar -xvf libpng-1.4.4.tar.gz
-cd libpng-1.4.4
-./configure --enable-shared=no --prefix=$PREFIX
-make
-make install
-cd $PREFIX/dist
-
-
-clear
-echo -------------------------
-echo "Downloading and building TIFF"
-echo -------------------------
-curl -L -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
-tar -xvf tiff-3.9.4.tar.gz
-cd tiff-3.9.4
-./configure --enable-shared=no --prefix=$PREFIX
-make && make install
-cd $PREFIX/dist
+#clear
+# echo -------------------------
+# echo "Downloading and building Jasper"
+# echo -------------------------
+# curl -O http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
+# unzip jasper-1.900.1.zip
+# cd jasper-1.900.1
+# ./configure --prefix=$PREFIX
+# make
+# make install
+# cd $PREFIX/dist
+# 
+# 
+# clear
+# echo -------------------------
+# echo "Downloading and building JPEG"
+# echo -------------------------
+# curl -O http://www.ijg.org/files/jpegsrc.v8b.tar.gz
+# tar -xvf jpegsrc.v8b.tar.gz
+# cd jpeg-8b
+# ./configure --enable-shared=no --prefix=$PREFIX
+# make
+# make install
+# cd $PREFIX/dist
+# 
+# 
+# clear
+# echo -------------------------
+# echo "Downloading and building PNG"
+# echo -------------------------
+# curl -O ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.4.tar.gz
+# tar -xvf libpng-1.4.4.tar.gz
+# cd libpng-1.4.4
+# ./configure --enable-shared=no --prefix=$PREFIX
+# make
+# make install
+# cd $PREFIX/dist
+# 
+# 
+# clear
+# echo -------------------------
+# echo "Downloading and building TIFF"
+# echo -------------------------
+# curl -L -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
+# tar -xvf tiff-3.9.4.tar.gz
+# cd tiff-3.9.4
+# ./configure --enable-shared=no --prefix=$PREFIX
+# make && make install
+# cd $PREFIX/dist
 
 
 clear
@@ -213,16 +215,34 @@ patch -p0 -i $PREFIX/share/patches/ffmpeg_framehack_rev25296.patch
 make && make install
 cd $PREFIX/dist
 
-
+# HACK ALERT!
+# OpenCV ships with a bunch of libraries (Jasper, Jpeg, PNG, TIFF) in a folder called "3rdParty"
+# I'd like to be able to compile my own versions of these libraries and have OpenCV use them
+# instead of the who-knows-how-outdated versions that are in there. 
+# The FFMPEG Makefile needs CFLAGS, CPPFLAGS, LDFLAGS set so that it knows where to find 
+# stuff like x264, lame, vorbis, etc. 
+# But if we install Jasper, Jpeg, PNG, TIFF separately and then try to install OpenCV, we get an 
+# error.  Sometimes with JPEG, sometimes with TIFF, depending on the version of OpenCV.
+# I guess it confuses the headers that have already been installed with the ones that it is trying to compile?
+# I can't seem to stop OpenCV from making them, even with OPENCV_BUILD_3RDPARTY_LIBS=FALSE
+# So, there are 2 options: 
+# 1. We can compile Jasper, JPEG, TIFF, and then unset these variables before compiling OpenCV so that
+# 	it doesn't get confused.  Problem:  OpenCV is going to link against its own "3rdParty" versions of 
+#	the libraries no matter what, and it *might* cause problems later on to use a different version
+# 2. We can just suck it up and use the versions that come with OpenCV.  To do this, we need to
+#	not have these varialbes (which are required for FFMPEG to find x264, faac, etc.) set.
+export CFLAGS=""
+export CPPFLAGS=""
+export LDFLAGS=""
 
 clear
 echo -------------------------
 echo "Checking out and building OpenCV"
 echo -------------------------
-svn co -r 3713 https://code.ros.org/svn/opencv/trunk/opencv 
-cd opencv
-patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
-$PREFIX/bin/cmake -G "Unix Makefiles" -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
+svn co https://code.ros.org/svn/opencv/tags/2.1/opencv opencv2.1
+cd opencv2.1
+#patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
+$PREFIX/bin/cmake -G "Unix Makefiles" -D OPENCV_BUILD_3RDPARTY_LIBS=FALSE -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make && make install
 cd $PREFIX/dist
 
