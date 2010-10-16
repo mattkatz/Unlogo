@@ -1,6 +1,5 @@
 /*
- *  unlogo.cpp
- *  unlogo
+ *  pixelize.cpp
  *
  *  Created by Jeffrey Crouse
  *  Copyright 2010 Eyebeam. All rights reserved.
@@ -15,8 +14,9 @@
 #include "Image.h"
 
 using namespace fh;
-Image prev;			// The last frame -- for optical flow.
-int framenum=0;					// Current frame number
+using namespace std;
+
+int framenum=0;
 
 extern "C" int init( const char* argstr )
 {
@@ -32,7 +32,7 @@ extern "C" int init( const char* argstr )
 			log(LOG_LEVEL_ERROR, "You must supply at least 1 arguments.");
 			exit(-1);
 		}
-	
+		
 		namedWindow("input");		cvMoveWindow("input", 0, 0);
 		namedWindow("output");		cvMoveWindow("output", 650, 0);
 		
@@ -49,7 +49,6 @@ extern "C" int uninit()
 }
 
 
-
 extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 					   uint8_t* src[4], int src_stride[4],
 					   int width, int height)
@@ -59,11 +58,11 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	if(input.empty()) return 1;
 	
 	input.show("input");
-
+	
 	
 	Image output(width, height, dst[0], dst_stride[0]);			// point the 'output' image to the FFMPEG data array	
 	output.copyFromImage(input);								// copy input into the output memory
-	output.text("unlogo", 20, 20);
+	output.text("pixelize", 20, 20);
 	
 	CV_Assert(&output.cvImage.data[0]==&dst[0][0]);				// Make sure output still points to dst
 	
@@ -73,5 +72,3 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	framenum++;
 	return 0;
 }
-
-

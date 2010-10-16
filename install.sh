@@ -6,15 +6,10 @@ SCRIPT=$(cd ${0%/*} && echo $PWD/${0##*/})
 PREFIX=`dirname $SCRIPT`
 
 
-PATH=$PREFIX/bin:$PATH
-LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
-CFLAGS="-I$PREFIX/include"
-LDFLAGS="-L$PREFIX/lib"
-
-export CFLAGS
-export LDFLAGS
-export LD_LIBRARY_PATH
-export PATH
+export PATH=$PREFIX/bin:$PATH
+export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
+export CFLAGS="-I$PREFIX/include"
+export LDFLAGS="-L$PREFIX/lib"
 
 clear
 echo -------------------------
@@ -33,55 +28,55 @@ mkdir -p $PREFIX/dist
 cd $PREFIX/dist
 
 
-# clear
-# echo -------------------------
-# echo "Downloading and building Jasper"
-# echo -------------------------
-# curl -O http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
-# unzip jasper-1.900.1.zip
-# cd jasper-1.900.1
-# ./configure --prefix=$PREFIX
-# make
-# make install
-# cd $PREFIX/dist
-# 
-# 
-# clear
-# echo -------------------------
-# echo "Downloading and building JPEG"
-# echo -------------------------
-# curl -O http://www.ijg.org/files/jpegsrc.v8b.tar.gz
-# tar -xvf jpegsrc.v8b.tar.gz
-# cd jpeg-8b
-# ./configure --enable-shared=no --prefix=$PREFIX
-# make
-# make install
-# cd $PREFIX/dist
-# 
-# 
-# clear
-# echo -------------------------
-# echo "Downloading and building PNG"
-# echo -------------------------
-# curl -O ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.4.tar.gz
-# tar -xvf libpng-1.4.4.tar.gz
-# cd libpng-1.4.4
-# ./configure --enable-shared=no --prefix=$PREFIX
-# make
-# make install
-# cd $PREFIX/dist
-# 
-# 
-# clear
-# echo -------------------------
-# echo "Downloading and building TIFF"
-# echo -------------------------
-# curl -L -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
-# tar -xvf tiff-3.9.4.tar.gz
-# cd tiff-3.9.4
-# ./configure --enable-shared=no --prefix=$PREFIX
-# make && make install
-# cd $PREFIX/dist
+clear
+echo -------------------------
+echo "Downloading and building Jasper"
+echo -------------------------
+curl -O http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
+unzip jasper-1.900.1.zip
+cd jasper-1.900.1
+./configure --prefix=$PREFIX
+make
+make install
+cd $PREFIX/dist
+
+
+clear
+echo -------------------------
+echo "Downloading and building JPEG"
+echo -------------------------
+curl -O http://www.ijg.org/files/jpegsrc.v8b.tar.gz
+tar -xvf jpegsrc.v8b.tar.gz
+cd jpeg-8b
+./configure --enable-shared=no --prefix=$PREFIX
+make
+make install
+cd $PREFIX/dist
+
+
+clear
+echo -------------------------
+echo "Downloading and building PNG"
+echo -------------------------
+curl -O ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.4.tar.gz
+tar -xvf libpng-1.4.4.tar.gz
+cd libpng-1.4.4
+./configure --enable-shared=no --prefix=$PREFIX
+make
+make install
+cd $PREFIX/dist
+
+
+clear
+echo -------------------------
+echo "Downloading and building TIFF"
+echo -------------------------
+curl -L -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
+tar -xvf tiff-3.9.4.tar.gz
+cd tiff-3.9.4
+./configure --enable-shared=no --prefix=$PREFIX
+make && make install
+cd $PREFIX/dist
 
 
 clear
@@ -227,7 +222,7 @@ echo -------------------------
 svn co -r 3713 https://code.ros.org/svn/opencv/trunk/opencv 
 cd opencv
 patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
-$PREFIX/bin/cmake -G "Unix Makefiles" -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
+$PREFIX/bin/cmake -G "Unix Makefiles" -D OPENCV_BUILD_3RDPARTY_LIBS=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make && make install
 cd $PREFIX/dist
 

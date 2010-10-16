@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F29252E1263F58500792190 /* framehack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F29252D1263F58500792190 /* framehack.cpp */; };
+		1F2925551263F74C00792190 /* newFilter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FFD996E125FD1DE0047A8CB /* newFilter.cpp */; };
 		1F3336D6125F9C5A004F6077 /* fhUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F3336D2125F9C5A004F6077 /* fhUtils.cpp */; };
 		1F3336D7125F9C5A004F6077 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F3336D4125F9C5A004F6077 /* Image.cpp */; };
 		1F3336E0125F9C8B004F6077 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3336DA125F9C8B004F6077 /* Cocoa.framework */; };
@@ -61,6 +63,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1F29252D1263F58500792190 /* framehack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = framehack.cpp; path = ../../src/framehack.cpp; sourceTree = SOURCE_ROOT; };
 		1F3336D2125F9C5A004F6077 /* fhUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fhUtils.cpp; path = ../../src/fhUtils.cpp; sourceTree = SOURCE_ROOT; };
 		1F3336D3125F9C5A004F6077 /* fhUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fhUtils.h; path = ../../src/fhUtils.h; sourceTree = SOURCE_ROOT; };
 		1F3336D4125F9C5A004F6077 /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Image.cpp; path = ../../src/Image.cpp; sourceTree = SOURCE_ROOT; };
@@ -83,7 +86,7 @@
 		1F3337AB125F9C94004F6077 /* libopencv_objdetect.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_objdetect.a; path = ../../lib/libopencv_objdetect.a; sourceTree = SOURCE_ROOT; };
 		1FFD9855125FD08C0047A8CB /* libnewFilter.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libnewFilter.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FFD996E125FD1DE0047A8CB /* newFilter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = newFilter.cpp; path = src/newFilter.cpp; sourceTree = SOURCE_ROOT; };
-		8DD76F6C0486A84900D96B5E /* newFilter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = newFilter; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DD76F6C0486A84900D96B5E /* framehackDebug */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = framehackDebug; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* newFilter.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = newFilter.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				08FB7795FE84155DC02AAC07 /* Source */,
+				1F2925471263F6D200792190 /* Shells */,
 				1F3336D9125F9C8B004F6077 /* External Frameworks and Libraries */,
 				1F3337A1125F9C94004F6077 /* Libraries */,
 				C6859E8C029090F304C91782 /* Documentation */,
@@ -164,10 +168,18 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DD76F6C0486A84900D96B5E /* newFilter */,
+				8DD76F6C0486A84900D96B5E /* framehackDebug */,
 				1FFD9855125FD08C0047A8CB /* libnewFilter.dylib */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1F2925471263F6D200792190 /* Shells */ = {
+			isa = PBXGroup;
+			children = (
+				1F29252D1263F58500792190 /* framehack.cpp */,
+			);
+			name = Shells;
 			sourceTree = "<group>";
 		};
 		1F3336D9125F9C8B004F6077 /* External Frameworks and Libraries */ = {
@@ -239,9 +251,9 @@
 			productReference = 1FFD9855125FD08C0047A8CB /* libnewFilter.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		8DD76F620486A84900D96B5E /* filterTest */ = {
+		8DD76F620486A84900D96B5E /* framehack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "filterTest" */;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "framehack" */;
 			buildPhases = (
 				8DD76F640486A84900D96B5E /* Sources */,
 				8DD76F660486A84900D96B5E /* Frameworks */,
@@ -251,10 +263,10 @@
 			);
 			dependencies = (
 			);
-			name = filterTest;
+			name = framehack;
 			productInstallPath = "$(HOME)/bin";
 			productName = newFilter;
-			productReference = 8DD76F6C0486A84900D96B5E /* newFilter */;
+			productReference = 8DD76F6C0486A84900D96B5E /* framehackDebug */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -276,7 +288,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8DD76F620486A84900D96B5E /* filterTest */,
+				8DD76F620486A84900D96B5E /* framehack */,
 				1FFD9854125FD08C0047A8CB /* newFilter */,
 			);
 		};
@@ -289,6 +301,7 @@
 			files = (
 				1FFD9859125FD09F0047A8CB /* fhUtils.cpp in Sources */,
 				1FFD985A125FD09F0047A8CB /* Image.cpp in Sources */,
+				1F2925551263F74C00792190 /* newFilter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +312,7 @@
 				1F3336D6125F9C5A004F6077 /* fhUtils.cpp in Sources */,
 				1F3336D7125F9C5A004F6077 /* Image.cpp in Sources */,
 				1FFD996F125FD1DE0047A8CB /* newFilter.cpp in Sources */,
+				1F29252E1263F58500792190 /* framehack.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,7 +334,7 @@
 					"\"$(SRCROOT)/../../dist/opencv/3rdparty/lib\"",
 					"\"$(SRCROOT)/../../lib\"",
 				);
-				PRODUCT_NAME = newFilter;
+				PRODUCT_NAME = framehackDebug;
 			};
 			name = Debug;
 		};
@@ -336,7 +350,7 @@
 					"\"$(SRCROOT)/../../dist/opencv/3rdparty/lib\"",
 					"\"$(SRCROOT)/../../lib\"",
 				);
-				PRODUCT_NAME = newFilter;
+				PRODUCT_NAME = framehack;
 			};
 			name = Release;
 		};
@@ -421,7 +435,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "filterTest" */ = {
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "framehack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB923208733DC60010E9CD /* Debug */,

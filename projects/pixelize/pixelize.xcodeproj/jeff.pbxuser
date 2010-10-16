@@ -1,0 +1,190 @@
+// !$*UTF8*$!
+{
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 1F292C4C1266279300792190 /* ffmpeg */;
+		activeTarget = D2AAC0620554660B00DB518D /* pixelize */;
+		addToTargets = (
+			D2AAC0620554660B00DB518D /* pixelize */,
+		);
+		codeSenseManager = 1F2927F81264186100792190 /* Code sense */;
+		executables = (
+			1F292C4C1266279300792190 /* ffmpeg */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					559,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					671,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					631,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 308938888;
+			PBXWorkspaceStateSaveDate = 308938888;
+		};
+		perUserProjectItems = {
+			1FA77BB9126A088E001517EA /* PBXTextBookmark */ = 1FA77BB9126A088E001517EA /* PBXTextBookmark */;
+			1FA77BE4126A09A4001517EA /* PBXTextBookmark */ = 1FA77BE4126A09A4001517EA /* PBXTextBookmark */;
+		};
+		sourceControlManager = 1F2927F71264186100792190 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	1F2927F41264186100792190 /* pixelize.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1099, 975}}";
+			sepNavSelRange = "{900, 0}";
+			sepNavVisRange = "{748, 415}";
+		};
+	};
+	1F2927F71264186100792190 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	1F2927F81264186100792190 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	1F292C4C1266279300792190 /* ffmpeg */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+			YES,
+			YES,
+			YES,
+			YES,
+		);
+		argumentStrings = (
+			"-i resources/Foucault.mp4",
+			"-qscale 2",
+			"-vf plugin=build/Debug/libpixelize.dylib:blah",
+			"-y out.mov",
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+			"PBXLSLaunchAction-0" = {
+				PBXLSLaunchAction = 0;
+				PBXLSLaunchStartAction = 1;
+				PBXLSLaunchStdioStyle = 2;
+				PBXLSLaunchStyle = 0;
+				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
+				displayName = "Executable Runner";
+				environment = {
+				};
+				identifier = com.apple.Xcode.launch.runConfig;
+				remoteHostInfo = "";
+				startActionInfo = "";
+			};
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		launchableReference = 1F292C4D1266279300792190 /* framehack */;
+		libgmallocEnabled = 0;
+		name = ffmpeg;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		startupPath = "<<ProjectDirectory>>";
+	};
+	1F292C4D1266279300792190 /* framehack */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = "compiled.mach-o.executable";
+		name = framehack;
+		path = ../../bin/ffmpeg;
+		sourceTree = SOURCE_ROOT;
+	};
+	1FA77BB9126A088E001517EA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1F2927F41264186100792190 /* pixelize.cpp */;
+		name = "pixelize.cpp: 51";
+		rLen = 0;
+		rLoc = 900;
+		rType = 0;
+		vrLen = 415;
+		vrLoc = 748;
+	};
+	1FA77BE4126A09A4001517EA /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1F2927F41264186100792190 /* pixelize.cpp */;
+		name = "pixelize.cpp: 51";
+		rLen = 0;
+		rLoc = 900;
+		rType = 0;
+		vrLen = 1368;
+		vrLoc = 228;
+	};
+	D2AAC0620554660B00DB518D /* pixelize */ = {
+		activeExec = 0;
+	};
+}
