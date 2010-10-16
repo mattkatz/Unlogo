@@ -1,19 +1,18 @@
-UNLOGO
+FRAMEHACK
 By Jeff Crouse
 jefftimesten at gmail dot com
 
 This software is licensed under the GNU-GPL version 3 or later.
 
-UNLOGO is free software; you can redistribute it and/or
+FRAMEHACK is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation; either
 version 3 of the License, or (at your option) any later version.
 
-UNLOGO is distributed in the hope that it will be useful,
+FRAMEHACK is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
-
 
 
 REQUIREMENTS
@@ -24,6 +23,16 @@ REQUIREMENTS
 BUILDING
 ========================
 
+Open a terminal and type
+
+./install.sh
+
+This will install all of the programs and libraries that you will need to use framehack.  
+
+
+INSTRUCTIONS FOR USE
+========================
+
 An Unlogo filter is simply a BSD C Library that contains 3 functions: 
 
 int init(const char* argstr)
@@ -32,12 +41,7 @@ int process(uint8_t* dst[4], int dst_stride[4],
 					   uint8_t* src[4], int src_stride[4],
 					   int width, int height)
 
-UNLOGO filter uses the 'plugin' AVFilter for FFMPEG written by Michael Droese.  This greatly simplifies and speeds up the process of making a filter by allowing the user to reference a shared object when running FFMPEG rather than having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.   
-
-
-
-INSTRUCTIONS FOR USE
-========================
+UNLOGO filter uses the 'plugin' AVFilter for FFMPEG written by Michael Droese.  This greatly simplifies and speeds up the process of making a filter by allowing the user to reference a shared object when running FFMPEG rather than having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.  
 
 To use the filter, make sure to use the version of FFMPEG that you just built, and then do something like this: 
 

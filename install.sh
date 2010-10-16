@@ -209,7 +209,7 @@ echo -------------------------
 svn co -r 25296 svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg 
 cd ffmpeg
 patch -p0 -i $PREFIX/share/patches/ffmpeg_framehack_rev25296.patch
-./configure --prefix=$PREFIX --arch=x86 --enable-gpl --disable-doc --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-libvorbis --enable-libxvid --enable-version3 --enable-pthreads --enable-libfaac --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libxvid --enable-x11grab
+./configure --prefix=$PREFIX --enable-gpl --disable-doc --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-libvorbis --enable-libxvid --enable-version3 --enable-pthreads --enable-libfaac --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libxvid --enable-x11grab
 make && make install
 cd $PREFIX/dist
 
@@ -222,7 +222,7 @@ echo -------------------------
 svn co -r 3713 https://code.ros.org/svn/opencv/trunk/opencv 
 cd opencv
 patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
-$PREFIX/bin/cmake -G "Unix Makefiles" -D OPENCV_BUILD_3RDPARTY_LIBS=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
+$PREFIX/bin/cmake -G "Unix Makefiles" -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make && make install
 cd $PREFIX/dist
 

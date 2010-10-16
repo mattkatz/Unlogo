@@ -8,16 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1F2927F61264186100792190 /* pixelize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F2927F41264186100792190 /* pixelize.cpp */; };
-		1F292804126418AC00792190 /* liblibjasper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F2927FA126418AC00792190 /* liblibjasper.a */; };
-		1F292805126418AC00792190 /* liblibjpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F2927FB126418AC00792190 /* liblibjpeg.a */; };
-		1F292806126418AC00792190 /* liblibpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F2927FC126418AC00792190 /* liblibpng.a */; };
-		1F292807126418AC00792190 /* liblibtiff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F2927FD126418AC00792190 /* liblibtiff.a */; };
-		1F292808126418AC00792190 /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F2927FE126418AC00792190 /* libopencv_highgui.a */; };
-		1F292809126418AC00792190 /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F2927FF126418AC00792190 /* libopencv_core.a */; };
-		1F29280A126418AC00792190 /* libopencv_calib3d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F292800126418AC00792190 /* libopencv_calib3d.a */; };
-		1F29280B126418AC00792190 /* libopencv_imgproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F292801126418AC00792190 /* libopencv_imgproc.a */; };
-		1F29280C126418AC00792190 /* libopencv_features2d.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F292802126418AC00792190 /* libopencv_features2d.a */; };
-		1F29280D126418AC00792190 /* libopencv_objdetect.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F292803126418AC00792190 /* libopencv_objdetect.a */; };
 		1F292815126418B300792190 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F29280F126418B300792190 /* Cocoa.framework */; };
 		1F292816126418B300792190 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F292810126418B300792190 /* CoreVideo.framework */; };
 		1F292817126418B300792190 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F292811126418B300792190 /* Foundation.framework */; };
@@ -32,16 +22,6 @@
 
 /* Begin PBXFileReference section */
 		1F2927F41264186100792190 /* pixelize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pixelize.cpp; sourceTree = "<group>"; };
-		1F2927FA126418AC00792190 /* liblibjasper.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibjasper.a; path = ../../dist/opencv/3rdparty/lib/liblibjasper.a; sourceTree = SOURCE_ROOT; };
-		1F2927FB126418AC00792190 /* liblibjpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibjpeg.a; path = ../../dist/opencv/3rdparty/lib/liblibjpeg.a; sourceTree = SOURCE_ROOT; };
-		1F2927FC126418AC00792190 /* liblibpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibpng.a; path = ../../dist/opencv/3rdparty/lib/liblibpng.a; sourceTree = SOURCE_ROOT; };
-		1F2927FD126418AC00792190 /* liblibtiff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblibtiff.a; path = ../../dist/opencv/3rdparty/lib/liblibtiff.a; sourceTree = SOURCE_ROOT; };
-		1F2927FE126418AC00792190 /* libopencv_highgui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_highgui.a; path = ../../lib/libopencv_highgui.a; sourceTree = SOURCE_ROOT; };
-		1F2927FF126418AC00792190 /* libopencv_core.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_core.a; path = ../../lib/libopencv_core.a; sourceTree = SOURCE_ROOT; };
-		1F292800126418AC00792190 /* libopencv_calib3d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_calib3d.a; path = ../../lib/libopencv_calib3d.a; sourceTree = SOURCE_ROOT; };
-		1F292801126418AC00792190 /* libopencv_imgproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_imgproc.a; path = ../../lib/libopencv_imgproc.a; sourceTree = SOURCE_ROOT; };
-		1F292802126418AC00792190 /* libopencv_features2d.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_features2d.a; path = ../../lib/libopencv_features2d.a; sourceTree = SOURCE_ROOT; };
-		1F292803126418AC00792190 /* libopencv_objdetect.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libopencv_objdetect.a; path = ../../lib/libopencv_objdetect.a; sourceTree = SOURCE_ROOT; };
 		1F29280F126418B300792190 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		1F292810126418B300792190 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		1F292811126418B300792190 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -60,16 +40,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F292804126418AC00792190 /* liblibjasper.a in Frameworks */,
-				1F292805126418AC00792190 /* liblibjpeg.a in Frameworks */,
-				1F292806126418AC00792190 /* liblibpng.a in Frameworks */,
-				1F292807126418AC00792190 /* liblibtiff.a in Frameworks */,
-				1F292808126418AC00792190 /* libopencv_highgui.a in Frameworks */,
-				1F292809126418AC00792190 /* libopencv_core.a in Frameworks */,
-				1F29280A126418AC00792190 /* libopencv_calib3d.a in Frameworks */,
-				1F29280B126418AC00792190 /* libopencv_imgproc.a in Frameworks */,
-				1F29280C126418AC00792190 /* libopencv_features2d.a in Frameworks */,
-				1F29280D126418AC00792190 /* libopencv_objdetect.a in Frameworks */,
 				1F292815126418B300792190 /* Cocoa.framework in Frameworks */,
 				1F292816126418B300792190 /* CoreVideo.framework in Frameworks */,
 				1F292817126418B300792190 /* Foundation.framework in Frameworks */,
@@ -116,16 +86,6 @@
 		1F2927F9126418AC00792190 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				1F2927FA126418AC00792190 /* liblibjasper.a */,
-				1F2927FB126418AC00792190 /* liblibjpeg.a */,
-				1F2927FC126418AC00792190 /* liblibpng.a */,
-				1F2927FD126418AC00792190 /* liblibtiff.a */,
-				1F2927FE126418AC00792190 /* libopencv_highgui.a */,
-				1F2927FF126418AC00792190 /* libopencv_core.a */,
-				1F292800126418AC00792190 /* libopencv_calib3d.a */,
-				1F292801126418AC00792190 /* libopencv_imgproc.a */,
-				1F292802126418AC00792190 /* libopencv_features2d.a */,
-				1F292803126418AC00792190 /* libopencv_objdetect.a */,
 			);
 			name = Libraries;
 			sourceTree = SOURCE_ROOT;

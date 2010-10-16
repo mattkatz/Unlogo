@@ -270,6 +270,8 @@
 							<array>
 								<string>08FB7794FE84155DC02AAC07</string>
 								<string>08FB7795FE84155DC02AAC07</string>
+								<string>1F29280E126418B300792190</string>
+								<string>1F2927F9126418AC00792190</string>
 								<string>1AB674ADFE9D54B511CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FAAC04509CD000000102</string>
@@ -277,8 +279,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>6</integer>
-									<integer>1</integer>
+									<integer>14</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -316,7 +317,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1F2928DC126418F000792190</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Image.h</string>
+								<string>pixelize.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -324,15 +325,14 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1F2928DD126418F000792190</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Image.h</string>
+										<string>pixelize.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>1FA77C15126A0C84001517EA</string>
+										<string>1FA77D9D126A186E001517EA</string>
 										<key>history</key>
 										<array>
-											<string>1FA77C13126A0C84001517EA</string>
-											<string>1FA77C14126A0C84001517EA</string>
+											<string>1FA77D95126A143D001517EA</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -346,18 +346,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {910, 819}}</string>
+								<string>{{0, 0}, {910, 815}}</string>
 								<key>RubberWindowFrame</key>
 								<string>320 93 1160 935 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>819pt</string>
+							<string>815pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>70pt</string>
+							<string>74pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -371,7 +371,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {910, 43}}</string>
+										<string>{{10, 27}, {910, 47}}</string>
 										<key>RubberWindowFrame</key>
 										<string>320 93 1160 935 0 0 1680 1028 </string>
 									</dict>
@@ -455,11 +455,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>1FA77C02126A0BD4001517EA</string>
+				<string>1FA77D9E126A186E001517EA</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>1FA77C03126A0BD4001517EA</string>
+				<string>1FA77D9F126A186E001517EA</string>
 				<string>1F2928DC126418F000792190</string>
-				<string>1FA77C04126A0BD4001517EA</string>
+				<string>1FA77DA0126A186E001517EA</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -649,9 +649,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>1FA77C0B126A0BD4001517EA</string>
-		<string>1FA77C0C126A0BD4001517EA</string>
-		<string>/Users/jeff/Desktop/unlogo/projects/pixelize/pixelize.xcodeproj</string>
+		<string>/Users/jeff/Desktop/unlogo2/projects/pixelize/pixelize.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>320 93 1160 935 0 0 1680 1028 </string>
