@@ -62,31 +62,7 @@ namespace fh {
 	}
 
 	
-	vector<Mat> Image::pyramid(int maxLevel) 
-	{
-		vector<Mat> imagePyr;
-		buildPyramid(cvImage, imagePyr, maxLevel);
-		return imagePyr;
-	}
-	
-	//--------------------------------------------------
-	Mat Image::bw()
-	{
-		if(cvImage.channels()==1) return cvImage;
-		else {
-			Mat bwImage;
-			cvtColor(cvImage, bwImage, CV_RGB2GRAY);
-			return bwImage;
-		}
-	}
-	
-	//--------------------------------------------------
-	void Image::convert(int code) 
-	{
-		Mat tmp;
-		cvtColor(cvImage, tmp, code);
-		cvImage = tmp;	
-	}
+#pragma mark UTILITIES
 	
 	//--------------------------------------------------
 	int Image::open( const char* path )
@@ -99,12 +75,23 @@ namespace fh {
 		return 0;
 	}
 	
+	//--------------------------------------------------
+	void Image::show(const char* win_name)
+	{
+		imshow( win_name, cvImage );	
+	}
 	
+
+
+
+#pragma mark EFFECTS_AND_MANIPULATION
+
 	//--------------------------------------------------
 	void Image::equalizeHist() 
 	{
 		cv::equalizeHist(cvImage, cvImage);
 	}
+	
 	
 	//--------------------------------------------------
 	// TO DO:  this only works with 4-channel images
@@ -115,7 +102,7 @@ namespace fh {
 		
 		// Get intersection of 2 images
 		Rect intersection = Rect(loc, other.size()) & Rect(Point(0,0), size());
-								   
+		
 		// Get the sub-section of each image that can be written to.
 		Mat fg = other.cvImage(Rect(abs(intersection.x - loc.x), abs(intersection.y - loc.y), intersection.width, intersection.height));
 		Mat bg = cvImage(intersection);
@@ -139,7 +126,27 @@ namespace fh {
 		}
 	}
 	
-
+	//--------------------------------------------------
+	void Image::pixelize(int pixel_size) {
+		
+		Mat tmp;
+		cvImage.copyTo(tmp);
+		
+		for(int y=0; y<cvImage.size().height; y+=pixel_size)
+		{
+			for(int x=0; x<cvImage.size().width; x+=pixel_size)
+			{
+				int i = (y * cvImage.size().width + x) * cvImage.channels();
+				float r = cvImage.data[ i + 0 ];
+				float g = cvImage.data[ i + 1 ];
+				float b = cvImage.data[ i + 2 ];
+				rectangle(tmp, Point(x,y), Point(x+pixel_size, y+pixel_size), CV_RGB(r,g,b), CV_FILLED);
+			}
+		}
+		
+		tmp.copyTo(cvImage);
+	}
+	
 	//--------------------------------------------------
 	void Image::text(const char* text, int x, int y, double scale, Scalar color )
 	{
@@ -149,9 +156,22 @@ namespace fh {
 	}
 	
 	//--------------------------------------------------
-	void Image::show(const char* win_name)
+	Mat Image::bw()
 	{
-		imshow( win_name, cvImage );	
+		if(cvImage.channels()==1) return cvImage;
+		else {
+			Mat bwImage;
+			cvtColor(cvImage, bwImage, CV_RGB2GRAY);
+			return bwImage;
+		}
+	}
+	
+	//--------------------------------------------------
+	void Image::convert(int code) 
+	{
+		Mat tmp;
+		cvtColor(cvImage, tmp, code);
+		cvImage = tmp;	
 	}
 
 	
@@ -163,6 +183,14 @@ namespace fh {
 		return cvImage.empty();
 	}
 	
+	//--------------------------------------------------
+	vector<Mat> Image::pyramid(int maxLevel) 
+	{
+		vector<Mat> imagePyr;
+		buildPyramid(cvImage, imagePyr, maxLevel);
+		return imagePyr;
+	}
+
 	//--------------------------------------------------
 	Size Image::size()
 	{

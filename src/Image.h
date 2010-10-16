@@ -41,7 +41,9 @@ namespace fh {
 		void convert( int code );
 		void equalizeHist();
 		
+		
 		void drawIntoMe( Image &other, Point2f loc );
+		void pixelize(int pixelSize);
 		void show(const char* win_name);
 		Point2f opticalFlowAvg( const Image& prev, Point2f thresh );
 		Point2f opticalFlowAt( const Image& prev, Point2f pos );

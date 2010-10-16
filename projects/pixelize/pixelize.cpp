@@ -62,6 +62,8 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	
 	Image output(width, height, dst[0], dst_stride[0]);			// point the 'output' image to the FFMPEG data array	
 	output.copyFromImage(input);								// copy input into the output memory
+	output.pixelize(width/40.0);
+	
 	output.text("pixelize", 20, 20);
 	
 	CV_Assert(&output.cvImage.data[0]==&dst[0][0]);				// Make sure output still points to dst

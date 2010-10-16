@@ -146,8 +146,11 @@ echo -------------------------
 svn co -r 25296 svn://svn.ffmpeg.org/ffmpeg/trunk ffmpeg 
 cd ffmpeg
 patch -p0 -i $PREFIX/share/patches/ffmpeg_framehack_rev25296.patch
-./configure --prefix=$PREFIX --enable-gpl --disable-doc --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-libvorbis --enable-libxvid --enable-version3 --enable-pthreads --enable-libfaac --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libxvid --enable-x11grab
+./configure --disable-stripping --enable-debug=3 --prefix=$PREFIX --enable-gpl --disable-doc --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-libvorbis --enable-libxvid --enable-version3 --enable-pthreads --enable-libfaac --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libxvid --enable-x11grab
 make && make install
+cp ffmpeg_g $PREFIX/bin
+cp ffprobe_g $PREFIX/bin
+cp ffserver_g $PREFIX/bin
 cd $PREFIX/dist
 
 
