@@ -21,7 +21,7 @@ int framenum=0;
 extern "C" int init( const char* argstr )
 {
 	try {
-		log(LOG_LEVEL_DEBUG, "Welcome to unlogo, using OpenCV version %s (%d.%d.%d)\n",
+		log(LOG_LEVEL_DEBUG, "Welcome to framehack, using OpenCV version %s (%d.%d.%d)\n",
 			CV_VERSION, CV_MAJOR_VERSION, CV_MINOR_VERSION, CV_SUBMINOR_VERSION);
 		
 		// Parse arguments.

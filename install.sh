@@ -30,56 +30,6 @@ mkdir -p $PREFIX/dist
 cd $PREFIX/dist
 
 
-#clear
-# echo -------------------------
-# echo "Downloading and building Jasper"
-# echo -------------------------
-# curl -O http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
-# unzip jasper-1.900.1.zip
-# cd jasper-1.900.1
-# ./configure --prefix=$PREFIX
-# make
-# make install
-# cd $PREFIX/dist
-# 
-# 
-# clear
-# echo -------------------------
-# echo "Downloading and building JPEG"
-# echo -------------------------
-# curl -O http://www.ijg.org/files/jpegsrc.v8b.tar.gz
-# tar -xvf jpegsrc.v8b.tar.gz
-# cd jpeg-8b
-# ./configure --enable-shared=no --prefix=$PREFIX
-# make
-# make install
-# cd $PREFIX/dist
-# 
-# 
-# clear
-# echo -------------------------
-# echo "Downloading and building PNG"
-# echo -------------------------
-# curl -O ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.4.tar.gz
-# tar -xvf libpng-1.4.4.tar.gz
-# cd libpng-1.4.4
-# ./configure --enable-shared=no --prefix=$PREFIX
-# make
-# make install
-# cd $PREFIX/dist
-# 
-# 
-# clear
-# echo -------------------------
-# echo "Downloading and building TIFF"
-# echo -------------------------
-# curl -L -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
-# tar -xvf tiff-3.9.4.tar.gz
-# cd tiff-3.9.4
-# ./configure --enable-shared=no --prefix=$PREFIX
-# make && make install
-# cd $PREFIX/dist
-
 
 clear
 echo -------------------------
@@ -189,21 +139,6 @@ make && make install clean
 cd $PREFIX/dist
 
 
-
-clear
-echo -------------------------
-echo "Checking out and building CMake"
-echo -------------------------
-curl -L -O http://www.cmake.org/files/v2.8/cmake-2.8.2.tar.gz
-tar -xvf cmake-2.8.2.tar.gz
-cd cmake-2.8.2
-./configure --prefix=$PREFIX
-make && make install clean
-cd $PREFIX/dist
-
-
-
-
 clear
 echo -------------------------
 echo "Checking out and building FFMPEG"
@@ -214,6 +149,74 @@ patch -p0 -i $PREFIX/share/patches/ffmpeg_framehack_rev25296.patch
 ./configure --prefix=$PREFIX --enable-gpl --disable-doc --enable-libmp3lame --enable-libx264 --enable-nonfree --enable-libvorbis --enable-libxvid --enable-version3 --enable-pthreads --enable-libfaac --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libtheora --enable-libxvid --enable-x11grab
 make && make install
 cd $PREFIX/dist
+
+
+
+#clear
+# echo -------------------------
+# echo "Downloading and building Jasper"
+# echo -------------------------
+# curl -O http://www.ece.uvic.ca/~mdadams/jasper/software/jasper-1.900.1.zip
+# unzip jasper-1.900.1.zip
+# cd jasper-1.900.1
+# ./configure --prefix=$PREFIX
+# make
+# make install
+# cd $PREFIX/dist
+# 
+# 
+# clear
+# echo -------------------------
+# echo "Downloading and building JPEG"
+# echo -------------------------
+# curl -O http://www.ijg.org/files/jpegsrc.v8b.tar.gz
+# tar -xvf jpegsrc.v8b.tar.gz
+# cd jpeg-8b
+# ./configure --enable-shared=no --prefix=$PREFIX
+# make
+# make install
+# cd $PREFIX/dist
+# 
+# 
+# clear
+# echo -------------------------
+# echo "Downloading and building PNG"
+# echo -------------------------
+# curl -O ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng-1.4.4.tar.gz
+# tar -xvf libpng-1.4.4.tar.gz
+# cd libpng-1.4.4
+# ./configure --enable-shared=no --prefix=$PREFIX
+# make
+# make install
+# cd $PREFIX/dist
+# 
+# 
+# clear
+# echo -------------------------
+# echo "Downloading and building TIFF"
+# echo -------------------------
+# curl -L -O ftp://ftp.remotesensing.org/pub/libtiff/tiff-3.9.4.tar.gz
+# tar -xvf tiff-3.9.4.tar.gz
+# cd tiff-3.9.4
+# ./configure --enable-shared=no --prefix=$PREFIX
+# make && make install
+# cd $PREFIX/dist
+
+
+#test if cmake is installed.
+type -P cmake &>/dev/null || { 
+clear
+echo -------------------------
+echo "Checking out and building CMake"
+echo -------------------------
+curl -L -O http://www.cmake.org/files/v2.8/cmake-2.8.2.tar.gz
+tar -xvf cmake-2.8.2.tar.gz
+cd cmake-2.8.2
+./configure --prefix=$PREFIX
+make && make install clean
+cd $PREFIX/dist;
+}
+
 
 # HACK ALERT!
 # OpenCV ships with a bunch of libraries (Jasper, Jpeg, PNG, TIFF) in a folder called "3rdParty"
@@ -239,10 +242,10 @@ clear
 echo -------------------------
 echo "Checking out and building OpenCV"
 echo -------------------------
-svn co https://code.ros.org/svn/opencv/tags/2.1/opencv opencv2.1
+svn -r 3713 co https://code.ros.org/svn/opencv/trunk/opencv opencv2.1
 cd opencv2.1
-#patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
-$PREFIX/bin/cmake -G "Unix Makefiles" -D OPENCV_BUILD_3RDPARTY_LIBS=FALSE -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
+patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
+cmake -G "Unix Makefiles" -D OPENCV_BUILD_3RDPARTY_LIBS=FALSE -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make && make install
 cd $PREFIX/dist
 
