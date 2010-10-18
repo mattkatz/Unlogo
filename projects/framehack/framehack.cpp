@@ -19,6 +19,30 @@
 #include <cvaux.h>
 #include <dlfcn.h>
 
+/*
+vector<string> split(const string& str, const string& delimiters)
+{
+	vector<string> tokens;
+	
+    // Skip delimiters at beginning.
+    string::size_type lastPos = str.find_first_not_of(delimiters, 0);
+    // Find first "non-delimiter".
+    string::size_type pos     = str.find_first_of(delimiters, lastPos);
+	
+    while (string::npos != pos || string::npos != lastPos)
+    {
+        // Found a token, add it to the vector.
+        tokens.push_back(str.substr(lastPos, pos - lastPos));
+        // Skip delimiters.  Note the "not_of"
+        lastPos = str.find_first_not_of(delimiters, pos);
+        // Find next "non-delimiter"
+        pos = str.find_first_of(delimiters, lastPos);
+    }
+	
+	return tokens;
+}
+*/
+
 int main(int argc, char * const argv[])
 {
 	if(argc<3)
@@ -31,6 +55,7 @@ int main(int argc, char * const argv[])
 	char* pluginPath = argv[1];
 	char* videoPath = argv[2];
 	char* args = (argc>3) ? argv[3] : NULL;
+	//vector<string> strArgs = split(args, ":");
 	
 	std::cout << "[framehack] Loading Plugin: " << pluginPath << std::endl;
 	
