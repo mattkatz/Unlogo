@@ -2,10 +2,12 @@
  *  unlogo.cpp
  *  unlogo
  *
- *  Created by Jeffrey Crouse
+ *  Created by Jeffrey Crouse on 10/18/10.
  *  Copyright 2010 Eyebeam. All rights reserved.
  *
  */
+
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -105,7 +107,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	input.show("input");
 #endif
 	
-
+	
 	bool doMatching = framenum==0 || framenum%MATCHING_DELAY==0 || detected_logos.size()==0;
 	if( doMatching )
 	{
@@ -114,16 +116,16 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 		input.findDescriptors("SURF");
 		
 		detected_logos.clear();
-
+		
 		// Make a MatchSet for each frame/logo pair
 		for(int i=0; i<(int)logos.size(); i++)
 		{
 			vector<int> matches;
-			logos[i].logo.matchTo( input, matches );
+			//logos[i].logo.matchTo( input, matches );
 			
-			Mat img_corr;
-			drawMatches(input.bw(), input.features, logos[i].logo.bw(), logos[i].logo.features, matches, img_corr);
-			imshow(logos[i].name, img_corr);
+			//Mat img_corr;
+			//drawMatches(input.bw(), input.features, logos[i].logo.bw(), logos[i].logo.features, matches, img_corr);
+			//imshow(logos[i].name, img_corr);
 			
 		}
 		
@@ -136,7 +138,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	{
 		
 	}
-
+	
 	
 	Image output(width, height, dst[0], dst_stride[0]);			// point the 'output' image to the FFMPEG data array	
 	output.copyFromImage(input);								// copy input into the output memory
@@ -153,51 +155,3 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	framenum++;
 	return 0;
 }
-
-
-
-#ifdef DEBUG
-int main(int argc, char * const argv[])
-{
-	// Imitating the arguments that FFMPEG gives us through AVFilter.
-	// see process() in unlogo.cpp
-	int width, height;
-	uint8_t* src[4];
-	uint8_t* dst[4];
-	int src_stride[4];
-	int dst_stride[4];
-	
-	// Open the video
-	cv::VideoCapture cap(argv[1]);
-	cap.set(CV_CAP_PROP_CONVERT_RGB, 1);
-	
-    if(!cap.isOpened())  
-	{
-		std::cout << "Can not open video source" << std::endl;
-        return -1;
-	}
-	width = cap.get(CV_CAP_PROP_FRAME_WIDTH);
-	height = cap.get(CV_CAP_PROP_FRAME_HEIGHT);
-	dst[0]= new uint8_t[ width* height * 3 ];
-	dst_stride[0] = width * 3;
-	
-	init(argv[2]);													// from unlogo.cpp
-	
-	cv::Mat frame;
-	for(;;)
-    {
-        cap >> frame; // get a new frame from camera
-		if(frame.empty()) break;
-		
-		src[0] = frame.data;
-		src_stride[0] = frame.step;
-		
-		process(dst, dst_stride, src, src_stride, width, height);  // from unlogo.cpp
-	}
-	
-	uninit();														// from unlogo.cpp
-	
-	std::cout << "Exiting ..." << std::endl;
-	return 0;
-}
-#endif

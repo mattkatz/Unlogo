@@ -8,7 +8,6 @@ rm -rf $PREFIX/bin
 rm -rf $PREFIX/lib
 rm -rf $PREFIX/doc
 rm -rf $PREFIX/include
-rm -rf $PREFIX/dist
 rm -rf $PREFIX/man
 rm -rf $PREFIX/share/doc
 rm -rf $PREFIX/share/man
