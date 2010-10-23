@@ -236,6 +236,7 @@
 					"\"$(SDKROOT)//Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_ASM_KEYWORD = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -250,6 +251,7 @@
 					"\"$(SDKROOT)//Developer/SDKs/MacOSX10.6.sdk/usr/lib\"",
 					"\"$(SRCROOT)/../../dist/opencv2.1/3rdparty/lib\"",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = unlogo;
 			};
 			name = Debug;
@@ -264,6 +266,7 @@
 					"$(inherited)",
 					"\"$(SDKROOT)//Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks\"",
 				);
+				GCC_ENABLE_ASM_KEYWORD = YES;
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/lib;
 				LIBRARY_SEARCH_PATHS = (
@@ -272,6 +275,7 @@
 					"\"$(SDKROOT)//Developer/SDKs/MacOSX10.6.sdk/usr/lib\"",
 					"\"$(SRCROOT)/../../dist/opencv2.1/3rdparty/lib\"",
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = unlogo;
 			};
 			name = Release;
