@@ -7,6 +7,7 @@ PREFIX=`dirname $SCRIPT`
 rm -rf $PREFIX/bin
 rm -rf $PREFIX/lib
 rm -rf $PREFIX/doc
+rm -rf $PREFIX/dist
 rm -rf $PREFIX/include
 rm -rf $PREFIX/man
 rm -rf $PREFIX/share/doc
