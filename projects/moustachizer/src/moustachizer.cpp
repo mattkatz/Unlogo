@@ -7,6 +7,8 @@
  *
  */
 
+#define FHDEBUG
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
@@ -39,7 +41,7 @@ extern "C" int init( const char* argstr )
 		return -1;
 	}
 	
-	moustache.open("resources/moustache.png");
+	moustache.open("data/moustache.png");
 	
 	return 0;
 }
@@ -58,13 +60,13 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	
 	input.setData( width, height, src[0], src_stride[0]);
 	input.convert( CV_RGB2BGR );
+	
 #ifdef FHDEBUG
 	input.show("input");
 #endif
 	
 	gray = Image( input );
 	gray.convert(CV_RGB2GRAY);
-	input.convert(CV_RGB2RGBA);
 	gray.equalizeHist();
 	faces.clear();
 	faceFinder.detectMultiScale( gray.cvImage, faces,
@@ -98,15 +100,19 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 								   ,
 								   Size(30, 30) );
 		
-		if(eyes.size()>0)
+		//if(eyes.size()>0)
 		{
 			Point2f pos = center;
 			pos.x -= moustache.width() / 2.;
-			pos.y += radius/4.0;
-			Image scaledMoustache;
+			pos.y += radius / 4.0;
+			//Image scaledMoustache;
 			
-			resize(moustache.cvImage, scaledMoustache.cvImage, Size(radius, radius/2.));
-			input.drawIntoMe(scaledMoustache, pos);
+			//resize(moustache.cvImage, scaledMoustache.cvImage, Size(radius, radius/2.));
+			cout << "drawing moustache at " << pos.x << ", " << pos.y << endl;
+
+			input.convert(CV_RGB2RGBA);
+			input.drawIntoMe(moustache, pos);
+			input.convert(CV_RGBA2RGB);	
 		}
 		
         for(vector<Rect>::const_iterator eye = eyes.begin(); eye != eyes.end(); eye++ )
@@ -117,8 +123,6 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
             circle( input.cvImage, center, radius, CV_RGB(0,255,0), 3, 8, 0 );
         }
     }
-	
-	input.convert(CV_RGBA2RGB);	
 	
 	output.setData( width, height, dst[0], dst_stride[0] );
 	output.copyFromImage(input);								// copy input into the output memory

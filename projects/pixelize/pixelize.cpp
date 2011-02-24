@@ -69,6 +69,7 @@ extern "C" int process( uint8_t* dst[4], int dst_stride[4],
 	CV_Assert(&output.cvImage.data[0]==&dst[0][0]);				// Make sure output still points to dst
 	
 	output.show("output");
+	
 	waitKey(3);	// needed to update windows.
 	
 	framenum++;

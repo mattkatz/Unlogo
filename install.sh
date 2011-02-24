@@ -251,7 +251,7 @@ echo -------------------------
 svn -r 4374 co https://code.ros.org/svn/opencv/trunk/opencv opencv2.2
 cd opencv2.2
 #patch -p0 -i $PREFIX/share/patches/opencv_framehack_rev3713.patch
-cmake -G "Unix Makefiles" -D CMAKE_OSX_ARCHITECTURES="i386;x86_64" -D OPENCV_BUILD_3RDPARTY_LIBS=FALSE -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
+cmake -G "Unix Makefiles" -D CMAKE_OSX_ARCHITECTURES="i386;x86_64" -D BUILD_EXAMPLES=OFF -D BUILD_NEW_PYTHON_SUPPORT=OFF -D BUILD_TESTS=OFF -D BUILD_SHARED_LIBS=OFF -D CMAKE_BUILD_TYPE=Debug -D CMAKE_INSTALL_PREFIX=$PREFIX .
 make && make install
 cd $PREFIX/dist
 

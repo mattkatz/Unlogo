@@ -98,7 +98,10 @@ namespace fh {
 	// This should be fixed at some point.
 	void Image::drawIntoMe( Image &other, Point2f loc )
 	{
-		if(loc.x > width() || loc.y > height()) return;
+		if(loc.x > width() || loc.y > height()) {
+			cout << "ERROR" << endl;
+			return;
+		}
 		
 		// Get intersection of 2 images
 		Rect intersection = Rect(loc, other.size()) & Rect(Point(0,0), size());
