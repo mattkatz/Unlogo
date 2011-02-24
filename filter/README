@@ -1,9 +1,0 @@
-
-* The directory 'ffmpeg' includes the plugin filter. To compile it just run
-  /configure as usual.
-
-* The directory 'vfilter_plugin' includes the implementation of the logo 
-  detection filter. OpenCV needs to be installed to compile it.
-
-ffmpeg -qscale 2 -i IMG_0092.MOV -vf plugin=./logo.so:Dior.jpg -y out.mov
-

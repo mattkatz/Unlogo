@@ -1,1 +1,0 @@
-/usr/bin/c++    -Wl,-search_paths_first -headerpad_max_install_names -L/opt/local/lib CMakeFiles/siftfast.dir/libsiftfast.o CMakeFiles/siftfast.dir/siftfast.o  -o siftfast  

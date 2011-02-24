@@ -1,1 +1,0 @@
-// Put all your lovely jQuery / Javascript goodies right down here.
