@@ -10,523 +10,58 @@
 
 #include <opencv2/opencv.hpp>
 
-class ofxCvMatImage :  public cv::Mat {
+class ofxCvMatImage {
 	
 	public:
+
 	/*
-	 Constructors
-	 (1) Mat::Mat(); 
-	 (2) Mat::Mat(int rows, int cols, int type); 
-	 (3) Mat::Mat(Size size, int type); 
-	 (4) Mat::Mat(int rows, int cols, int type, const Scalar& s); 
-	 (5) Mat::Mat(Size size, int type, const Scalar& s); 
-	 (6) Mat::Mat(const Mat& m); 
-	 (7) Mat::Mat(int rows, int cols, int type, void* data, size t step=AUTO STEP); 
-	 (8) Mat::Mat(Size size, int type, void* data, size t step=AUTO STEP); 
-	 (9) Mat::Mat(const Mat& m, const Range& rowRange, const Range& colRange); 
-	 (10) Mat::Mat(const Mat& m, const Rect& roi); 
-	 (11) Mat::Mat(const CvMat* m, bool copyData=false); 
-	 (12) Mat::Mat(const IplImage* img, bool copyData=false); 
-	 (13) template<typename T, int n> explicit Mat::Mat(const Vec<T, n>& vec, bool copyData=true); 
-	 (14) template<typename T, int m, int n> explicit Mat::Mat(const Matx<T, m, n>& vec, bool copyData=true); 
-	 (15) template<typename T> explicit Mat::Mat(const vector<T>& vec, bool copyData=false); 
-	 (16) Mat::Mat(const MatExpr& expr); 
-	 (17) Mat::Mat(int ndims, const int* sizes, int type); 
-	 (18) Mat::Mat(int ndims, const int* sizes, int type, const Scalar& s); 
-	 (19) Mat::Mat(int ndims, const int* sizes, int type, void* data, const size t* steps=0); 
-	 (20) Mat::Mat(const Mat& m, const Range* ranges);
-	 
-	 Parameters
-	 ndims				The array dimensionality
-	 rows				The number of rows in 2D array
-	 cols				The number of columns in 2D array
-	 size				The 2D array size: Size(cols, rows). Note that in the Size() constructor the number of 
-	 rows and the number of columns go in the reverse order.
-	 type				The array type, use CV 8UC1, ..., CV 64FC4 to create 1-4 channel matrices, or CV 8UC(n),
-	 ..., CV 64FC(n) to create multi-channel (up to CV MAX CN channels) matrices
-	 data				Pointer to the user data. Matrix constructors that take data and step parameters do 
-	 not allocate matrix data. Instead, they just initialize the matrix header that points 
-	 to the specified data, i.e. no data is copied. This operation is very efficient and 
-	 can be used to process external data using OpenCV functions. The external data is not 
-	 automatically deallocated, user should take care of it.
-	 step				The data buddy. This optional parameter specifies the number of bytes that each matrix 
-	 row occupies. The value should include the padding bytes in the end of each row, if any. 
-	 If the parameter is missing (set to cv::AUTO STEP), no padding is assumed and the actual 
-	 step is calculated as cols*elemSize(), see Mat::elemSize ().
-	 steps				The array of ndims-1 steps in the case of multi-dimensional array (the last step is always 
-	 set to the element size). If not specified, the matrix is assumed to be continuous.
-	 m					The array that (in whole, a partly) is assigned to the constructed matrix. No data is 
-	 copied by these constructors. Instead, the header pointing to m data, or its sub-array, 
-	 is constructed and the associated with it reference counter, if any, is incremented. 
-	 That is, when you modify the matrix formed using such a constructor, you will also modify 
-	 the corresponding elements of m. If you want to have an independent copy of the sub-array, use Mat::clone().
-	 img				Pointer to the old-style IplImage image structure. By default, the data is shared between 
-	 the original image and the new matrix, but when copyData is set, the full copy of the image data is created.
-	 vec				STL vector, which elements will form the matrix. The matrix will have a single column and the 
-	 number of rows equal to the number of vector elements. Type of the matrix will match the type of vector elements. 
-	 The constructor can handle arbitrary types, for which there is properly declared DataType , i.e. the 
-	 vector elements must be primitive numbers or uni-type numerical tuples of numbers. 
-	 Mixed-type structures are not supported, of course. Note that the corresponding constructor is explicit, 
-	 meaning that STL vectors are not automatically converted to Mat instances, you should write Mat(vec) explicitly. 
-	 Another obvious note: unless you copied the data into the matrix (copyData=true), no new elements 
-	 should be added to the vector, because it can potentially yield vector data reallocation, 
-	 and thus the matrix data pointer will become invalid.
-	 copyData			Specifies, whether the underlying data of the STL vector, or the old-style CvMat or IplImage 
-	 should be copied to (true) or shared with (false) the newly constructed matrix. 
-	 When the data is copied, the allocated buffer will be managed using Mat’s reference counting mechanism. 
-	 While when the data is shared, the reference counter will be NULL, and you should not deallocate the 
-	 data until the matrix is not destructed.
-	 rowRange			The range of the m’s rows to take. As usual, the range start is inclusive and the range end is exclusive. 
-	 Use Range::all() to take all the rows.
-	 colRange			The range of the m’s columns to take. Use Range::all() to take all the columns. 
-	 ranges				The array of selected ranges of m along each dimensionality . 
-	 expr				Matrix expression. See Matrix Expressions .
+	 I am trying to stick with the way that OpenCV2.2 uses operators/constructors as much as possible.
+	 Note that this is quite different than they are used in the original OF wrapper.
 	 */
 	
-	ofxCvMatImage(){}
-	ofxCvMatImage(IplImage* img) : cv::Mat(img) { }
+	ofxCvMatImage(){	cout << "0\n";	}
 	
-	// Like the equal operator of cv::Mat, no data is copied in these assignment operators.  Only the header
-	void operator = ( const cv::Mat& mom );
-	void operator = ( const IplImage* mom );
-	
-	
-	void copyFrom( ofxCvMatImage& other, int numChannels );	
-	float getHeight()	{	return size().height;	}
-	float getWidth()	{	return size().width;	}
+	// CONSTRUCTOR COPY OPERATORS (data is copied)
+	//ofxCvMatImage( const IplImage* iplimg )		: img(iplimg)	{cout << "1\n";}
+	ofxCvMatImage( const cv::Mat& mom )			: img(mom)		{cout << "2\n";}
+	ofxCvMatImage( const ofxCvMatImage& mom )	: img(mom.img)	{cout << "3\n";}
 
+	// ASSIGNMENT OPERATORS (no data is copied, new header is made)
+	//void operator = ( const IplImage* mom );
+	void operator = ( const cv::Mat& mom );
+	void operator = ( const ofxCvMatImage& mom );
+	
+	// CAST OPERATORS (no data is copied)
+    //operator IplImage*();
+	operator cv::Mat();
+	operator cv::Mat*();
+	
+	// () OPERATOR  
+	// NOTE:  Don't confuse this operator with the constructor.
+	// This is confusing, so I am hesitant to put it in here, but it is a very
+	// useful feature of the cv::Mat, so I will.
+	ofxCvMatImage& operator()(cv::Rect r);					// no data is copied
+	
+
+	void copyFrom( ofxCvMatImage& other, int numChannels );	
+	ofxCvMatImage subimg( cv::Rect r ) {	return (ofxCvMatImage)img(r); 	}
 	void setFromPixels(unsigned char* pix, int width, int height, int channels);
-	int getCode(int fromChannels, int toChannels);
 	void setChannels( int nChannels );
 	void flip(bool v, bool h);
-	void threshold(int amt, bool inv=false) {
-		int thresholdType = (inv) ?  cv::THRESH_BINARY_INV :  cv::THRESH_BINARY;
-		cv::threshold( *this, *this, amt, 255, thresholdType);
-	}
-	void blur() {
-		cv::blur( *this, *this, cv::Size(3,3) );	
-	}
+	
+	
+	
+	float height()	{ return img.size().height;	}
+	float width()	{ return img.size().width;	}
+	void threshold(int amt, bool inv=false) {	cv::threshold( img, img, amt, 255, (inv) ? cv::THRESH_BINARY_INV : cv::THRESH_BINARY);	}
+	void blur()		{ cv::blur( img, img, cv::Size(3,3) );	}
+	bool empty()	{ return img.empty();		}
+	int channels()	{ return img.channels(); }
+	IplImage* ipl_image();
+	cv::Mat mat_image();
+	
+protected:
+	int getConversionCode(int fromChannels, int toChannels);
+	cv::Mat img;
 
-	
-	
-#pragma mark USEFUL INHERITED METHODS
-	
-	//Mat& operator = (const Mat& m);
-	//Mat& operator = (const MatExpr& expr);
-	//Mat& operator = (const Scalar& s);
-	/*
-	 m				The assigned, right-hand-side matrix. Matrix assignment is O(1) operation, 
-	 that is, no data is copied. Instead, the data is shared and the reference counter, 
-	 if any, is incremented. Before assigning new data, the old data is dereferenced via Mat::release .
-	 expr			The assigned matrix expression object. As opposite to the first form of assignment operation, 
-	 the second form can reuse already allocated matrix if it has the right size and type to fit the 
-	 matrix expression result. It is automatically handled by the real function that the matrix 
-	 expressions is expanded to. For example, C=A+B is expanded to cv::add(A, B, C), and cv::add 
-	 will take care of automatic C reallocation.
-	 s				The scalar, assigned to each matrix element. The matrix size or type is not changed.
-	 */
-	
-	//Mat operator()( Range rowRange, Range colRange ) const;
-    //Mat operator()( const Rect& roi ) const;
-	/*
-	 rowRange			The start and the end row of the extracted submatrix. The upper boundary is not included. 
-	 To select all the rows, use Range::all()
-	 colRange			The start and the end column of the extracted submatrix. The upper boundary is not included. 
-	 To select all the columns, use Range::all()
-	 roi				The extracted submatrix specified as a rectangle 
-	 ranges				The array of selected ranges along each array dimension
-	 
-	 The operators make a new header for the specified sub-array of *this. They are the most generalized 
-	 forms of cv::Mat::row, cv::Mat::col, cv::Mat::rowRange and cv::Mat::colRange. For example, 
-	 
-	 A(Range(0, 10), Range::all()) 
-	 
-	 is equivalent to 
-	 
-	 A.rowRange(0, 10). 
-	 
-	 Similarly to all of the above, the operators are O(1) operations, i.e. no matrix data is copied.
-	 */
-	
-    //Mat row(int y) const;
-	//Mat col(int x) const;
-	/*
-	 The method makes a new header for the specified matrix row or col and returns it. The underlying data
-	 of the new matrix will be shared with the original matrix.
-	 */
-	
-	//Mat rowRange(int start, int end) const;
-	//Mat rowRange(const Range& r) const;
-    //Mat colRange(int start, int end) const;
-    //Mat colRange(const Range& r) const;
-	/*
-	 The method makes a new header for the specified column or row span of the matrix.
-	 
-	 start					the 0-based start index of the row/column span 
-	 end					the 0-based ending index of the row/column span 
-	 r						The cv::Range structure containing both the start and the end indices
-	 */
-	
-	//Mat diag(int d=0) const;
-	/*
-	 Extracts diagonal from a matrix, or creates a diagonal matrix.
-	 The method makes a new header for the specified matrix diagonal. The new matrix will be represented as a 
-	 single-column matrix. Similarly to cv::Mat::row and cv::Mat::col, this is O(1) operation.
-	 d				index of the diagonal, with the following meaning: 
-	 d=0 the main diagonal
-	 d>0 a diagonal from the lower half, e.g. d=1 means the diagonal immediately below the main one
-	 d<0 a diagonal from the upper half, e.g. d=1 means the diagonal immediately above the main one
-	 matD			single-column matrix that will form the diagonal matrix.
-	 */
-	
-    //Mat clone() const;
-	/*
-	 returns deep copy of the matrix, i.e. the data is copied
-	 The method creates full copy of the array. The original step[] are not taken into the account. 
-	 That is, the array copy will be a continuous array occupying total()*elemSize() bytes.
-	 */
-	
-    //void copyTo( Mat& m ) const;
-	//void copyTo( Mat& m, const Mat& mask ) const;
-	/*
-	 The method copies the matrix data to another matrix. Before copying the data, the method invokes 
-	 m.create(this->size(), this->type); so that the destination matrix is reallocated if needed. 
-	 While m.copyTo(m); will work as expected, i.e. will have no effect, the function does not handle 
-	 the case of a partial overlap between the source and the destination matrices.
-	 When the operation mask is specified, and the Mat::create call shown above reallocated the matrix, 
-	 the newly allocated matrix is initialized with all 0’s before copying the data.
-	 
-	 m				The destination matrix. If it does not have a proper size or type before the operation, it will be
-	 reallocated
-	 mask			The operation mask. Its non-zero elements indicate, which matrix elements need to be copied
-	 */
-	
-    //void convertTo( Mat& m, int rtype, double alpha=1, double beta=0 ) const;
-	/*
-	 The method converts source pixel values to the target datatype. saturate cast<> is applied in the end 
-	 to avoid possible overflows:
-	 
-	 m				The destination matrix. If it does not have a proper size or type before the operation, 
-					it will be reallocated
-	 rtype			The desired destination matrix type, or rather, the depth (since the number of channels 
-					will be the same with the source one). If rtype is negative, the destination matrix will 
-					have the same type as the source.
-					
-	 alpha			The optional scale factor beta The optional delta, added to the scaled values.
-	 
-	 */
-	
-	//Mat& setTo(const Scalar& s, const Mat& mask=Mat());
-	/*
-	 This is the advanced variant of Mat::operator=(const Scalar& s) operator.
-	 
-	 s				Assigned scalar, which is converted to the actual array type 
-	 mask			The operation mask of the same size as *this
-	 */
-	
-	//Mat reshape(int _cn, int _rows=0) const;
-	/*
-	 Changes the 2D matrix’s shape and/or the number of channels without copying the data.
-	 
-	 cn					The new number of channels. If the parameter is 0, the number of channels remains the same. 
-	 rows				The new number of rows. If the parameter is 0, the number of rows remains the same.
-	 
-	 The method makes a new matrix header for *this elements. The new matrix may have
-	 different size and/or different number of channels. Any combination is possible, as long as: 
-	 
-	 1. No extra elements is included into the new matrix and no elements are excluded. Conse-
-	 quently, the product rows*cols*channels() must stay the same after the transformation.
-	 
-	 2. No data is copied, i.e. this is O(1) operation. Consequently, if you change the number of rows, 
-	 or the operation changes elements’ row indices in some other way, the matrix must be continuous. 
-	 See cv::Mat::isContinuous.
-	 */
-	
-    //MatExpr inv(int method=DECOMP_LU) const;
-	/*
-	 The method performs matrix inversion by means of matrix expressions, i.e. a temporary ”matrix inversion” 
-	 object is returned by the method, and can further be used as a part of more complex matrix expression or 
-	 be assigned to a matrix.
-	 
-	 method					The matrix inversion method, one of 
-	 DECOMP_LU			LU decomposition. The matrix must be non-singular
-	 DECOMP_CHOLESKY		Cholesky LLT decomposition, for symmetrical positively defined matri- ces only. 
-	 About twice faster than LU on big matrices.
-	 DECOMP_SVD			SVD decomposition. The matrix can be a singular or even non-square, 
-	 then the pseudo-inverse is computed
-	 */
-	
-    //MatExpr mul(const Mat& m, double scale=1) const;
-    //MatExpr mul(const MatExpr& m, double scale=1) const;
-    /*
-	 The method returns a temporary object encoding per-element array multiplication, with optional scale. 
-	 Note that this is not a matrix multiplication, which corresponds to a simpler ”*” operator.
-	 
-	 m				Another matrix, of the same type and the same size as *this, or a matrix expression 
-	 scale			The optional scale factor
-	 
-	 Mat C = A.mul(5/B); // equivalent to divide(A, B, C, 5)
-	 */
-	
-    //Mat cross(const Mat& m) const;
-	/*
-	 m				Another cross-product operand
-	 
-	 The method computes cross-product of the two 3-element vectors. The vectors must be 3-elements 
-	 floating-point vectors of the same shape and the same size. The result will be another 3-element 
-	 vector of the same shape and the same type as operands.
-	 */
-	
-    //double dot(const Mat& m) const;
-	/*
-	 m				Another dot-product operand.
-	 
-	 The method computes dot-product of the two matrices. If the matrices are not single-column 
-	 or single-row vectors, the top-to-bottom left-to-right scan ordering is used to treat them 
-	 as 1D vectors. The vectors must have the same size and the same type. If the matrices have 
-	 more than one channel, the dot products from all the channels are summed together.
-	 */
-	
-    //! Matlab-style matrix initialization
-    //static MatExpr zeros(int rows, int cols, int type);
-    //static MatExpr zeros(Size size, int type);
-    //static MatExpr ones(int rows, int cols, int type);
-    //static MatExpr ones(Size size, int type);
-    //static MatExpr eye(int rows, int cols, int type);
-    //static MatExpr eye(Size size, int type);
-	/*
-	 ndims				The array dimensionality 
-	 rows				The number of rows 
-	 cols				The number of columns 
-	 size				Alternative matrix size specification: Size(cols, rows) 
-	 type				The created matrix type
-	 
-	 The method returns Matlab-style zero array initializer. It can be used to quickly form a constant
-	 array and use it as a function parameter, as a part of matrix expression, or as a matrix initializer.
-	 
-	 Mat A;
-	 A = Mat::zeros(3, 3, CV_32F);
-	 
-	 Note that in the above sample a new matrix will be allocated only if A is not 3x3 floating-point matrix, 
-	 otherwise the existing matrix A will be filled with 0’s.
-	 */
-	
-    //void create(int _rows, int _cols, int _type);
-    //void create(Size _size, int _type);
-	/*
-	 rows				The new number of rows 
-	 cols				The new number of columns 
-	 size				Alternative new matrix size specification: Size(cols, rows) 
-	 type				The new matrix type 
-	 CV_8UC1			8-bit single-channel array		<----  for a grayscale image, usually this
-	 CV_8UC3			8-bit 3-channel array			<----  for an RGB image, it will usually be this
-	 CV_8UC4			8-bit 4-channel array			<----  for RGBA image
-	 CV_32FC2		2-channel floating- point array)
-	 
-	 allocates new matrix data unless the matrix already has specified size and type. 
-	 previous data is unreferenced if needed.
-	 
-	 This is one of the key Mat methods. Most new-style OpenCV functions and methods that 
-	 produce arrays call this method for each output array. The method uses the following algorithm:
-	 
-	 1. if the current array shape and the type match the new ones, return immediately. 
-	 2. otherwise, dereference the previous data by calling cv::Mat::release 
-	 3. initialize the new header 
-	 4. allocate the new data of total()*elemSize() bytes
-	 5. allocate the new, associated with the data, reference counter and set it to 1.
-	 
-	 Such a scheme makes the memory management robust and efficient at the same time, and also 
-	 saves quite a bit of typing for the user, i.e. usually there is no need to explicitly 
-	 allocate output arrays. That is, instead of writing:
-	 
-	 Mat color;
-	 Mat gray(color.rows, color.cols, color.depth());
-	 cvtColor(color, gray, CV_BGR2GRAY);
-	 
-	 you can simply write:
-	 
-	 Mat color;
-	 Mat gray;
-	 cvtColor(color, gray, CV_BGR2GRAY);
-	 
-	 because cvtColor, as well as most of OpenCV functions, calls Mat::create() for the output array internally.
-	 */
-	
-    //void addref();
-	/*
-	 The method increments the reference counter, associated with the matrix data. 
-	 If the matrix header points to an external data (see cv::Mat::Mat), the reference counter is 
-	 NULL, and the method has no effect in this case. Normally, the method should not be called 
-	 explicitly, to avoid memory leaks. It is called implicitly by the matrix assignment operator. 
-	 The reference counter increment is the atomic operation on the platforms that support it, 
-	 thus it is safe to operate on the same matrices asynchronously in different threads.
-	 */
-	
-    //void release();
-	/*
-	 decreases reference counter;
-	 deallocate the data when reference counter reaches 0.
-	 
-	 The method decrements the reference counter, associated with the matrix data. When the 
-	 reference counter reaches 0, the matrix data is deallocated and the data and the reference 
-	 counter pointers are set to NULL’s. If the matrix header points to an external data (see cv::Mat::Mat), 
-	 the reference counter is NULL, and the method has no effect in this case.
-	 This method can be called manually to force the matrix data deallocation. But since this method is 
-	 automatically called in the destructor, or by any other method that changes the data pointer, it is 
-	 usually not needed. The reference counter decrement and check for 0 is the atomic operation on the 
-	 platforms that support it, thus it is safe to operate on the same matrices asynchronously in different threads.
-	 */
-	
-    //Mat& adjustROI( int dtop, int dbottom, int dleft, int dright );
-	/*
-	 Adjust submatrix size and position within the parent matrix
-	 
-	 dtop				The shift of the top submatrix boundary upwards 
-	 dbottom			The shift of the bottom submatrix boundary downwards 
-	 dleft				The shift of the left submatrix boundary to the left 
-	 dright				The shift of the right submatrix boundary to the right
-	 
-	 The method is complimentary to the cv::Mat::locateROI. Indeed, the typical use of these 
-	 func- tions is to determine the submatrix position within the parent matrix and then shift 
-	 the position somehow. Typically it can be needed for filtering operations, when pixels outside 
-	 of the ROI should be taken into account. When all the method’s parameters are positive, it means 
-	 that the ROI needs to grow in all directions by the specified amount, i.e.
-	 
-	 A.adjustROI(2, 2, 2, 2);
-	 
-	 increases the matrix size by 4 elements in each direction and shifts it by 2 elements to the left 
-	 and 2 elements up, which brings in all the necessary pixels for the filtering with 5x5 kernel.
-	 
-	 It’s user responsibility to make sure that adjustROI does not cross the parent matrix boundary. 
-	 If it does, the function will signal an error.
-	 
-	 The function is used internally by the OpenCV filtering functions, like cv::filter2D, morphologi- cal operations etc.
-	 */
-	
-	//void locateROI( Size& wholeSize, Point& ofs ) const;
-	/*
-	 Locates matrix header within a parent matrix
-	 
-	 wholeSize				The output parameter that will contain size of the whole matrix, which *this is a part of. 
-	 ofs					The output parameter that will contain offset of *this inside the whole matrix
-	 
-	 After you extracted a submatrix from a matrix using cv::Mat::row, cv::Mat::col, cv::Mat::rowRange, 
-	 cv::Mat::colRange etc., the result submatrix will point just to the part of the original big matrix. 
-	 However, each submatrix contains some information (represented by datastart and dataend fields), 
-	 using which it is possible to reconstruct the original matrix size and the position of the extracted 
-	 submatrix within the original matrix. The method locateROI does exactly that.
-	 */	
-	
-    //operator CvMat() const;			//! converts header to CvMat; no data is copied
-    //operator IplImage() const;		//! converts header to IplImage; no data is copied
-	/*
-	 These operators makes CvMat of IplImage header for the matrix without copying the underlying data. 
-	 The reference counter is not taken into account by this operation, thus you should make sure than 
-	 the original matrix is not deallocated while the CvMat header is used. 
-	 
-	 The operator is useful for intermixing the new and the old OpenCV API’s, e.g:
-	 
-	 Mat img(Size(320, 240), CV_8UC3);
-	 CvMat cvimg = img;
-	 mycvOldFunc( &cvimg, ...);
-	 
-	 where mycvOldFunc is some function written to work with OpenCV 1.x data structures.
-	 */
-	
-	
-    //bool isContinuous() const;
-	/*
-	 similar to CV_IS_MAT_CONT(cvmat->type)
-	 
-	 The method returns true if the matrix elements are stored continuously, i.e. without gaps 
-	 in the end of each row, and false otherwise. Obviously, 1x1 or 1xN matrices are always continuous. 
-	 Matrices created with cv::Mat::create are always continuous, but if you extract a part of the 
-	 matrix using cv::Mat::col, cv::Mat::diag etc. or constructed a matrix header for externally allocated data, 
-	 such matrices may no longer have this property.
-	 
-	 The continuity flag is stored as a bit in Mat::flags field, and is computed automatically when you 
-	 construct a matrix header, thus the continuity check is very fast operation, though it could be, 
-	 in theory, done as following:
-	 
-	 bool myCheckMatContinuity(const Mat& m)
-	 {
-	 //return (m.flags & Mat::CONTINUOUS_FLAG) != 0;
-	 return m.rows == 1 || m.step == m.cols*m.elemSize();
-	 }
-	 
-	 The method is used in a quite a few of OpenCV functions, and you are welcome to use it as well. 
-	 The point is that element-wise operations (such as arithmetic and logical operations, math functions, 
-	 alpha blending, color space transformations etc.) do not depend on the image geometry, and thus, 
-	 if all the input and all the output arrays are continuous, the functions can process them as very 
-	 long single-row vectors.
-	 */
-	
-	//size_t elemSize() const;
-	/*
-	 similar to CV_ELEM_SIZE(cvmat->type)
-	 
-	 The method returns the matrix element size in bytes. 
-	 For example, if the matrix type is CV 16SC3, the method will return 3*sizeof(short) or 6.
-	 */
-	
-    //size_t elemSize1() const;
-	/*
-	 The method returns the matrix element channel size in bytes, that is, it ignores the 
-	 number of channels. For example, if the matrix type is CV 16SC3, the method will return sizeof(short) or 2.
-	 */
-	
-    //int type() const;
-	/*
-	 similar to CV_MAT_TYPE(cvmat->type)
-	 
-	 The method returns the matrix element type, an id, compatible with the CvMat type system, 
-	 like CV_16SC3 or 16-bit signed 3-channel array etc.
-	 
-	 NOTE:  type() represents the type of one full element (ie, a single "pixel"), where 
-	 depth represents the depth of a single chanel (ie: the precision of the "red" channel)
-	 */
-	
-    //int depth() const;
-	/*
-	 similar to CV_MAT_DEPTH(cvmat->type)
-	 The method returns the matrix element depth id, i.e. the type of each individual channel. 
-	 For example, for 16-bit signed 3-channel array the method will return CV 16S. 
-	 
-	 The complete list of matrix types:
-	 • CV_8U - 8-bit unsigned integers (0..255) 
-	 • CV_8S - 8-bit signed integers (-128..127) 
-	 • CV_16U - 16-bit unsigned integers (0..65535) 
-	 • CV_16S - 16-bit signed integers (-32768..32767) 
-	 • CV_32S - 32-bit signed integers (-2147483648..2147483647)
-	 • CV_32F - 32-bit floating-point numbers (-FLT MAX..FLT MAX, INF, NAN)
-	 • CV_64F - 64-bit floating-point numbers (-DBL MAX..DBL MAX, INF, NAN)
-	 */
-	
-	//size t Mat::total() const;	//The method returns the number of array elements (e.g. number of pixels if the array represents an image).
-    //int channels() const;			//returns element number of channels. (ie: Grayscale=1, RGB=3, RGBA=4)
-    //size_t step1() const;			//returns step/elemSize1(), ie: normalized step
-    //Size size() const;			//The method returns the matrix size: Size(cols, rows).
-    //bool empty() const;			//returns true if matrix data is NULL
-    //uchar* ptr(int y=0);			//The methods return uchar* or typed pointer to the specified matrix row. 
-	
-	
-#pragma mark INHERITED PROPERTIES
-	
-	//int flags;
-	/*! includes several bit-fields:
-	 - the magic signature
-	 - continuity flag
-	 - depth
-	 - number of channels
-     */
-	
-    //int rows, cols;
-    //size_t step;		//a distance between successive rows in bytes; includes the gap if any
-    //uchar* data;		//! pointer to the data
-    //int* refcount;	//! pointer to the reference counter.  when matrix points to user-allocated data, the pointer is NULL
-    //! helper fields used in locateROI and adjustROI
-    //uchar* datastart;
-    //uchar* dataend;
-	
-	
 };

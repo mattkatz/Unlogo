@@ -10,33 +10,90 @@
 #include "ofxCvMatImage.h"
 
 //--------------------------------------------------------------------------------
-void ofxCvMatImage::operator = ( const cv::Mat& mom ) {
-    unsigned char* oldData = data;	// keep a copy of the data pointer
-	
-	cv::Mat::operator=(mom);
-	
-	if( data != oldData  ) {
-		cerr <<  "ofxCvMatImage::operator = ( const cv::Mat& _mom ) Mat has been reallocated.  This usually means you are doing some transformation on an image that it isn't allocated to deal with, and it could lead to unexpected results." << endl;
+void ofxCvMatImage::operator = ( const cv::Mat& mom )
+{
+	cout << "3\n";
+    unsigned char* oldData = img.data;	// keep a copy of the data pointer
+	img = mom;
+	if( img.data != oldData  ) {
+		cerr <<  "ofxCvMatImage::operator = ( const cv::Mat& _mom ) Mat has been reallocated.  If you are seeing this repeatedly, this usually means you are doing some transformation on an image that it isn't allocated to deal with, and it could lead to unexpected results." << endl;
 	}
+}
+
+/*
+//--------------------------------------------------------------------------------
+void ofxCvMatImage::operator = ( const IplImage* mom )
+{
+	cout << "4\n";
+	unsigned char* oldData = img.data;	// keep a copy of the data pointer
+    img = mom;
+	if( img.data != oldData  ) {
+		cerr <<  "ofxCvMatImage::::operator = ( const IplImage* _mom ) Mat has been reallocated.  If you are seeing this repeatedly, this usually means you are doing some transformation on an image that it isn't allocated to deal with, and it could lead to unexpected results." << endl;
+	}
+}*/
+
+//--------------------------------------------------------------------------------
+void ofxCvMatImage::operator = ( const ofxCvMatImage& mom )
+{
+	cout << "5\n";
+	unsigned char* oldData = img.data;	// keep a copy of the data pointer
+    img = mom.img;
+	if( img.data != oldData  ) {
+		cerr <<  "ofxCvMatImage::::operator = ( const IplImage* _mom ) Mat has been reallocated.  If you are seeing this repeatedly, this usually means you are doing some transformation on an image that it isn't allocated to deal with, and it could lead to unexpected results." << endl;
+	}
+}
+
+/*
+//--------------------------------------------------------------------------------
+ofxCvMatImage::operator IplImage*()
+{
+	cout << "6\n";
+	IplImage* ipl_img = new IplImage();
+	*ipl_img = img;
+	return ipl_img;
+}
+*/
+
+//--------------------------------------------------------------------------------
+ofxCvMatImage::operator cv::Mat()
+{
+	cout << "7\n";
+	return img;
+}
+
+//--------------------------------------------------------------------------------
+ofxCvMatImage::operator cv::Mat*()
+{
+	cout << "8\n";
+	return &img;
+}
+
+//--------------------------------------------------------------------------------
+ofxCvMatImage& ofxCvMatImage::operator()(const cv::Rect r)
+{
+	cout << "9\n";
+	ofxCvMatImage* newMatImg = new ofxCvMatImage( img(r) );
+	return *newMatImg;
 }
 
 
 //--------------------------------------------------------------------------------
-// When calling the equals operator, use the 
-void ofxCvMatImage::operator = ( const IplImage* mom ) {
-	unsigned char* oldData = data;	// keep a copy of the data pointer
-	
-    cv::Mat::operator=(mom);
-	
-	if( data != oldData  ) {
-		cerr <<  "ofxCvMatImage::::operator = ( const IplImage* _mom ) Mat has been reallocated.  This usually means you are doing some transformation on an image that it isn't allocated to deal with, and it could lead to unexpected results." << endl;
-	}
+IplImage* ofxCvMatImage::ipl_image()
+{
+	 IplImage* ipl_img = new IplImage();
+	 *ipl_img = img;
+	 return ipl_img;
 }
 
+//--------------------------------------------------------------------------------
+cv::Mat ofxCvMatImage::mat_image()
+{
+	return img;
+}
 
 // -------------------------------------------------------------
 void ofxCvMatImage::setFromPixels(unsigned char* pix, int width, int height, int channels) {
-	unsigned char* oldData = data;	// keep a copy of the data pointer
+	unsigned char* oldData = img.data;	// keep a copy of the data pointer
 	
 	int type;
 	switch(channels) {
@@ -45,24 +102,24 @@ void ofxCvMatImage::setFromPixels(unsigned char* pix, int width, int height, int
 		case 4:	type = CV_8UC4;	break;
 		default: cerr << "channels not supported" << endl; return;
 	}
-	create(height, width, type);
-	if(isContinuous()) {
-		memcpy(data, pix, total()*channels);
+	img.create(height, width, type);
+	if(img.isContinuous()) {
+		memcpy(img.data, pix, img.total()*channels);
 	} else {
-		for(int i=0; i<size().height; i++) {
-			unsigned char* row = ptr<unsigned char>(i);
-			memcpy(row, pix + (i*step), step);
+		for(int i=0; i<img.size().height; i++) {
+			unsigned char* row = img.ptr<unsigned char>(i);
+			memcpy(row, pix + (i*img.step), img.step);
 		}
 	}
 	
-	if( data != oldData  ) {
+	if( img.data != oldData  ) {
 		cerr <<  "ofxCvMatImage::setFromPixels() Mat has been reallocated.  This usually means you are doing some transformation on an image that it isn't allocated to deal with, and it could lead to unexpected results." << endl;
 	}
 }
 
 
 // -------------------------------------------------------------
-int ofxCvMatImage::getCode(int fromChannels, int toChannels) {
+int ofxCvMatImage::getConversionCode(int fromChannels, int toChannels) {
 	int code = -1;
 	switch(fromChannels) {
 		case 1: switch(toChannels) {
@@ -95,22 +152,23 @@ int ofxCvMatImage::getCode(int fromChannels, int toChannels) {
  */
 // -------------------------------------------------------------
 void ofxCvMatImage::setChannels( int nChannels ) {
-	uchar* ptr = data;	// keep a copy of the data pointer
+	uchar* ptr = img.data;	// keep a copy of the data pointer
 	
-	int code = getCode(channels(), nChannels);
+	int code = getConversionCode(img.channels(), nChannels);
 	
 	if(code == -1) {
 		cerr << "conversion is not supported." << endl;
 		return;
 	}
-	Mat tmp;
-	cv::cvtColor( *this, tmp, code  );
-	tmp.copyTo( *this );
+	cv::Mat tmp;
+	cv::cvtColor( img, tmp, code  );
+	tmp.copyTo( img );
 	
-	if( data != ptr ) {
+	if( img.data != ptr ) {
 		cerr << "ofxCvMatImage::setChannels() Mat has been reallocated." << endl;
 	}
 }
+
 
 
 // -------------------------------------------------------------
@@ -125,5 +183,5 @@ void ofxCvMatImage::flip(bool v, bool h){
 		return;
 	}
 
-	cv::flip( *this, *this, flipMode);	
+	cv::flip( img, img, flipMode);	
 }

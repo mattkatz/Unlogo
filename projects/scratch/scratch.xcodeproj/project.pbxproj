@@ -20,14 +20,6 @@
 		1FBD22B912F898EC00F5EE41 /* libopencv_objdetect.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FBD22AC12F898EC00F5EE41 /* libopencv_objdetect.2.2.0.dylib */; };
 		1FBD22BA12F898EC00F5EE41 /* libopencv_video.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FBD22AD12F898EC00F5EE41 /* libopencv_video.2.2.0.dylib */; };
 		1FBD235212F89E4100F5EE41 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD233B12F89E4100F5EE41 /* main.cpp */; };
-		1FBD235312F89E4100F5EE41 /* ofxCvChamerMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD233D12F89E4100F5EE41 /* ofxCvChamerMatcher.cpp */; };
-		1FBD235512F89E4100F5EE41 /* ofxCvContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD234112F89E4100F5EE41 /* ofxCvContourFinder.cpp */; };
-		1FBD235612F89E4100F5EE41 /* ofxCvFeatureFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD234312F89E4100F5EE41 /* ofxCvFeatureFinder.cpp */; };
-		1FBD235712F89E4100F5EE41 /* ofxCvFlowFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD234512F89E4100F5EE41 /* ofxCvFlowFinder.cpp */; };
-		1FBD235912F89E4100F5EE41 /* ofxCvHaarFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD234912F89E4100F5EE41 /* ofxCvHaarFinder.cpp */; };
-		1FBD235A12F89E4100F5EE41 /* ofxCvLetterFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD234B12F89E4100F5EE41 /* ofxCvLetterFinder.cpp */; };
-		1FBD235B12F89E4100F5EE41 /* ofxCvMatImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD234D12F89E4100F5EE41 /* ofxCvMatImage.cpp */; };
-		1FBD235C12F89E4100F5EE41 /* ofxCvSkinFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FBD234F12F89E4100F5EE41 /* ofxCvSkinFinder.cpp */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -48,23 +40,7 @@
 		1FBD22AC12F898EC00F5EE41 /* libopencv_objdetect.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_objdetect.2.2.0.dylib; path = /opt/local/lib/libopencv_objdetect.2.2.0.dylib; sourceTree = "<absolute>"; };
 		1FBD22AD12F898EC00F5EE41 /* libopencv_video.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_video.2.2.0.dylib; path = /opt/local/lib/libopencv_video.2.2.0.dylib; sourceTree = "<absolute>"; };
 		1FBD233B12F89E4100F5EE41 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD233D12F89E4100F5EE41 /* ofxCvChamerMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvChamerMatcher.cpp; path = src/ofxOpenCV22/ofxCvChamerMatcher.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD233E12F89E4100F5EE41 /* ofxCvChamerMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvChamerMatcher.h; path = src/ofxOpenCV22/ofxCvChamerMatcher.h; sourceTree = SOURCE_ROOT; };
-		1FBD234112F89E4100F5EE41 /* ofxCvContourFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvContourFinder.cpp; path = src/ofxOpenCV22/ofxCvContourFinder.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD234212F89E4100F5EE41 /* ofxCvContourFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvContourFinder.h; path = src/ofxOpenCV22/ofxCvContourFinder.h; sourceTree = SOURCE_ROOT; };
-		1FBD234312F89E4100F5EE41 /* ofxCvFeatureFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvFeatureFinder.cpp; path = src/ofxOpenCV22/ofxCvFeatureFinder.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD234412F89E4100F5EE41 /* ofxCvFeatureFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvFeatureFinder.h; path = src/ofxOpenCV22/ofxCvFeatureFinder.h; sourceTree = SOURCE_ROOT; };
-		1FBD234512F89E4100F5EE41 /* ofxCvFlowFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvFlowFinder.cpp; path = src/ofxOpenCV22/ofxCvFlowFinder.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD234612F89E4100F5EE41 /* ofxCvFlowFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvFlowFinder.h; path = src/ofxOpenCV22/ofxCvFlowFinder.h; sourceTree = SOURCE_ROOT; };
-		1FBD234912F89E4100F5EE41 /* ofxCvHaarFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvHaarFinder.cpp; path = src/ofxOpenCV22/ofxCvHaarFinder.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD234A12F89E4100F5EE41 /* ofxCvHaarFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvHaarFinder.h; path = src/ofxOpenCV22/ofxCvHaarFinder.h; sourceTree = SOURCE_ROOT; };
-		1FBD234B12F89E4100F5EE41 /* ofxCvLetterFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvLetterFinder.cpp; path = src/ofxOpenCV22/ofxCvLetterFinder.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD234C12F89E4100F5EE41 /* ofxCvLetterFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvLetterFinder.h; path = src/ofxOpenCV22/ofxCvLetterFinder.h; sourceTree = SOURCE_ROOT; };
-		1FBD234D12F89E4100F5EE41 /* ofxCvMatImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvMatImage.cpp; path = src/ofxOpenCV22/ofxCvMatImage.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD234E12F89E4100F5EE41 /* ofxCvMatImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvMatImage.h; path = src/ofxOpenCV22/ofxCvMatImage.h; sourceTree = SOURCE_ROOT; };
-		1FBD234F12F89E4100F5EE41 /* ofxCvSkinFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ofxCvSkinFinder.cpp; path = src/ofxOpenCV22/ofxCvSkinFinder.cpp; sourceTree = SOURCE_ROOT; };
-		1FBD235012F89E4100F5EE41 /* ofxCvSkinFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofxCvSkinFinder.h; path = src/ofxOpenCV22/ofxCvSkinFinder.h; sourceTree = SOURCE_ROOT; };
-		1FBD235E12F89E5100F5EE41 /* ofxOpenCV22.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofxOpenCV22.h; sourceTree = "<group>"; };
+		1FBD2BAB12FA32AC00F5EE41 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* scratch-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "scratch-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* scratch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = scratch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -135,31 +111,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1FBD233C12F89E4100F5EE41 /* ofxOpenCV22 */ = {
-			isa = PBXGroup;
-			children = (
-				1FBD235E12F89E5100F5EE41 /* ofxOpenCV22.h */,
-				1FBD234D12F89E4100F5EE41 /* ofxCvMatImage.cpp */,
-				1FBD234E12F89E4100F5EE41 /* ofxCvMatImage.h */,
-				1FBD233D12F89E4100F5EE41 /* ofxCvChamerMatcher.cpp */,
-				1FBD233E12F89E4100F5EE41 /* ofxCvChamerMatcher.h */,
-				1FBD234112F89E4100F5EE41 /* ofxCvContourFinder.cpp */,
-				1FBD234212F89E4100F5EE41 /* ofxCvContourFinder.h */,
-				1FBD234312F89E4100F5EE41 /* ofxCvFeatureFinder.cpp */,
-				1FBD234412F89E4100F5EE41 /* ofxCvFeatureFinder.h */,
-				1FBD234512F89E4100F5EE41 /* ofxCvFlowFinder.cpp */,
-				1FBD234612F89E4100F5EE41 /* ofxCvFlowFinder.h */,
-				1FBD234912F89E4100F5EE41 /* ofxCvHaarFinder.cpp */,
-				1FBD234A12F89E4100F5EE41 /* ofxCvHaarFinder.h */,
-				1FBD234B12F89E4100F5EE41 /* ofxCvLetterFinder.cpp */,
-				1FBD234C12F89E4100F5EE41 /* ofxCvLetterFinder.h */,
-				1FBD234F12F89E4100F5EE41 /* ofxCvSkinFinder.cpp */,
-				1FBD235012F89E4100F5EE41 /* ofxCvSkinFinder.h */,
-			);
-			name = ofxOpenCV22;
-			path = src/ofxOpenCV22;
-			sourceTree = SOURCE_ROOT;
-		};
 		29B97314FDCFA39411CA2CEA /* scratch */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,7 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				1FBD233B12F89E4100F5EE41 /* main.cpp */,
-				1FBD233C12F89E4100F5EE41 /* ofxOpenCV22 */,
+				1FBD2BAB12FA32AC00F5EE41 /* utils.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -261,14 +212,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FBD235212F89E4100F5EE41 /* main.cpp in Sources */,
-				1FBD235312F89E4100F5EE41 /* ofxCvChamerMatcher.cpp in Sources */,
-				1FBD235512F89E4100F5EE41 /* ofxCvContourFinder.cpp in Sources */,
-				1FBD235612F89E4100F5EE41 /* ofxCvFeatureFinder.cpp in Sources */,
-				1FBD235712F89E4100F5EE41 /* ofxCvFlowFinder.cpp in Sources */,
-				1FBD235912F89E4100F5EE41 /* ofxCvHaarFinder.cpp in Sources */,
-				1FBD235A12F89E4100F5EE41 /* ofxCvLetterFinder.cpp in Sources */,
-				1FBD235B12F89E4100F5EE41 /* ofxCvMatImage.cpp in Sources */,
-				1FBD235C12F89E4100F5EE41 /* ofxCvSkinFinder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

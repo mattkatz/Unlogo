@@ -26,7 +26,6 @@ public:
 	vector<vector<cv::Point> > cvContours;
 	vector<cv::Vec4i> hierarchy;
 	
-	
 	void findContours( ofxCvMatImage& img, bool bUseAproxPolyDP=true ) {
 		if(img.empty()) {
 			cerr << "image passed to findContours is empty" << endl;
@@ -39,15 +38,14 @@ public:
 		}
 		
 		// findContours destroys the image.  So let's make a copy
-		cv::Mat tmpImg = img.clone();
+		cv::Mat tmpImg = img.mat_image().clone();
+
 
 		cvContours.clear();
 		hierarchy.clear();
 		contours.clear();
 		
 	    // Find all of the contours
-
-	
 		cv::findContours( tmpImg, cvContours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
 		
 		cvContours.resize(cvContours.size());	// not sure why this is here... it's from the sample code.
@@ -86,7 +84,8 @@ public:
 	}
 #else
 	void draw(ofxCvMatImage img, int _levels=1) {
-	    drawContours( img, cvContours, _levels <= 0 ? 3 : -1, cv::Scalar(128,255,255),
+		cv::Mat mat = img.mat_image();
+	    drawContours( mat, cvContours, _levels <= 0 ? 3 : -1, cv::Scalar(128,255,255),
 					 3, CV_AA, hierarchy, std::abs(_levels) );	
 	}
 #endif	
