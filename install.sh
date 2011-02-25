@@ -2,16 +2,15 @@
 
 set -e
 set -o pipefail
-SCRIPT=$(cd ${0%/*} && echo $PWD/${0##*/})
-PREFIX=`dirname $SCRIPT`
 
+SDK=/Developer/SDKs/MacOSX10.6.sdk
+CFLAGS="-msse -arch x86_64 -arch i686 -nostdinc -g -pipe  \
+    -B$SDK/usr/include/gcc -B$SDK/usr/lib/gcc \
+    -isystem$SDK/usr/include -F$SDK/System/Library/Frameworks"
+LDFLAGS="-arch x86_64 -arch i686 -Wl,-syslibroot,$SDK "
+CXXFLAGS="$CFLAGS"
+export SDK CFLAGS CXXFLAGS LDFLAGS
 
-export PATH=$PREFIX/bin:$PATH
-export LD_LIBRARY_PATH=$PREFIX/lib:$LD_LIBRARY_PATH
-export CFLAGS="-I$PREFIX/include"
-export CPPFLAGS="-I$PREFIX/include"
-export LDFLAGS="-L$PREFIX/lib"
-export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
 
 WGET=wget
 type -P wget &>/dev/null || { 
@@ -20,20 +19,29 @@ WGET=curl -L -O
 
 clear
 echo -------------------------
-echo "Welcome to the Unlogo Requirement Installer"
-echo "Framehack will be installed into $PREFIX"
-echo "PATH $PATH"
-echo "LD_LIBRARY_PATH $LD_LIBRARY_PATH"
+echo "Welcome to the FFMPEG installer"
 echo "CFLAGS $CFLAGS"
 echo "CPPFLAGS $CFLAGS"
 echo "LDFLAGS $LDFLAGS"
-echo "PKG_CONFIG_PATH $PKG_CONFIG_PATH"
 echo -------------------------
 
 
 read -p "Press any key to start install"
 echo "Making the distribution directory..."
+
+
+
+
+set -e
+set -o pipefail
+SCRIPT=$(cd ${0%/*} && echo $PWD/${0##*/})
+PREFIX=`dirname $SCRIPT`
 mkdir -p $PREFIX/dist
+
+
+# Use this method to see if each library is installed
+# http://serverfault.com/questions/54736/how-to-check-if-a-library-is-installed
+
 
 
 

@@ -1,5 +1,5 @@
-FRAMEHACK
-By Jeff Crouse 
+UNLOGO
+By Jeff Crouse
 jefftimesten at gmail dot com
 
 This software is licensed under the GNU-GPL version 3 or later.
@@ -17,38 +17,26 @@ General Public License for more details.
 
 REQUIREMENTS
 ========================
-- OSX Developer Tools
 
 
-BUILDING
-========================
+==OpenCV
 
-Open a terminal and type
+-Mac OSX
+As of this writing, MacPorts uses version 2.2 ov OpenCV, which is acceptable for Unlogo.
+It is recommended to use the +universal and +debug variants:
 
-./install.sh
+sudo port install opencv +universal +debug
 
-This will install all of the programs and libraries that you will need to use framehack.  
+-Windows
 
+-Linux
 
-INSTRUCTIONS FOR USE
-========================
-
-An Unlogo filter is simply a BSD C Library that contains 3 functions: 
-
-int init(const char* argstr)
-int uninit()
-int process(uint8_t* dst[4], int dst_stride[4],
-					   uint8_t* src[4], int src_stride[4],
-					   int width, int height)
-
-UNLOGO filter uses the 'plugin' AVFilter for FFMPEG written by Michael Droese.  This greatly simplifies and speeds up the process of making a filter by allowing the user to reference a shared object when running FFMPEG rather than having to recompile all of FFMPEG with every change. So the first thing you need to do is compile a version of FFMPEG with the 'plugin' filter.  
-
-To use the filter, make sure to use the version of FFMPEG that you just built, and then do something like this: 
-
-	ffmpeg -qscale 2 -i [input video] -vf plugin=moustachizer.so -y [output file name]
+==FFMPEG
+Unlogo uses an interface called AVFilter that currnetly must be recompiled with
 
 
+-Mac OSX
 
-TROUBLESHOOTING
-========================
+-Windows
 
+-Linux
