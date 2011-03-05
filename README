@@ -1,42 +1,54 @@
-UNLOGO
+unlogo
 By Jeff Crouse
 jefftimesten at gmail dot com
-
+http://www.jeffcrouse.info
+ 
 This software is licensed under the GNU-GPL version 3 or later.
 
-FRAMEHACK is free software; you can redistribute it and/or
+unlogo is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public
 License as published by the Free Software Foundation; either
 version 3 of the License, or (at your option) any later version.
 
-FRAMEHACK is distributed in the hope that it will be useful,
+unlogo is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
 
+
+INTRODUCTION
+----------------
+Unlogo is a web service that eliminates logos and other corporate signage from videos. On a practical level, it takes back your personal media from the corporations and advertisers. On a technical level, it is a really cool combination of some brand new OpenCV and FFMPEG functionality. On a poetic level, it is a tool for focusing on what is important in the record of your life rather than the ubiquitous messages that advertisers want you to focus on.
+
+In short, Unlogo gives people the opportunity to opt out of having corporate messages permanently imprinted into the photographic record of their lives.
+
+
 REQUIREMENTS
-========================
+----------------
+
+OpenCV 2.2 - http://opencv.willowgarage.com/wiki/
+FFMPEG compiled with vf_plugin.c
+
+vf_plugin.c is a simple framework that allows you to specify a dylib or .o file to use as an avfilter in FFMPEG.  It basically saves you the trouble of having to recompile FFMPEG every time you make a change to your filter.  Perhaps future versions fo the moustachizer/Unlogo will just be a self-contained avfilter, but for development, this is the way to go*.
+
+1. I start with the v0.6.1 tag from the git repository
+
+git clone git://git.ffmpeg.org/ffmpeg.git ffmpeg
+cd ffmpeg
+git checkout v0.6.1
+
+2. add vf_plugin.c to the libavfilter folder
+
+cp [this folder]/libavfilter/vf_plugin.c [your ffmpeg clone]/libavfilter
+
+3. modify '[your ffmpeg clone]/libavfilter/allfilters.c' and [your ffmpeg clone]/libavfilter/Makefile to include vf_plugin (see examples in [this folder]/libavfilter)
+
+4. Then just ./configure, make, make install as usual
+
+* The frei0r video filter framework is similar (but much more sophisticated) to vf_plugin.c, but I couldn't get it to work at all.
 
 
-==OpenCV
-
--Mac OSX
-As of this writing, MacPorts uses version 2.2 ov OpenCV, which is acceptable for Unlogo.
-It is recommended to use the +universal and +debug variants:
-
-sudo port install opencv +universal +debug
-
--Windows
-
--Linux
-
-==FFMPEG
-Unlogo uses an interface called AVFilter that currnetly must be recompiled with
-
-
--Mac OSX
-
--Windows
-
--Linux
+EXAMPLE USAGE
+---------------
+ffmpeg -i movies/FullHouse.mp4 -qscale 2 -vf plugin=unlogo -y out.mov
