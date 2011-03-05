@@ -52,3 +52,11 @@ cp [this folder]/libavfilter/vf_plugin.c [your ffmpeg clone]/libavfilter
 EXAMPLE USAGE
 ---------------
 ffmpeg -i movies/mymovie.mp4 -qscale 2 -vf plugin=unlogo.dylib:logo.jpg -y out.mov
+
+
+TO DO
+---------------
+
+1. All matchers should implement hasHomography(), getHomography(), and warpPoints(), bInited, bTrainImageSet
+2. Make the matcher classes more consistent in general -- perhaps make an interface that they must conform to
+3. Make the train data save names consistent

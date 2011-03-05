@@ -19,13 +19,14 @@ unlogo::~unlogo()
 // ------------------------------
 int unlogo::init(const char* argstr)
 {	
-
-	threshold	= new Threshold(50);
-
 	findTrackingPoints=true;
 
 	train.open(argstr, true);
 	
+	
+	chamer.setTrainImage(train, argstr);
+	
+	/*
 	if(asift.init()){
 		asift.setTrainImage(train, argstr);
 	} else {
@@ -38,6 +39,13 @@ int unlogo::init(const char* argstr)
 		return 1;
 	}
 
+	if(ferns.init()) {
+		ferns.setTrainImage(train, argstr);
+	} else {
+		return 1;
+	}
+	*/
+	
 	flow.setMaxPoints(500);
 	return 0;
 }
@@ -59,16 +67,21 @@ void unlogo::process(Mat frame)
 		flow.findTrackingPoints( gray );
 		findTrackingPoints=false;
 	}
-	flow.updateTrackingPoints( gray );
+	else
+	{
+		flow.updateTrackingPoints( gray );
+	}
+
+	
 	
 	
 	//Mat H12 = flow.getHomography();
 	
 	
-
-	gmatcher.doQuery( gray, true );
-	asift.doQuery( gray, true );
-
+	chamer.doQuery(gray, true);
+	//ferns.doQuery( gray, true);
+	//gmatcher.doQuery( gray, true );
+	//asift.doQuery( gray, true );
 	
 
 	imshow("preview", frame);

@@ -79,6 +79,10 @@
 		1F6F17CC132186FF00457F54 /* GenericMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F6F17CA132186FF00457F54 /* GenericMatcher.cpp */; };
 		1F6F17CF1321870A00457F54 /* ASIFTMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F6F17CD1321870A00457F54 /* ASIFTMatcher.h */; };
 		1F6F17D01321870A00457F54 /* ASIFTMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F6F17CE1321870A00457F54 /* ASIFTMatcher.cpp */; };
+		1FD1D7331322BF8E001DFF4D /* FernsMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FD1D7311322BF8E001DFF4D /* FernsMatcher.h */; };
+		1FD1D7341322BF8E001DFF4D /* FernsMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FD1D7321322BF8E001DFF4D /* FernsMatcher.cpp */; };
+		1FD1D7371322C016001DFF4D /* ChamerMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FD1D7351322C016001DFF4D /* ChamerMatcher.h */; };
+		1FD1D7381322C016001DFF4D /* ChamerMatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FD1D7361322C016001DFF4D /* ChamerMatcher.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +160,10 @@
 		1F6F17CA132186FF00457F54 /* GenericMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GenericMatcher.cpp; path = src/GenericMatcher.cpp; sourceTree = "<group>"; };
 		1F6F17CD1321870A00457F54 /* ASIFTMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIFTMatcher.h; path = src/ASIFTMatcher.h; sourceTree = "<group>"; };
 		1F6F17CE1321870A00457F54 /* ASIFTMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ASIFTMatcher.cpp; path = src/ASIFTMatcher.cpp; sourceTree = "<group>"; };
+		1FD1D7311322BF8E001DFF4D /* FernsMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FernsMatcher.h; path = src/FernsMatcher.h; sourceTree = "<group>"; };
+		1FD1D7321322BF8E001DFF4D /* FernsMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FernsMatcher.cpp; path = src/FernsMatcher.cpp; sourceTree = "<group>"; };
+		1FD1D7351322C016001DFF4D /* ChamerMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChamerMatcher.h; path = src/ChamerMatcher.h; sourceTree = "<group>"; };
+		1FD1D7361322C016001DFF4D /* ChamerMatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChamerMatcher.cpp; path = src/ChamerMatcher.cpp; sourceTree = "<group>"; };
 		D2AAC0630554660B00DB518D /* unlogo.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = unlogo.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -264,6 +272,10 @@
 				1F6F17CA132186FF00457F54 /* GenericMatcher.cpp */,
 				1F6F17CD1321870A00457F54 /* ASIFTMatcher.h */,
 				1F6F17CE1321870A00457F54 /* ASIFTMatcher.cpp */,
+				1FD1D7311322BF8E001DFF4D /* FernsMatcher.h */,
+				1FD1D7321322BF8E001DFF4D /* FernsMatcher.cpp */,
+				1FD1D7351322C016001DFF4D /* ChamerMatcher.h */,
+				1FD1D7361322C016001DFF4D /* ChamerMatcher.cpp */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -390,6 +402,8 @@
 				1F6F17561321736800457F54 /* JSONElement.h in Headers */,
 				1F6F17CB132186FF00457F54 /* GenericMatcher.h in Headers */,
 				1F6F17CF1321870A00457F54 /* ASIFTMatcher.h in Headers */,
+				1FD1D7331322BF8E001DFF4D /* FernsMatcher.h in Headers */,
+				1FD1D7371322C016001DFF4D /* ChamerMatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +488,8 @@
 				1F6F17551321736800457F54 /* JSONElement.cpp in Sources */,
 				1F6F17CC132186FF00457F54 /* GenericMatcher.cpp in Sources */,
 				1F6F17D01321870A00457F54 /* ASIFTMatcher.cpp in Sources */,
+				1FD1D7341322BF8E001DFF4D /* FernsMatcher.cpp in Sources */,
+				1FD1D7381322C016001DFF4D /* ChamerMatcher.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
