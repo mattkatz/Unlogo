@@ -1,58 +1,68 @@
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/contrib/contrib.hpp>
 
-#include <iostream>
+
+#include "Tools/ChamerMatcher.h"
 
 using namespace cv;
 using namespace std;
 
-void help()
-{
-	cout <<
-	"\nThis program demonstrates Chamfer matching -- computing a distance between an \n"
-	"edge template and a query edge image.\n"
-	"Call:\n"
-	"./chamfer [<image edge map> <template edge map>]\n"
-	"By default\n"
-	"the inputs are ./chamfer logo_in_clutter.png logo.png\n"<< endl;
-}
+Image trainImage;
+ChamerMatcher chamerMatcher;
+VideoCapture capture;
+
 int main( int argc, char** argv )
 {
-    if( argc != 1 && argc != 3 )
-    {
-        help();
-        return 0;
-    }
-    Mat img = imread(argc == 3 ? argv[1] : "data/logo_in_clutter.png", 0);
-    Mat cimg;
-    cvtColor(img, cimg, CV_GRAY2BGR);
-    Mat tpl = imread(argc == 3 ? argv[2] : "data/logo.png", 0);
-    
-    // if the image and the template are not edge maps but normal grayscale images,
-    // you might want to uncomment the lines below to produce the maps. You can also
-    // run Sobel instead of Canny.
-    
-    // Canny(img, img, 5, 50, 3);
-    // Canny(tpl, tpl, 5, 50, 3);
-    
-    vector<vector<Point> > results;
-    vector<float> costs;
-    int best = chamerMatching( img, tpl, results, costs );
-    if( best < 0 )
-    {
-        cout << "not found;\n";
-        return 0;
-    }
-    
-    size_t i, n = results[best].size();
-    for( i = 0; i < n; i++ )
-    {
-        Point pt = results[best][i];
-        if( pt.inside(Rect(0, 0, cimg.cols, cimg.rows)) )
-			cimg.at<Vec3b>(pt) = Vec3b(0, 255, 0);
-    }
-    imshow("result", cimg);
-    waitKey();
-    return 0;
+
+	
+	trainImage.open("data/logo.png", true);
+	if(trainImage.empty())
+	{
+		cout << "couldn't open " << argv[1] << endl;
+		return 1;
+	}
+	
+	chamerMatcher.train(trainImage);
+	
+	
+
+	capture.open( "data/apple_logo.mp4" );
+	if (!capture.isOpened())
+	{
+		cout << "couldn't open video" << endl;
+		return 1;
+	}
+	
+	int frameno=0;
+	Image frame, gray;
+	for (;;)
+	{
+		cout << "frame " << frameno << endl;
+		frame.grabFrame(capture);
+		frame.show("clean");
+		
+		if (frame.empty())
+			continue;
+		
+		// Do some stuff to the image to make it easier to match.
+		gray = frame.getGrayscale();
+		gray.equalize();
+		//gray.show("equalized");
+		//gray.threshold(150);
+		//gray.adaptiveThreshold();
+		gray.canny(100, 255, 3);
+		//gray.soebel(false);
+		gray.show("soebel");
+		
+		chamerMatcher.doQuery(gray, "chamer");
+		
+		char key = waitKey(2);
+		switch (key)
+		{
+			case 27:
+			case 'q':
+				return 0;
+				break;
+		}
+		
+		frameno++;
+	}
 }

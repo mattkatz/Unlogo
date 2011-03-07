@@ -148,11 +148,11 @@ bool ASIFTMatcher::init(float InitSigma, int BorderDist, int Scales, float PeakT
 
 
 //--------------------------------------------------------------
-bool ASIFTMatcher::setTrainImage(Image& _train, string datapath) 
+bool ASIFTMatcher::train(Image& _trainImg, string datapath) 
 {
-	assert(_train.channels()==1);
+	assert(_trainImg.channels()==1);
 	
-	train = _train;
+	trainImg = _trainImg;
 	
 	string data_filename = datapath+".json";
 	struct stat stFileInfo; 
@@ -165,11 +165,11 @@ bool ASIFTMatcher::setTrainImage(Image& _train, string datapath)
 		cout << "File " << data_filename <<" does not exist.  Generating keypoints." << endl;
 		
 		vector<float> fpix;
-		for(int i=0; i<train.cvImg.total(); i++) {
-			fpix.push_back( train.cvImg.data[i] );
+		for(int i=0; i<trainImg.cvImg.total(); i++) {
+			fpix.push_back( trainImg.cvImg.data[i] );
 		}
 		
-		numKeypoints = compute_asift_keypoints(fpix, train.width(), train.height(), tilts, true, train_keys, params);
+		numKeypoints = compute_asift_keypoints(fpix, trainImg.width(), trainImg.height(), tilts, true, train_keys, params);
 		bKeysGenerated=true;
 		
 		return saveTrainingData(data_filename);
@@ -202,7 +202,7 @@ void ASIFTMatcher::drawTrainKeypointsIntoImage(Image& img)
 
 
 //--------------------------------------------------------------
-void ASIFTMatcher::doQuery(Image& query, bool showCorrespondence)
+void ASIFTMatcher::doQuery(Image& queryImg, bool showCorrespondence)
 {
 	if(!bInited)	{
 		cerr << "WARNING: Not inited. Using default values. Please call init before doQuery" << endl;
@@ -214,20 +214,20 @@ void ASIFTMatcher::doQuery(Image& query, bool showCorrespondence)
 		return;
 	}
 	
-	assert(query.channels()==1);
+	assert(queryImg.channels()==1);
 	
 	vector<float> fpix;
-	for(int i=0; i<query.cvImg.total(); i++) {
-		fpix.push_back( query.cvImg.data[i] );
+	for(int i=0; i<queryImg.cvImg.total(); i++) {
+		fpix.push_back( queryImg.cvImg.data[i] );
 	}
 	
 	vector< vector< keypointslist > > query_keys;
-	compute_asift_keypoints(fpix, query.width(), query.height(), tilts, true, query_keys, params);
+	compute_asift_keypoints(fpix, queryImg.width(), queryImg.height(), tilts, true, query_keys, params);
 	
 	
 	num_matchings = compute_asift_matches(tilts, tilts, 
-											  train.width(), train.height(), 
-											  query.width(), query.height(), 
+											  trainImg.width(), trainImg.height(), 
+											  queryImg.width(), queryImg.height(), 
 											  true, train_keys, query_keys, matchings, params);
 	if(num_matchings>0)
 	{
@@ -251,18 +251,18 @@ void ASIFTMatcher::doQuery(Image& query, bool showCorrespondence)
 	if(showCorrespondence)
 	{
 		Size s;
-		s.width = train.width() + query.width();
-		s.height = max(train.height(), query.height());
+		s.width = trainImg.width() + queryImg.width();
+		s.height = max(trainImg.height(), queryImg.height());
 		Image correspondence( s );
 		
-		train.copyInto(correspondence, 0, 0);
-		query.copyInto(correspondence, train.width(), 0);
+		trainImg.copyInto(correspondence, 0, 0);
+		queryImg.copyInto(correspondence, trainImg.width(), 0);
 		
 		matchingslist::iterator ptr = matchings.begin();
 		for(int i=0; i < (int) matchings.size(); i++, ptr++)
 		{	
 			Point pt1(ptr->first.x, ptr->first.y);
-			Point pt2(ptr->second.x+train.width(), ptr->second.y);
+			Point pt2(ptr->second.x+trainImg.width(), ptr->second.y);
 			line(correspondence.cvImg, pt1, pt2, Scalar(255,0,0), 1);
 		}
 	}

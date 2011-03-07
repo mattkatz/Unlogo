@@ -10,7 +10,6 @@
 #pragma once
 #include "Image.h"
 #include "FlowFinder.h"
-#include "Threshold.h"
 #include "ASIFTMatcher.h"
 #include "GenericMatcher.h"
 #include "FernsMatcher.h"

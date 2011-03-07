@@ -33,8 +33,8 @@ public:
 			  float OriHistThresh=0.8, float MaxIndexVal=0.2, int MagFactor=3, float IndexSigma=1.0,
 			  int IgnoreGradSign=0, float MatchRatio=0.73, float MatchXradius=1000000.0f,
 			  float MatchYradius=1000000.0f);
-	bool setTrainImage(Image& train, string datapath);
-	void doQuery(Image& query, bool showCorrespondence=false);
+	bool train(Image& train, string datapath);
+	void doQuery(Image& queryImg, bool showCorrespondence=false);
 
 	bool saveTrainingData(string basepath);
 	bool loadTrainingData(string basepath);
@@ -50,7 +50,7 @@ protected:
 	double h[9];
 	matchingslist matchings;
 	int num_matchings;
-	Image train;
+	Image trainImg;
 	vector< vector< keypointslist > > train_keys;
 	int tilts;
 	siftPar params;

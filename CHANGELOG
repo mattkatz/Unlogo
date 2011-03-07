@@ -1,0 +1,98 @@
+CHANGELOG
+---------------
+I am starting this log less for changes, and more to keep track of the research that I am doing.  
+
+Before I start, the state of Unlogo is currently as follows:
+
+1.  The avfilter interface for FFMPEG allows developers to write their own filters that users can apply to videos when running ffmpeg, ffplay, etc.   There isn't very good documentation for it yet, but there are some tutorials available:  
+
+http://wiki.multimedia.cx/index.php?title=FFmpeg_filter_howto
+http://www.ffmpeg.org/doxygen/trunk/structAVFilter.html
+
+Essentially, it asks developers to create a AVFilter avfilter_vf_plugin structure and add it to the libavfilter module before compiling FFMPEG.  Recompiling FFMPEG is kind of a pain when you are actively developing a filter, so instead, we have vf_plugin.c, which is a filter that takes, as an argument, a shared object or shared library with 3 functions exposed: "init", "uninit", and "process". I have compiled this into FFMPEG and provided instructions in README
+
+So, to use the "plugin" avfilter, you would call ffmpeg like:
+
+ffmpeg -i yourmovie.mov -vf plugin=[yourplugin.dylib]:list:of:additional:arguments  outfile.mpv
+
+2. src/main.cpp contains the 3 required functions mentioned above.  It also contains an "unlogo" object.  init() simply passes the argument string (see :list:of:additional:arguments above) to unlogo::init().  uninit() simply deletes the instance of the unlogo object.  process() is where all of the interesting things happen.  NOTE:  It might seem like having this main.cpp is unnecessary, but I am very concerned with readabiltiy and encapsulation as much as possible.  I'd like to be able to have someone look at the unlogo class and not worry about the inner workings of vf_plugin.c or any of the FFMPEG stuff, so I have opted for this organization.
+
+3.  in main.cpp, the process() function takes a bunch of arguments from FFMPEG.  These contain the pixels of a single frame. I initialize a cv::Mat object with the relevant pixels (src_stride[0] -- see cv::Mat constructor #8 in Mat.rtf), and then pass it to the unlogo object to be processed. You will notice that I also save a reference to the address of the pixel data and then check to make sure it hasn't changed after being passed to "process". This is because the cv::Mat object will sometimes re-allocate its uchar* data; if you try an operation that requires more memory. The next step is to copy those src pixels to the dst pixels, so it would be bad if we were operating on pixels that we thought were going to be copied into the output movie, but the cv::Mat had in fact reallocated them.
+
+4. Moving into the unlogo class: At this level of abstraction, we have the Image class, which is a wrapper around cv::Mat.  The first thing we do is point an Image called query to the Mat passed in by main.cpp (Image::useMat).  So there are essentially 2 wrappers around the raw pixels provided by FFMPEG:  cv::Mat and then Image.  The actual pixels provided by FFMPEG are now located at query.cvImg.data. I chose not to extend cv::Mat because of problems passing the superclass to OpenCV functions.  This was mostly out of lack of c++ skill, but I think it's slightly more readable also.
+
+5.  At this point I adopt the Train/Query relationship.  In step 2 I mentioned that main.cpp calls unlogo::init.  unlogo::init opens files (logos) that are specified by the ffmpeg command call.  These are the "train" images, or the ones that we are searching for.  Each frame that enters the process function is a "query".  
+
+6.  There are also a bunch of different Matcher classes that we "train" with the logos and then run each frame.  They provide a Homography that can then be used to warp and translate a replacement graphic over the query image if the train is found.
+
+
+This is basically the structure that I am working with right now. After several false starts where the code quickly became overwhelmingly complex, I think this is as simple and straightforward as it can be. Although I have tools for matching, I haven't done enough tests to know exactly how to implemnt them, and that is what I am working on now. 
+
+
+
+
+
+
+March 6 2011
+=================
+After seeing the letter_recog.cpp sample in opencv/samples/cpp, I spent today researching  how to use datasets on the UCI Machine Learning site.  In particular, this one: http://archive.ics.uci.edu/ml/datasets/Letter+Recognition
+
+I was hoping that I would be able to use this as an additional layer of matching on top of the Matchers that I have been making. It has 20000 "feature vectors" of letter data. I was not familliar with the terminology or basic ideas of this kind of matching, so it took me a while to understand how you would even go about using the provided "letter-recognition.data" file.  As it turns out, each dataset is made up of one or more "classes" (in this case, each letter represents a class).  Each class may have 1 or more entries in the dataset.  The first column of a row is a label of a class, which is followed by several numbers that define an instance of the class.  After some digging, I found that the numbers in letter-recognition.data correspond to (on a scale of 0-15):
+
+ 1.	lettr	capital letter	(26 values from A to Z)
+ 2.	x-box	horizontal position of box	(integer)
+ 3.	y-box	vertical position of box	(integer)
+ 4.	width	width of box			(integer)
+ 5.	high 	height of box			(integer)
+ 6.	onpix	total # on pixels		(integer)
+ 7.	x-bar	mean x of on pixels in box	(integer)
+ 8.	y-bar	mean y of on pixels in box	(integer)
+ 9.	x2bar	mean x variance			(integer)
+10.	y2bar	mean y variance			(integer)
+11.	xybar	mean x y correlation		(integer)
+12.	x2ybr	mean of x * x * y		(integer)
+13.	xy2br	mean of x * y * y		(integer)
+14.	x-ege	mean edge count left to right	(integer)
+15.	xegvy	correlation of x-ege with y	(integer)
+16.	y-ege	mean edge count bottom to top	(integer)
+17.	yegvx	correlation of y-ege with x	(integer)
+
+source: http://archive.ics.uci.edu/ml/machine-learning-databases/letter-recognition/letter-recognition.names
+
+So if you have a page of text and want to identify letters on it, the first thing you would do to make use of this database would be to segment the image -- that is, isloate each letter -- find the bounding boxes of each letter and normalize them in some way, and then calculate each of these characteristics for each box.  Then you can use a method such as nearest neighbors to determine which "class" your box/letter most closely corresponds to. So now I understand the importance of image segmentation.
+
+But I don't immediately see how I would be able to accurately segment an arbitrary video frame to isolate a logo and make use of this method.  I also don't understand the significance of all of the values in the letter-recognition.data file.  Are these common? If I were to create a dataaset for logos, would I want to calculate these same values for images of logos, or come up with my own features to track?  I looked at this tutorial for a while, which simplified the idea of pulling out data from images:
+
+http://blog.damiles.com/?p=93
+
+I think this one just downsamples the image to 32 floats.  
+
+Also, how is Haar training related to this? The "haartraining" module in OpenCV has some code for creating samples, but kind of feature vectors do they use?  I found a few tutorials about creating your own HaarCascades:
+
+http://note.sonots.com/SciSoftware/haartraining.html
+http://issuu.com/flavio58/docs/opencv_tutorial_haartraining
+Face databases: http://www.face-rec.org/databases/
+
+Finally, this is clearly a lot different than the feature detection that I've been using: SIFT, FERNS, etc.  But it shares a lot of the same terminology, which confuses me.  Where, if anywhere, do these methods overlap?  
+
+The letter_recog.cpp example takes a database such as letter-recognition.data and turns it into a Random Trees classifier.  This is another topic that I should look into, but was out of scope for today.  http://opencv.willowgarage.com/documentation/cpp/random_trees.html
+http://opencv.willowgarage.com/documentation/cpp/boosting.html
+
+So many questions!  One troubling idea: If this is how I should have been doing things all along, that means I have been barking up the wrong tree.  
+
+
+Conclusion: This was kind of a lark, and I should get back to the path I was pursuing.  After making testing suites for the different matchers, I should see what kind of image segmentation I can do, and this might convince me that making training sets would be a good idea.
+
+
+
+March 7, 2011 - ChamerMatching
+==========================
+My current goal is to set up testing suites for all of the matchers in order to have a measurable way to test different parameters, and generally make sure they are working correctly.  
+
+Today I set up several tests using the "chamerMatching" method that is shown in opencv/samples/cpp/chamfer.cpp, but it was a bit difficult because it is not documented in the openCV2.2 documentation.  In fact, the function seems to be incorrectly named.  The type of matching that it does is called "Chamfer", as described here:  http://www.imgfsr.com/ifsr_ir_cm.html
+
+That said, it is remarkably easy to implement.  It seems to be used to match edges, which would seem to be very useful for logo detection. But the problem is that it doesn't seem to be scale or skew invariant.  It works fine with the logo.png/logo_in_clutter.png combo. 
+
+
+
+

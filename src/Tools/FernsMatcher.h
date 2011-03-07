@@ -54,7 +54,7 @@ public:
 	}
 	
 	
-	bool setTrainImage(Image& train, string object_filename) {
+	bool train(Image& train, string object_filename) {
 		
 		object = train.cvImg.clone();
 		

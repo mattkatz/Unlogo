@@ -19,7 +19,7 @@ public:
 	GenericMatcher() : bTrainAnalyzed(false), bInited(false) {}
 	
 	bool init(string _detector_alg="SIFT", string _extractor_alg="SIFT", string _matcher_alg="BruteForce", float _ransacReprojThreshold=5.0);
-	bool setTrainImage(Image& train, string datapath);
+	bool train(Image& train, string datapath);
 	void doQuery(Image& query, bool showCorresponence=false);
 	
 	bool saveTrainingData(string basepath);
@@ -29,7 +29,7 @@ public:
 	
 private:
 	
-	Image train;
+	Image trainImg;
 	
 	float ransacReprojThreshold;
 	

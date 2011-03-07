@@ -23,6 +23,11 @@ Unlogo is a web service that eliminates logos and other corporate signage from v
 
 In short, Unlogo gives people the opportunity to opt out of having corporate messages permanently imprinted into the photographic record of their lives.
 
+GOALS
+--------------
+
+For this inital version of Unlogo, I am not interested in performance, only accuracy.  This has lead to several decisions, not the least of which is the fact that it is a video processing plugin rather than an AR experience or something of that nature.  
+
 
 REQUIREMENTS
 ----------------
@@ -60,3 +65,4 @@ TO DO
 1. All matchers should implement hasHomography(), getHomography(), and warpPoints(), bInited, bTrainImageSet
 2. Make the matcher classes more consistent in general -- perhaps make an interface that they must conform to
 3. Make the train data save names consistent
+

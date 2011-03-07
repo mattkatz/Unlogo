@@ -40,11 +40,11 @@ bool GenericMatcher::init(string _detector_alg, string _extractor_alg, string _m
 }
 
 // --------------------------------------------------
-bool GenericMatcher::setTrainImage(Image& _train, string datapath)
+bool GenericMatcher::train(Image& _trainImg, string datapath)
 {
-	assert(_train.channels()==1);
+	assert(_trainImg.channels()==1);
 	
-	train = _train;
+	trainImg = _trainImg;
 
 	if(loadTrainingData(datapath))
 	{
@@ -53,8 +53,8 @@ bool GenericMatcher::setTrainImage(Image& _train, string datapath)
 	else
 	{
 		// TO DO:  return false if soething here fails.
-		detector->detect(train.cvImg, train_kpts);							//Find interest points
-		extractor->compute(train.cvImg, train_kpts, train_descriptors);	//Compute descriptors at each keypoint location	
+		detector->detect(trainImg.cvImg, train_kpts);							//Find interest points
+		extractor->compute(trainImg.cvImg, train_kpts, train_descriptors);	//Compute descriptors at each keypoint location	
 		saveTrainingData(datapath);
 		bTrainAnalyzed=true;
 	}
@@ -74,7 +74,7 @@ void GenericMatcher::drawTrainKeypointsIntoImage(Image& img)
 
 
 // --------------------------------------------------
-void GenericMatcher::doQuery(Image& query, bool showCorrespondence)
+void GenericMatcher::doQuery(Image& queryImg, bool showCorrespondence)
 {
 	if(!bInited)	{
 		cerr << "WARNING: Not inited. Using default values. Please call init before match." << endl;
@@ -90,8 +90,8 @@ void GenericMatcher::doQuery(Image& query, bool showCorrespondence)
 	vector<cv::KeyPoint> query_kpts;
 	vector<Point2f> query_pts;
 	
-	detector->detect(query.cvImg, query_kpts);				
-	extractor->compute(query.cvImg, query_kpts, query_descriptors); 
+	detector->detect(queryImg.cvImg, query_kpts);				
+	extractor->compute(queryImg.cvImg, query_kpts, query_descriptors); 
 	
 	// Match the keypoints
 	if(bDoCrossCheckFilter) {
@@ -133,7 +133,7 @@ void GenericMatcher::doQuery(Image& query, bool showCorrespondence)
 	if(showCorrespondence)
 	{
 		Mat correspondenceImg;
-		drawMatches(train.cvImg, train_kpts, query.cvImg, query_kpts, matches, correspondenceImg, CV_RGB(0, 255, 0), CV_RGB(0, 0, 255), matchesMask, DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+		drawMatches(trainImg.cvImg, train_kpts, queryImg.cvImg, query_kpts, matches, correspondenceImg, CV_RGB(0, 255, 0), CV_RGB(0, 0, 255), matchesMask, DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 		imshow("generic correspondence", correspondenceImg);
 	}
 }

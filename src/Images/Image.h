@@ -9,13 +9,11 @@
 
 #pragma once
 #include <opencv2/opencv.hpp>
-#include "Effect.h"
 
 
 using namespace cv;
 using namespace std;
 
-class Effect;
 
 class Image {
 public:
@@ -44,9 +42,18 @@ public:
 	void erode(int amt)		{	cv::erode(cvImg, cvImg, Mat(), Point(-1,-1), amt);	}
 	void blur(int amt)		{	cv::blur(cvImg, cvImg, Size(amt,amt));		}
 	void invert()			{	cv::bitwise_not(cvImg, cvImg);	}
+	void equalize()			{	equalizeHist(cvImg, cvImg);		}
 	void show(string wn)	{	cv::imshow(wn, cvImg);		}
 	bool empty()			{	return cvImg.empty();		}	
 
+	
+	// Find edges on an image
+	void canny(double thresh1=5, double thresh2=50, int aperatureSize=3, bool moreAccurate=false);
+	void soebel(bool xfirst=true, int ksize=3);
+	
+	// Apply a threshold to an image
+	void threshold(int t, bool inverse=false);
+	void adaptiveThreshold(bool inverse=false, bool gaussian=true);
 	
 	// Point this image to the data in m
 	void useMat( cv::Mat m );
@@ -58,7 +65,7 @@ public:
 	void grabFrame( cv::VideoCapture &cap );
 	
 	// Apply an effect
-	void apply(Effect* filter);
+	//void apply(Effect* filter);
 	
 	// Get a section from another image
 	void copySectionFrom(Image src, Rect src_rect);

@@ -34,7 +34,8 @@ extern "C"
 	{
 		// To do:
 		// Do we need to calculate #channels using stride & width?
-		
+		// Should we just make an Image here instead and pass it to plugin?
+
 		Mat input(Size(width, height), CV_8UC3, src[0], src_stride[0]);
 		
 		uint8_t* data = src[0];	// save a reference to the data so we can make sure it is the same array

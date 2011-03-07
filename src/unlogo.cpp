@@ -24,27 +24,27 @@ int unlogo::init(const char* argstr)
 	train.open(argstr, true);
 	
 	
-	chamer.setTrainImage(train, argstr);
+	chamer.train(train);
 	
-	/*
+
 	if(asift.init()){
-		asift.setTrainImage(train, argstr);
+		asift.train(train, argstr);
 	} else {
 		return 1;
 	}
 
 	if(gmatcher.init()) {
-		gmatcher.setTrainImage(train, argstr);
+		gmatcher.train(train, argstr);
 	} else {
 		return 1;
 	}
 
 	if(ferns.init()) {
-		ferns.setTrainImage(train, argstr);
+		ferns.train(train, argstr);
 	} else {
 		return 1;
 	}
-	*/
+
 	
 	flow.setMaxPoints(500);
 	return 0;
@@ -78,7 +78,7 @@ void unlogo::process(Mat frame)
 	//Mat H12 = flow.getHomography();
 	
 	
-	chamer.doQuery(gray, true);
+	chamer.doQuery(gray, "chamer matches");
 	//ferns.doQuery( gray, true);
 	//gmatcher.doQuery( gray, true );
 	//asift.doQuery( gray, true );

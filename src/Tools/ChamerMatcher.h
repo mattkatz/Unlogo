@@ -14,17 +14,17 @@ using namespace cv;
 
 class ChamerMatcher {
 public:
-	ChamerMatcher() : bUseSobel(true){};
+	ChamerMatcher() : bTrained(false) {};
 	
-	bool init(bool useSoebelEdgeDetection=true);
-	bool setTrainImage(Image& _train, string datapath);
-	void doQuery(Image& _query, bool showCorrespondence=false);
-	
+	bool train(Image& _trainImg);
+	void doQuery(Image& _queryImg, string windowName="");
+
 protected:
-	
+
+	// Other stuff
 	int best;
-	bool bUseSobel;
-	Mat train, query;
+	bool bTrained;
+	Mat trainImg, queryImg;
 	vector<vector<Point> > results;
 	vector<float> costs;
 	

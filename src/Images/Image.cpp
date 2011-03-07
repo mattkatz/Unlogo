@@ -45,11 +45,12 @@ void Image::grabFrame( cv::VideoCapture &cap )
 	// be making a new data array frequently (like every frame)
 	// so if you see this a lot, you are probably doing something wrong.
 	if( data != cvImg.data) {
-		cout << "INFO: Reallocated Image::clean in Image::grabFrame" << endl;
+		cout << "INFO: Reallocated cvImg in Image::grabFrame" << endl;
 	}
 }
 
 // ------------------------------------------
+/*
 void Image::apply(Effect* effect)
 {
 	unsigned char* data = cvImg.data;
@@ -63,7 +64,35 @@ void Image::apply(Effect* effect)
 		cout << "INFO: Reallocated Image::clean in Image::apply" << endl;
 	}
 }
+*/
 
+
+// ------------------------------------------------------
+void Image::threshold(int t, bool inverse)
+{
+	int thresholdType = inverse ? THRESH_BINARY_INV : THRESH_BINARY;
+	cv::threshold(cvImg, cvImg, t, 255, thresholdType); 
+}
+
+// ------------------------------------------------------
+void Image::adaptiveThreshold(bool inverse, bool gaussian)
+{
+	int adaptiveMethod = gaussian ? ADAPTIVE_THRESH_GAUSSIAN_C : ADAPTIVE_THRESH_MEAN_C;
+	int thresholdType = inverse ? THRESH_BINARY_INV : THRESH_BINARY;
+	cv::adaptiveThreshold(cvImg, cvImg, 255, adaptiveMethod, thresholdType, 5, 5); 
+}
+
+// ------------------------------------------------------
+void Image::soebel(bool xfirst, int ksize)
+{	
+	Sobel(cvImg, cvImg, CV_8U, (xfirst)?1:0, (xfirst)?0:1, ksize);
+}
+
+// ------------------------------------------------------
+void Image::canny(double thresh1, double thresh2, int aperatureSize, bool moreAccurate)
+{
+	Canny(cvImg, cvImg, thresh1, thresh2, aperatureSize, moreAccurate);
+}
 
 // ------------------------------------------------------
 void Image::copySectionFrom(Image src, Rect src_rect)
