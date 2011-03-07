@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'scratch' target in the 'scratch' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif

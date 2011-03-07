@@ -1,3 +1,13 @@
+/*
+ *  flow_test.cpp
+ *  tests
+ *
+ *  Created by Jeffrey Crouse on 3/7/11.
+ *  Copyright 2011 Eyebeam. All rights reserved.
+ *
+ */
+
+
 #include "opencv2/video/tracking.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
@@ -46,9 +56,9 @@ int main( int argc, char** argv )
     bool nightMode = false;
     
     //if( argc == 1 || (argc == 2 && strlen(argv[1]) == 1 && isdigit(argv[1][0])))
-     //   cap.open(argc == 2 ? argv[1][0] - '0' : 0);
+	//   cap.open(argc == 2 ? argv[1][0] - '0' : 0);
     //else if( argc == 2 )
-     //   cap.open(argv[1]);
+	//   cap.open(argv[1]);
 	
 	cap.open(0);
     if( !cap.isOpened() )

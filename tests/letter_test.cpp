@@ -1,10 +1,18 @@
+/*
+ *  letter_test.cpp
+ *  tests
+ *
+ *  Created by Jeffrey Crouse on 3/7/11.
+ *  Copyright 2011 Eyebeam. All rights reserved.
+ *
+ */
+
+#include <cstdio>
+
 #include "opencv2/core/core_c.h"
 #include "opencv2/ml/ml.hpp"
 
-#include <cstdio>
-/*
- 
- */
+
 
 void help()
 {

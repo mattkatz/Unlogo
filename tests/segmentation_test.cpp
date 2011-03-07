@@ -1,3 +1,12 @@
+/*
+ *  segmentation_test.cpp
+ *  tests
+ *
+ *  Created by Jeffrey Crouse on 3/7/11.
+ *  Copyright 2011 Eyebeam. All rights reserved.
+ *
+ */
+
 #include <opencv2/video/background_segm.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
