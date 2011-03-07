@@ -33,8 +33,9 @@ This is basically the structure that I am working with right now. After several 
 
 
 
-March 6 2011
-=================
+March 6 2011 - Feature Vector Databases
+===============================================
+
 After seeing the letter_recog.cpp sample in opencv/samples/cpp, I spent today researching  how to use datasets on the UCI Machine Learning site.  In particular, this one: http://archive.ics.uci.edu/ml/datasets/Letter+Recognition
 
 I was hoping that I would be able to use this as an additional layer of matching on top of the Matchers that I have been making. It has 20000 "feature vectors" of letter data. I was not familliar with the terminology or basic ideas of this kind of matching, so it took me a while to understand how you would even go about using the provided "letter-recognition.data" file.  As it turns out, each dataset is made up of one or more "classes" (in this case, each letter represents a class).  Each class may have 1 or more entries in the dataset.  The first column of a row is a label of a class, which is followed by several numbers that define an instance of the class.  After some digging, I found that the numbers in letter-recognition.data correspond to (on a scale of 0-15):
@@ -86,13 +87,16 @@ Conclusion: This was kind of a lark, and I should get back to the path I was pur
 
 
 March 7, 2011 - ChamerMatching
-==========================
+===============================================
+
 My current goal is to set up testing suites for all of the matchers in order to have a measurable way to test different parameters, and generally make sure they are working correctly.  
 
 Today I set up several tests using the "chamerMatching" method that is shown in opencv/samples/cpp/chamfer.cpp, but it was a bit difficult because it is not documented in the openCV2.2 documentation.  In fact, the function seems to be incorrectly named.  The type of matching that it does is called "Chamfer", as described here:  http://www.imgfsr.com/ifsr_ir_cm.html
 
 That said, it is remarkably easy to implement.  It seems to be used to match edges, which would seem to be very useful for logo detection. But the problem is that it doesn't seem to be scale or skew invariant.  It works fine with the logo.png/logo_in_clutter.png combo. 
 
+With the right canny values (Soebel doesn't seem to work very well for edge detection), this method works pretty well in simple situations (apple_logo.mp4).  I fixed a few bugs in the matcher that was causing bad errors, but I need to stress test it a lot more.  Harder videos. 
 
+This was the simplest of the matchers.  I look forward to moving on to the mode complex ones with more parameters, but I need more tests.  Promising, though.  
 
 

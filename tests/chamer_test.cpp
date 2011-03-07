@@ -24,7 +24,7 @@ int main( int argc, char** argv )
 	
 	
 
-	capture.open( "data/apple_logo.mp4" );
+	capture.open( "data/apple_logo.mov" );
 	if (!capture.isOpened())
 	{
 		cout << "couldn't open video" << endl;
