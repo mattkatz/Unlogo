@@ -100,3 +100,29 @@ With the right canny values (Soebel doesn't seem to work very well for edge dete
 This was the simplest of the matchers.  I look forward to moving on to the mode complex ones with more parameters, but I need more tests.  Promising, though.  
 
 
+
+March 8, 2011 - I bought a book
+==============================================
+
+I have gotten some clarity on a few issues after posting on StackOverlow here:
+http://stackoverflow.com/questions/5279119/image-segmentation-techniques
+
+It seems that using the letter-recognition.data method (I still don't know what to call it) is not going to work. I did some tests with the GrabCut and Watershed methods of segmentation, and they both require some human assistance.  Basically, you specify an area, and then it will label/segment it for you.  The Berkeley Segmentation Engine (http://www.cs.berkeley.edu/~fowlkes/BSE/) is automatic, but my understanding is that, to use a feature database method, I'd need to know that the logo is not only within a particular region, but that is more or less alone in that region.  That doesn't seem possible with this method, so I am moving on.
+
+But I am pretty sure that the "feature fectors" described in the OCR tutorial that I read are the same (in principle, not content) as the ones calculated by SIFT, SURF, etc.  The difference is that SIFT and SURF methods choose their own areas to calculate vectors for, whereas the OCR tutorial takes the entire image as the input.  
+
+So that leads me to the question:  Is it possible to create a feature database of SURF feature vectors with classes, just like in the OCR tutorial?  This way you would benefit from multiple sample images and still have the robustness of the SURF feature fectors.  
+
+But the big question is: say you had this database. How would you use it to match a particular region in an image?
+
+AFAIK, SURF does not use color, which is also a shame because it might be useful information.  Is there a way of augmenting the feature vector?  I still think primary color and secondary color would make great features.
+
+I still feel like I might be chasing something that is not going to work, but to answer the question, I bought "An Introduction to Object Recognition: Selected Algorithms for a Wide Variety of Applications" by Marco Alexander Treiber (http://www.amazon.com/gp/product/1849962340).  The OpenCV only briefly talks about this subject. I desparately need this foundation so that I understand the difference between all of the different methods and which would be the best for Unlogo.
+
+The Haar method still seems promising, not only because it seems to be good at recognizing relatively simple patterns (liek most logos), but also (and perhaps most importantly) because it benefits from multiple samples.  I think this project will live or die by the community involvement, so if we can get to a situation where more submitted logos=a more successful filter, then we will be in a great place.  I imagine a scenario where people submit logos, and then, periodically, the haar trainer runs, and the resulting Haar Cascade is made available for download by anyone who wants it.  
+
+I was thinking that I would need to use something like SimpleDB, but I might not need anything more than a clever folder structure.
+
+QUESTION:  Do HaarCascades use color? Because that could be a really useful method: get the Hue value and use it as a feature.
+
+

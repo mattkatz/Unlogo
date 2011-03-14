@@ -78,6 +78,8 @@
 		1FD1DA291325640F001DFF4D /* utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FD1DA251325640F001DFF4D /* utils.h */; };
 		1FD1DA451325649C001DFF4D /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FD1DA431325649C001DFF4D /* Image.cpp */; };
 		1FD1DA461325649C001DFF4D /* Image.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FD1DA441325649C001DFF4D /* Image.h */; };
+		1FE7C9671325A87D008931C0 /* ContourFinder.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FE7C9651325A87D008931C0 /* ContourFinder.h */; };
+		1FE7C9681325A87D008931C0 /* ContourFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FE7C9661325A87D008931C0 /* ContourFinder.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,6 +156,8 @@
 		1FD1DA251325640F001DFF4D /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = utils.h; path = src/Utils/utils.h; sourceTree = SOURCE_ROOT; };
 		1FD1DA431325649C001DFF4D /* Image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Image.cpp; path = src/Images/Image.cpp; sourceTree = SOURCE_ROOT; };
 		1FD1DA441325649C001DFF4D /* Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Image.h; path = src/Images/Image.h; sourceTree = SOURCE_ROOT; };
+		1FE7C9651325A87D008931C0 /* ContourFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContourFinder.h; path = src/Tools/ContourFinder.h; sourceTree = "<group>"; };
+		1FE7C9661325A87D008931C0 /* ContourFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ContourFinder.cpp; path = src/Tools/ContourFinder.cpp; sourceTree = "<group>"; };
 		D2AAC0630554660B00DB518D /* unlogo.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = unlogo.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -252,6 +256,8 @@
 				1FD1DA1513256409001DFF4D /* FlowFinder.h */,
 				1FD1DA1613256409001DFF4D /* GenericMatcher.cpp */,
 				1FD1DA1713256409001DFF4D /* GenericMatcher.h */,
+				1FE7C9651325A87D008931C0 /* ContourFinder.h */,
+				1FE7C9661325A87D008931C0 /* ContourFinder.cpp */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -395,6 +401,7 @@
 				1FD1DA271325640F001DFF4D /* JSONElement.h in Headers */,
 				1FD1DA291325640F001DFF4D /* utils.h in Headers */,
 				1FD1DA461325649C001DFF4D /* Image.h in Headers */,
+				1FE7C9671325A87D008931C0 /* ContourFinder.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,6 +486,7 @@
 				1FD1DA261325640F001DFF4D /* JSONElement.cpp in Sources */,
 				1FD1DA281325640F001DFF4D /* utils.cpp in Sources */,
 				1FD1DA451325649C001DFF4D /* Image.cpp in Sources */,
+				1FE7C9681325A87D008931C0 /* ContourFinder.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
