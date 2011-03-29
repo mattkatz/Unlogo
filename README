@@ -18,30 +18,46 @@ General Public License for more details.
 
 
 INTRODUCTION
-----------------
+==============================================
 Unlogo is a web service that eliminates logos and other corporate signage from videos. On a practical level, it takes back your personal media from the corporations and advertisers. On a technical level, it is a really cool combination of some brand new OpenCV and FFMPEG functionality. On a poetic level, it is a tool for focusing on what is important in the record of your life rather than the ubiquitous messages that advertisers want you to focus on.
 
 In short, Unlogo gives people the opportunity to opt out of having corporate messages permanently imprinted into the photographic record of their lives.
 
+
 GOALS
---------------
+==============================================
 
 For this inital version of Unlogo, I am not interested in performance, only accuracy.  This has lead to several decisions, not the least of which is the fact that it is a video processing plugin rather than an AR experience or something of that nature.  
 
 
 REQUIREMENTS
-----------------
+==============================================
 
-OpenCV 2.2 - http://opencv.willowgarage.com/wiki/
 FFMPEG compiled with vf_plugin.c
+----------------------
+Prerequisites
+
+You may want to use your favorite package manager to install the following packages before compiling FFMPEG.  (links provided for manual install)
+
+- mp3lame 		http://downloads.sourceforge.net/project/lame/lame/3.98.4/lame-3.98.4.tar.gz
+- x264 			ftp://ftp.videolan.org/pub/videolan/x264/snapshots/x264-snapshot-20100922-2245.tar.bz2
+- ogg 			http://downloads.xiph.org/releases/ogg/libogg-1.2.0.tar.gz
+- vorbis 		http://downloads.xiph.org/releases/vorbis/libvorbis-1.3.1.tar.gz
+- xvid 			http://downloads.xvid.org/downloads/xvidcore-1.2.2.tar.gz
+- faac 			http://downloads.sourceforge.net/faac/faac-1.28.tar.gz (had to use ./configure --disable-dependency-tracking --without-mp4v2) 
+- theora 		http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2
+- opencore-amr  http://downloads.sourceforge.net/project/opencore-amr/opencore-amr/0.1.2/opencore-amr-0.1.2.tar.gz
+
+
+Compiling & Installing
 
 vf_plugin.c is a simple framework that allows you to specify a dylib or .o file to use as an avfilter in FFMPEG.  It basically saves you the trouble of having to recompile FFMPEG every time you make a change to your filter.  Perhaps future versions fo the moustachizer/Unlogo will just be a self-contained avfilter, but for development, this is the way to go*.
 
 1. I start with the v0.6.1 tag from the git repository
 
-git clone git://git.ffmpeg.org/ffmpeg.git ffmpeg
+git clone git://git.videolan.org/ffmpeg.git ffmpeg
 cd ffmpeg
-git checkout v0.6.1
+git checkout v0.6
 
 2. add vf_plugin.c to the libavfilter folder
 
@@ -49,18 +65,55 @@ cp [this folder]/libavfilter/vf_plugin.c [your ffmpeg clone]/libavfilter
 
 3. modify '[your ffmpeg clone]/libavfilter/allfilters.c' and [your ffmpeg clone]/libavfilter/Makefile to include vf_plugin (see examples in [this folder]/libavfilter)
 
+NOTE:  Do not just copy the Makefile and allfilters.c that came with Unlogo.  
+
+Makefile: add at the end of the list of lines that look the same
+OBJS-$(CONFIG_PLUGIN_FILTER)                 += vf_plugin.o
+
+allfilters.c: add at the end of the list of lines that look the same
+REGISTER_FILTER (PLUGIN,	  plugin,	   vf);
+
+
 4. Then just ./configure, make, make install as usual
+
+NOTE:  these are my configure options.  You may find them useful
+
+./configure --arch=x86_64 --enable-libmp3lame --enable-shared  \
+	--disable-mmx --disable-asm --disable-stripping --enable-debug  \
+	--disable-doc --enable-libx264 --enable-nonfree --enable-libvorbis --enable-gpl --enable-libxvid --enable-version3 \
+	--enable-pthreads --enable-libfaac --enable-libopencore-amrnb \
+	--enable-libopencore-amrwb --enable-libtheora--enable-x11grab \
+	--enable-ffplay
 
 * The frei0r video filter framework is similar (but much more sophisticated) to vf_plugin.c, but I couldn't get it to work at all.
 
 
+OpenCV 2.2 - http://opencv.willowgarage.com/wiki/
+----------------------
+The following process worked for me:
+
+wget http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2
+tar -xvf OpenCV-2.2.0.tar.bz2
+ccmake -G "Unix Makefiles" 
+
+
+
+
 EXAMPLE USAGE
----------------
+==============================================
 ffmpeg -i movies/mymovie.mp4 -qscale 2 -vf plugin=unlogo.dylib:logo.jpg -y out.mov
 
 
+SUPPORTERS
+==============================================
+I'd like to thank all of the people below for their contributions to the Unlogo Kickstarter campaign.
+
+futnuh, Rod Parker, Daniel Doyle, Nathan Loofbourrow, Daniel Alavi, Martha Chase, Michael Lewis, Michael Schieben, con.sume.org, Steev, Hise, Michael Bridgen, Nick Semenkovich, Shawn Allen, Darren Nelsen, Jason Fitch, gabriel vogt, Graham Reznick, Michal Migurski, Ed Costello, Siddiq Bello, ayah, Geary Feldstein, Daniel, Klainbaum, max raven, Steve Dietz, Cary Aurand, Travis Thatcher, kiran, Kib T., J.R. Maroney, Vasili Sviridov, Gladys Santiago, Alexey Zilber, Curt Sherman, Meredith Binder, doug jaeger, Sean Parker, craigp, Barbara Iverson, Blake Eggemeyer, Parker Higgins, Philipp Schlösser, WhiteNitro, Alastair Medford, giorgio, Justyna B. // aconite, David Proctor, jodi morrison, dmandzio, Ken Nickerson, CJ Cornell, Jeremy Levine , R. Lee Montgomery, Owocni.pl, Dominic Es, Aaron Meyers, Adam T, Michael Mandiberg, Pseudo, Kristofer Bergstrom, Philip, uniomni, Jeff Ubois, Starchy Grant, Steve Lambert, Jon Cohrs, Matthew Katz, Zach, David Schmidt, Cassandra Gero, nortd, Eric, Val Gough, Ben Tomassetti, Toby Marvin, brekk, Melissa Cohen, Drew Fister, Craig Caryl, Louai Abu-Osba, William Linn, David Papini, ddkk, Volker Neumann, Caitlin Rothermel, Sam Fleischner, J. Makary, David Miller, Kendall Lister, Damien Bargiacchi, ViKing, Ryan Anthony Petersen, Simone Cortesi, Hans Czajkowski Jørgensen, Andre Theisen, Aaron Cossey, Ivan Wong, Robert Prus, Noah Keating, Carol Thomas, Matt Campen, Sunny Bates, Wesley Ross, DBonar, Ryan Kelln, Stephanie Pereira, Michelle, Christoph Richter, Brook Hinton, Gal Buki, james nelson, Krister Knutars, Jason Asbahr, John De Boer, LigoranoReese, Hypothetical Development Organization, Ted Timmons, Paul Dembina, Melissa 'Bunni' Elian, Don Burke, Hatim Belyamani, Rufus Deuchler, Kristian Bjørnard, Jason Evers, Paul Hamingson, laudowicz, kaho, Brett Camper
+
+
+
 TO DO
----------------
+==============================================
 
 1. All matchers should implement hasHomography(), getHomography(), and warpPoints(), bInited, bTrainImageSet
 2. Make the matcher classes more consistent in general -- perhaps make an interface that they must conform to

@@ -76,16 +76,15 @@ void unlogo::process(Mat frame)
 	
 	
 	//Mat H12 = flow.getHomography();
-	
-	
 	chamer.doQuery(gray, "chamer matches");
 	//ferns.doQuery( gray, true);
 	//gmatcher.doQuery( gray, true );
 	//asift.doQuery( gray, true );
 	
 
-	imshow("preview", frame);
 	
+	
+	imshow("preview", frame);
 	cvWaitKey(1);
 }
 

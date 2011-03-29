@@ -125,4 +125,11 @@ I was thinking that I would need to use something like SimpleDB, but I might not
 
 QUESTION:  Do HaarCascades use color? Because that could be a really useful method: get the Hue value and use it as a feature.
 
+So, if you are keeping score, here are my current unanswered questions:
 
+1. If I created my own feature vector definition and collected a database of these features from a set of training images of an object, how could I use them to find that object inside of a query image?†
+2. Are the feature vectors calculated by SIFT/SURF/FAST/etc more or less the same (in principle) as those described here:  http://archive.ics.uci.edu/ml/machine-learning-databases/letter-recognition/letter-recognition.names  in that they are just a set of characteristics about a particular set of pixels?
+3. If I collected a database of these features from a set of training images of an object (presumably 10-20 vectors from each sample), how could I use these to find that object in a query image?
+4. Are there any feature matchers that use color?  Or can you modify existing ones to use it?
+
+† At first I thought the answer here was segmenting, but I don't think that is possible. And as I said above, it seems to me that this is what HaarCascades do.  
