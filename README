@@ -33,6 +33,9 @@ For this inital version of Unlogo, I am not interested in performance, only accu
 REQUIREMENTS
 ==============================================
 
+Unlogo requires FFMPEG (compiled with vf_plugin.c) and OpenCV.  I've provided installation instructions that have worked for me, but this is no guarantee that they will work for you!
+
+
 FFMPEG compiled with vf_plugin.c
 ----------------------
 Prerequisites
@@ -73,10 +76,9 @@ OBJS-$(CONFIG_PLUGIN_FILTER)                 += vf_plugin.o
 allfilters.c: add at the end of the list of lines that look the same
 REGISTER_FILTER (PLUGIN,	  plugin,	   vf);
 
+4. ./configure
 
-4. Then just ./configure, make, make install as usual
-
-NOTE:  these are my configure options.  You may find them useful
+NOTE:  these are my configure options.  You may find them useful if you installed all of the prerequisites listed above.
 
 ./configure --arch=x86_64 --enable-libmp3lame --enable-shared  \
 	--disable-mmx --disable-asm --disable-stripping --enable-debug  \
@@ -85,6 +87,12 @@ NOTE:  these are my configure options.  You may find them useful
 	--enable-libopencore-amrwb --enable-libtheora--enable-x11grab \
 	--enable-ffplay
 
+5. If you get an error, you probably just need to adjust your configure options.  You can run ./configure --help to see all of the options.  
+
+If you didn't get any errors, 'make && sudo make install'
+
+
+
 * The frei0r video filter framework is similar (but much more sophisticated) to vf_plugin.c, but I couldn't get it to work at all.
 
 
@@ -92,11 +100,14 @@ OpenCV 2.2 - http://opencv.willowgarage.com/wiki/
 ----------------------
 The following process worked for me:
 
-wget http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2
-tar -xvf OpenCV-2.2.0.tar.bz2
-ccmake -G "Unix Makefiles" 
+	wget http://downloads.sourceforge.net/project/opencvlibrary/opencv-unix/2.2/OpenCV-2.2.0.tar.bz2
+	tar -xvf OpenCV-2.2.0.tar.bz2
+	cd OpenCV-2.2.0
+	ccmake -G "Unix Makefiles" 
 
+At this point, you are in the 'ccmake' program, whose job it is to generate your Makefile.  Press 'c' to configure, and you should see all of the configuration options.  Change them as you like, then press 'g'.  This will generate the makefile and exit out of ccmake.  Then just:
 
+make && sudo make install
 
 
 EXAMPLE USAGE
