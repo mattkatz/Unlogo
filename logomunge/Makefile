@@ -6,18 +6,18 @@ ifndef config
 endif
 export config
 
-PROJECTS := descriptorextractor
+PROJECTS := logomunge
 
 .PHONY: all clean help $(PROJECTS)
 
 all: $(PROJECTS)
 
-descriptorextractor: 
-	@echo "==== Building descriptorextractor ($(config)) ===="
-	@${MAKE} --no-print-directory -C . -f descriptorextractor.make
+logomunge: 
+	@echo "==== Building logomunge ($(config)) ===="
+	@${MAKE} --no-print-directory -C . -f logomunge.make
 
 clean:
-	@${MAKE} --no-print-directory -C . -f descriptorextractor.make clean
+	@${MAKE} --no-print-directory -C . -f logomunge.make clean
 
 help:
 	@echo "Usage: make [config=name] [target]"
@@ -29,6 +29,6 @@ help:
 	@echo "TARGETS:"
 	@echo "   all (default)"
 	@echo "   clean"
-	@echo "   descriptorextractor"
+	@echo "   logomunge"
 	@echo ""
 	@echo "For more information, see http://industriousone.com/premake/quick-start"

@@ -1,0 +1,35 @@
+logomunge
+By Jeff Crouse
+jefftimesten at gmail dot com
+http://www.jeffcrouse.info
+ 
+This software is licensed under the GNU-GPL version 3 or later.
+
+unlogo is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.
+
+unlogo is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+REQUIREMENTS
+=======================
+
+boost::filesystem
+boost::program_options
+
+USAGE
+=======================
+
+logomunge logos/Adidas
+
+This will:
+
+1. loop through all of the images in /logos/Adidas.  Each image will be considered to be a "model", ie: a straight-on representation of the logo
+
+2. look for a folder of the same name, eg: if there is an image called variant-1.jpg, logomunge will look for a folder called variant-1 that contains examples of the logo "in the wild"
+
+3. Each example will be analyzed and the descriptors will be combined into a single file and saved as 'descriptors.xml' into the original directory.  

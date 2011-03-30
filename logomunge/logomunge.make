@@ -22,7 +22,7 @@ endif
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/descriptorextractor
+  TARGET     = $(TARGETDIR)/logomunge
   DEFINES   += -DDEBUG
   INCLUDES  += -I/opt/local/include -I/usr/local/include -I/usr/include
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -44,7 +44,7 @@ endif
 ifeq ($(config),release)
   OBJDIR     = obj/Release
   TARGETDIR  = .
-  TARGET     = $(TARGETDIR)/descriptorextractor
+  TARGET     = $(TARGETDIR)/logomunge
   DEFINES   += -DNDEBUG
   INCLUDES  += -I/opt/local/include -I/usr/local/include -I/usr/include
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
@@ -82,7 +82,7 @@ all: $(TARGETDIR) $(OBJDIR) prebuild prelink $(TARGET)
 	@:
 
 $(TARGET): $(GCH) $(OBJECTS) $(LDDEPS) $(RESOURCES)
-	@echo Linking descriptorextractor
+	@echo Linking logomunge
 	$(SILENT) $(LINKCMD)
 	$(POSTBUILDCMDS)
 
@@ -103,7 +103,7 @@ else
 endif
 
 clean:
-	@echo Cleaning descriptorextractor
+	@echo Cleaning logomunge
 ifeq (posix,$(SHELLTYPE))
 	$(SILENT) rm -f  $(TARGET)
 	$(SILENT) rm -rf $(OBJDIR)

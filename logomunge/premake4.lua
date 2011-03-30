@@ -1,8 +1,8 @@
-solution "DescriptorExtractor" 
+solution "LogoMunge" 
 	configurations { "Debug", "Release" }
 	
 -- A project defines one build target
-project "descriptorextractor"
+project "logomunge"
 	kind "ConsoleApp"
 	language "C++"
 	files { "src/*.h", "src/*.cpp" }
