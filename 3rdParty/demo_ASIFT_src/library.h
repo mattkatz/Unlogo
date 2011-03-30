@@ -8,9 +8,13 @@
 // #include <unistd.h>
 #include <float.h>
 
-
+#ifndef MAX
 #define MAX(i,j) ( (i)<(j) ? (j):(i) )
+#endif
+
+#ifndef MIN
 #define MIN(i,j) ( (i)<(j) ? (i):(j) )
+#endif
 
 #define LUTMAX 30
 #define LUTPRECISION 1000.0
