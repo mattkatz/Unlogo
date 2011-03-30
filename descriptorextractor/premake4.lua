@@ -5,9 +5,9 @@ solution "DescriptorExtractor"
 project "descriptorextractor"
 	kind "ConsoleApp"
 	language "C++"
-	files { "*.h", "*.cpp" }
+	files { "src/*.h", "src/*.cpp" }
 	links { 
-		"pcrecpp", "curl", "opencv_core",  "opencv_highgui", 
+		"opencv_core",  "opencv_highgui", 
 		"opencv_imgproc", "opencv_objdetect"}
 	libdirs { 
 		"/opt/local/lib", 
