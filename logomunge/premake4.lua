@@ -11,9 +11,9 @@ project "logomunge"
 	files { "src/*.h", "src/*.cpp" }
 	links { 
 		"opencv_core",  "opencv_highgui", 
-		"opencv_imgproc", "opencv_objdetect",
-		"boost_program_options", "boost_system", 
-		"boost_filesystem"}
+		"opencv_features2d", "opencv_imgproc", 
+		"opencv_objdetect", "boost_program_options", 
+		"boost_system", "boost_filesystem"}
 	libdirs { 
 		"/opt/local/lib", 
 		"/usr/local/lib", 

@@ -29,7 +29,7 @@ ifeq ($(config),debug)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -L/opt/local/lib -L/usr/local/lib
-  LIBS      += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lboost_program_options -lboost_system -lboost_filesystem
+  LIBS      += -lopencv_core -lopencv_highgui -lopencv_features2d -lopencv_imgproc -lopencv_objdetect -lboost_program_options -lboost_system -lboost_filesystem
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
@@ -51,7 +51,7 @@ ifeq ($(config),release)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2
   CXXFLAGS  += $(CFLAGS) 
   LDFLAGS   += -Wl,-x -L/opt/local/lib -L/usr/local/lib
-  LIBS      += -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lboost_program_options -lboost_system -lboost_filesystem
+  LIBS      += -lopencv_core -lopencv_highgui -lopencv_features2d -lopencv_imgproc -lopencv_objdetect -lboost_program_options -lboost_system -lboost_filesystem
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
   LINKCMD    = $(CXX) -o $(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(ARCH) $(LIBS)
