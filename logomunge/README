@@ -33,3 +33,5 @@ This will:
 2. look for a folder of the same name, eg: if there is an image called variant-1.jpg, logomunge will look for a folder called variant-1 that contains examples of the logo "in the wild"
 
 3. Each example will be analyzed and the descriptors will be combined into a single file and saved as 'descriptors.xml' into the original directory.  
+
+4. Make sure there are no duplicate images??
