@@ -94,6 +94,13 @@ void Image::canny(double thresh1, double thresh2, int aperatureSize, bool moreAc
 	Canny(cvImg, cvImg, thresh1, thresh2, aperatureSize, moreAccurate);
 }
 
+
+// ------------------------------------------------------
+void Image::text(const string txt, int x, int y, float scale)
+{
+	putText(cvImg, txt, Point(x,y), FONT_HERSHEY_PLAIN, 1, Scalar(255,255,255));
+}
+
 // ------------------------------------------------------
 void Image::copySectionFrom(Image src, Rect src_rect)
 {

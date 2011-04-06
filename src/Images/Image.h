@@ -67,6 +67,9 @@ public:
 	// Apply an effect
 	//void apply(Effect* filter);
 	
+	// Write some text into the image
+	void text(const string txt, int x, int y, float scale=1);
+	
 	// Get a section from another image
 	void copySectionFrom(Image src, Rect src_rect);
 	void copySectionFrom(Image src, Rect src_rect, Rect dst_rect);
