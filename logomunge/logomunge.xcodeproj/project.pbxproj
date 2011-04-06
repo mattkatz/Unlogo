@@ -14,6 +14,7 @@
 		1F028EF0134A94B500AC53C6 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F028EED134A94B500AC53C6 /* libboost_filesystem.dylib */; };
 		1F028EF1134A94B500AC53C6 /* libboost_program_options.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F028EEE134A94B500AC53C6 /* libboost_program_options.dylib */; };
 		1F028EF2134A94B500AC53C6 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F028EEF134A94B500AC53C6 /* libboost_system.dylib */; };
+		1F25A944134CBE75003CA658 /* Compress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F25A943134CBE75003CA658 /* Compress.cpp */; };
 		1FAEB99A134BB7F00014C3C1 /* libopencv_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FAEB999134BB7EF0014C3C1 /* libopencv_core.dylib */; };
 		1FE662031343BD5300896670 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FE662021343BD5300896670 /* main.cpp */; };
 /* End PBXBuildFile section */
@@ -38,6 +39,8 @@
 		1F028EED134A94B500AC53C6 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = /Users/jeff/Documents/Unlogo/logomunge/../../../../../usr/local/lib/libboost_filesystem.dylib; sourceTree = "<absolute>"; };
 		1F028EEE134A94B500AC53C6 /* libboost_program_options.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_program_options.dylib; path = /Users/jeff/Documents/Unlogo/logomunge/../../../../../usr/local/lib/libboost_program_options.dylib; sourceTree = "<absolute>"; };
 		1F028EEF134A94B500AC53C6 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = /Users/jeff/Documents/Unlogo/logomunge/../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<absolute>"; };
+		1F25A942134CBE75003CA658 /* Compress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compress.h; path = ../src/Utils/Compress/Compress.h; sourceTree = SOURCE_ROOT; };
+		1F25A943134CBE75003CA658 /* Compress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Compress.cpp; path = ../src/Utils/Compress/Compress.cpp; sourceTree = SOURCE_ROOT; };
 		1FAEB999134BB7EF0014C3C1 /* libopencv_core.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.dylib; path = /usr/local/lib/libopencv_core.dylib; sourceTree = "<absolute>"; };
 		1FE662021343BD5300896670 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
 		8DD76F6C0486A84900D96B5E /* logomunge */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = logomunge; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +79,8 @@
 			isa = PBXGroup;
 			children = (
 				1FE662021343BD5300896670 /* main.cpp */,
+				1F25A942134CBE75003CA658 /* Compress.h */,
+				1F25A943134CBE75003CA658 /* Compress.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -154,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FE662031343BD5300896670 /* main.cpp in Sources */,
+				1F25A944134CBE75003CA658 /* Compress.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

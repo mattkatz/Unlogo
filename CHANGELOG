@@ -135,7 +135,13 @@ So, if you are keeping score, here are my current unanswered questions:
 † At first I thought the answer here was segmenting, but I don't think that is possible. And as I said above, it seems to me that this is what HaarCascades do.  
 
 
-March 30, 2010
+March 30, 2011
 ==============================================
 
 I have decided that I am going to direct my efforts towards using a database of SURF points culled from several images that contain a certaion logo.  This means that I have to have a separate program that will dig through several photos and produce some representation of a shitload of descriptors.  So I am rearranging the repository into 2 projects: the filter and the descriptorextractor.
+
+
+April 6, 2011
+==============================================
+
+Worked a bunch on logomunge.  

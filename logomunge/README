@@ -18,22 +18,22 @@ General Public License for more details.
 REQUIREMENTS
 =======================
 
+opencv
 boost::filesystem
 boost::program_options
 
 USAGE
 =======================
 
-logomunge logos/Adidas
+logomunge -r -d ../logos/Adidas
 
 This will:
 
-1. loop through all of the images in /logos/Adidas.  Each image will be considered to be a "model", ie: a straight-on representation of the logo
+1. loop through all of the images in ../logos/Adidas and calcualte SURF keypoints and descriptors and save them to ../logos/Adidas.data
 
-2. look for a folder of the same name, eg: if there is an image called variant-1.jpg, logomunge will look for a folder called variant-1 that contains examples of the logo "in the wild"
+2. (Because of -r), loop through all of the subdirectories of ../logos/Adidas and save similar data to ../logos/Adidas/[subdirname].data
 
-3. Each example will be analyzed and the descriptors will be combined into a single file and saved as 'descriptors.xml' into the original directory.  
-
+These data files will be used by the Unlogo filter to find logos in a video.
 
 
 TO DO
