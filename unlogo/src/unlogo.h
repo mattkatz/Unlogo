@@ -36,18 +36,10 @@ private:
 	Image query;
 	Image gray;
 	
-	
 	/*
 	 The "train" image is usually created at the beginning of the app and compared against a 'query' image every frame.
 	 */
 	Image train;
-	
-	
-	ASIFTMatcher asift;
-	GenericMatcher gmatcher;
-	FernsMatcher ferns;
-	ChamerMatcher chamer;
-	
 	
 	FlowFinder flow;
 	bool findTrackingPoints;

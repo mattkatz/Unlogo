@@ -24,7 +24,7 @@ ifeq ($(config),debug)
   TARGETDIR  = .
   TARGET     = $(TARGETDIR)/libunlogo.a
   DEFINES   += -DDEBUG
-  INCLUDES  += -I../src/Effects -I../src/Images -I../src/Tools -I../src/Utils -I../3rdParty/demo_ASIFT_src -I../3rdParty/jsoncpp-src-0.5.0/include -I/opt/local/include -I/usr/local/include -I/usr/include
+  INCLUDES  += -I../src/Effects -I../src/Images -I../src/Tools -I../src/Utils -I../src/Tools/ASIFT -I../src/Utils/JSONElement -I../src/Utils/JSONElement/jsoncpp/include -I/opt/local/include -I/usr/local/include -I/usr/include
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g
   CXXFLAGS  += $(CFLAGS) 
@@ -46,7 +46,7 @@ ifeq ($(config),release)
   TARGETDIR  = .
   TARGET     = $(TARGETDIR)/libunlogo.a
   DEFINES   += -DNDEBUG
-  INCLUDES  += -I../src/Effects -I../src/Images -I../src/Tools -I../src/Utils -I../3rdParty/demo_ASIFT_src -I../3rdParty/jsoncpp-src-0.5.0/include -I/opt/local/include -I/usr/local/include -I/usr/include
+  INCLUDES  += -I../src/Effects -I../src/Images -I../src/Tools -I../src/Utils -I../src/Tools/ASIFT -I../src/Utils/JSONElement -I../src/Utils/JSONElement/jsoncpp/include -I/opt/local/include -I/usr/local/include -I/usr/include
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2
   CXXFLAGS  += $(CFLAGS) 
@@ -66,21 +66,6 @@ endif
 OBJECTS := \
 	$(OBJDIR)/main.o \
 	$(OBJDIR)/unlogo.o \
-	$(OBJDIR)/compute_asift_keypoints.o \
-	$(OBJDIR)/compute_asift_matches.o \
-	$(OBJDIR)/demo_lib_sift.o \
-	$(OBJDIR)/domain.o \
-	$(OBJDIR)/filter.o \
-	$(OBJDIR)/flimage.o \
-	$(OBJDIR)/fproj.o \
-	$(OBJDIR)/frot.o \
-	$(OBJDIR)/library.o \
-	$(OBJDIR)/numerics1.o \
-	$(OBJDIR)/orsa.o \
-	$(OBJDIR)/splines.o \
-	$(OBJDIR)/json_reader.o \
-	$(OBJDIR)/json_value.o \
-	$(OBJDIR)/json_writer.o \
 
 RESOURCES := \
 
@@ -145,51 +130,6 @@ $(OBJDIR)/main.o: src/main.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 $(OBJDIR)/unlogo.o: src/unlogo.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/compute_asift_keypoints.o: ../3rdParty/demo_ASIFT_src/compute_asift_keypoints.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/compute_asift_matches.o: ../3rdParty/demo_ASIFT_src/compute_asift_matches.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/demo_lib_sift.o: ../3rdParty/demo_ASIFT_src/demo_lib_sift.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/domain.o: ../3rdParty/demo_ASIFT_src/domain.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/filter.o: ../3rdParty/demo_ASIFT_src/filter.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/flimage.o: ../3rdParty/demo_ASIFT_src/flimage.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/fproj.o: ../3rdParty/demo_ASIFT_src/fproj.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/frot.o: ../3rdParty/demo_ASIFT_src/frot.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/library.o: ../3rdParty/demo_ASIFT_src/library.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/numerics1.o: ../3rdParty/demo_ASIFT_src/numerics1.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/orsa.o: ../3rdParty/demo_ASIFT_src/orsa.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/splines.o: ../3rdParty/demo_ASIFT_src/splines.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/json_reader.o: ../3rdParty/jsoncpp-src-0.5.0/src/lib_json/json_reader.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/json_value.o: ../3rdParty/jsoncpp-src-0.5.0/src/lib_json/json_value.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-$(OBJDIR)/json_writer.o: ../3rdParty/jsoncpp-src-0.5.0/src/lib_json/json_writer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 

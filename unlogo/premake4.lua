@@ -8,17 +8,7 @@ solution "Unlogo"
 project "unlogo"
 	kind "StaticLib"
 	language "C++"
-	files { 
-		"src/*.h", "src/*.cpp", 
-		"../src/*/*.h", "../src/*/*.cpp",
-		"../3rdParty/demo_ASIFT_src/*.h", 
-		"../3rdParty/demo_ASIFT_src/*.cpp",
-		"../3rdParty/jsoncpp-src-0.5.0/src/lib_json/*.h", 
-		"../3rdParty/jsoncpp-src-0.5.0/src/lib_json/*.cpp"
-		}
-	excludes {
-		"../3rdParty/demo_ASIFT_src/demo_ASIFT.cpp"
-	}
+	files {  "src/*.h", "src/*.cpp", }
 	links { 
 		"opencv_core",  "opencv_highgui", 
 		"opencv_imgproc", "opencv_objdetect"}
@@ -29,8 +19,9 @@ project "unlogo"
 	}
 	includedirs { 
 		"../src/*",
-		"../3rdParty/demo_ASIFT_src",
-		"../3rdParty/jsoncpp-src-0.5.0/include",
+		"../src/Tools/ASIFT",
+		"../src/Utils/JSONElement",
+		"../src/Utils/JSONElement/jsoncpp/include",
 		"/opt/local/include",
 		"/usr/local/include",
 		"/usr/include"
