@@ -36,6 +36,11 @@ This will:
 These data files will be used by the Unlogo filter to find logos in a video.
 
 
+logomunge -r -d ../logos/
+
+This will calculate the SURF keypoints for every image in the logos directory.  This will take a very long time.
+
+
 TO DO
 =======================
 

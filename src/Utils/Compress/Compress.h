@@ -7,13 +7,16 @@
  *
  */
 
+#pragma once
+
 #include "zlib.h"
 #include <stdio.h>
+#include <string>
 
-#ifdef STDC
+//#ifdef STDC
 #  include <string.h>
 #  include <stdlib.h>
-#endif
+//#endif
 
 #ifdef USE_MMAP
 #  include <sys/types.h>
@@ -128,11 +131,12 @@ static void pwinerror(const char *s)
 #  define local
 #endif
 
-
+using namespace std;
 
 class Compress {
 public:
 	
+	// compress and remove the original
 	static void compress(const char* file, int level=Z_DEFAULT_COMPRESSION, int mode=Z_FILTERED) {
 		char outmode[20];
 		strcpy(outmode, "wb6 ");
@@ -143,11 +147,60 @@ public:
 		file_compress((char*)file, outmode);
 	}
 	
+	// uncompress and remove original
 	static void uncompress(const char* file) {
+		
 		 file_uncompress((char*)file);
 	}
 
+	
+	// uncompress to a temp file and return the filename
+	static char* uncompress_to_tmp(const char* path) {
+		
+		gzFile in = gzopen(path, "rb");
+		if(in == NULL)
+		{
+			fprintf(stderr, "can't gzopen %s\n", path);
+		}
+		
+		char* fname = tmpnam(NULL);
+		FILE* out = fopen(fname, "w");
+		if(out==NULL)
+		{
+			fprintf(stderr, "can't open %s\n", fname);
+		}
+		
+		gz_uncompress(in, out);
+		return fname;
+	}	
+	
+	// uncompress and return the uncompressed string
+	static string uncompress_to_str(const char* path) {
+		string out;
+		
+		gzFile in = gzopen(path, "rb");
+		if (in == NULL)
+		{
+			fprintf(stderr, "can't gzopen %s\n", path);
+		}
+	
+		local char buf[BUFLEN];
+		int len;
+		int err;
+		
+		for (;;) {
+			len = gzread(in, buf, sizeof(buf));
+			if (len < 0) error (gzerror(in, &err));
+			if (len == 0) break;
+			
+			out.append(buf, (unsigned)len);
+		}
 
+		if (gzclose(in) != Z_OK) error("failed gzclose");
+		
+		return out;
+	}
+		
 protected:	
 
 	static void error            OF((const char *msg));

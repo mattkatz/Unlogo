@@ -9,9 +9,6 @@
 
 #include <iostream>
 #include "opencv2/core/core.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/objdetect/objdetect.hpp"
-#include "opencv2/highgui/highgui.hpp"
 #include "unlogo.h"
 
 
@@ -36,16 +33,20 @@ extern "C"
 		// Do we need to calculate #channels using stride & width?
 		// Should we just make an Image here instead and pass it to plugin?
 
-		Mat input(Size(width, height), CV_8UC3, src[0], src_stride[0]);
+		cv::Mat input(Size(width, height), CV_8UC3, src[0], src_stride[0]);
 		
-		uint8_t* data = src[0];	// save a reference to the data so we can make sure it is the same array
+		// save a reference to the data so we can make sure it is the same data after the frame is processsed by the unlogo filter
+		uint8_t* data = src[0];	
 		
+		// send the data (as a cv::Mat) to the unlogo object for processing
 		plugin->process(input); //src, src_stride, width, height
 		
-		if(src[0] != data) {
+		if(src[0] != data)
+		{
 			cout << "ERROR! Data has been reallocated.  This will be problematic" << endl;
 		}
 		
+		// Copy the processed data to the destination array
 		for(int i=0; i<4; i++) {
 			memcpy(dst[i], src[i], sizeof(uint8_t) * src_stride[i] * height);
 		}

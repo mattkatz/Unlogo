@@ -24,7 +24,7 @@ ifeq ($(config),debug)
   TARGETDIR  = .
   TARGET     = $(TARGETDIR)/logomunge
   DEFINES   += -DDEBUG
-  INCLUDES  += -I/opt/local/include -I/usr/local/include -I/usr/include
+  INCLUDES  += -I../src/Effects -I../src/Images -I../src/Tools -I../src/Utils -I/opt/local/include -I/usr/local/include -I/usr/include
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -g
   CXXFLAGS  += $(CFLAGS) 
@@ -46,7 +46,7 @@ ifeq ($(config),release)
   TARGETDIR  = .
   TARGET     = $(TARGETDIR)/logomunge
   DEFINES   += -DNDEBUG
-  INCLUDES  += -I/opt/local/include -I/usr/local/include -I/usr/include
+  INCLUDES  += -I../src/Effects -I../src/Images -I../src/Tools -I../src/Utils -I/opt/local/include -I/usr/local/include -I/usr/include
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -O2
   CXXFLAGS  += $(CFLAGS) 
@@ -65,6 +65,9 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/main.o \
+	$(OBJDIR)/TrainingSet.o \
+	$(OBJDIR)/Image.o \
+	$(OBJDIR)/TrainingImage.o \
 
 RESOURCES := \
 
@@ -126,6 +129,15 @@ $(GCH): $(PCH)
 endif
 
 $(OBJDIR)/main.o: src/main.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/TrainingSet.o: ../src/Tools/TrainingSet.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/Image.o: ../src/Images/Image.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+$(OBJDIR)/TrainingImage.o: ../src/Images/TrainingImage.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 

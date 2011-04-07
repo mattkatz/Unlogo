@@ -11,11 +11,13 @@ project "unlogo"
 	files {  "src/*.h", "src/*.cpp", }
 	links { 
 		"opencv_core",  "opencv_highgui", 
-		"opencv_imgproc", "opencv_objdetect"}
+		"opencv_imgproc", "opencv_objdetect",
+		"boost_system", "boost_filesystem"}
 	libdirs { 
 		"/opt/local/lib", 
 		"/usr/local/lib", 
 		os.findlib("opencv_core"),
+		os.findlib("boost_system")
 	}
 	includedirs { 
 		"../src/*",

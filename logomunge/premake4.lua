@@ -8,7 +8,11 @@ solution "LogoMunge"
 project "logomunge"
 	kind "ConsoleApp"
 	language "C++"
-	files { "src/*.h", "src/*.cpp" }
+	files { 
+		"src/*.h", "src/*.cpp",
+		"../src/Tools/TrainingSet.h", "../src/Tools/TrainingSet.cpp",
+		"../src/Images/*.h", "../src/Images/*.cpp"
+	}
 	links { 
 		"opencv_core",  "opencv_highgui", 
 		"opencv_features2d", "opencv_imgproc", 
@@ -21,6 +25,7 @@ project "logomunge"
 		os.findlib("boost_system")
 	}
 	includedirs { 
+		"../src/*",
 		"/opt/local/include",
 		"/usr/local/include",
 		"/usr/include"

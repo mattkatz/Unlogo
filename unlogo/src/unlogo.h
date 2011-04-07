@@ -10,11 +10,7 @@
 #pragma once
 #include "Image.h"
 #include "FlowFinder.h"
-#include "ASIFTMatcher.h"
-#include "GenericMatcher.h"
-#include "FernsMatcher.h"
-#include "ChamerMatcher.h"
-
+#include "TrainingSet.h"
 
 using namespace std;
 using namespace cv;
@@ -30,7 +26,7 @@ public:
 private:
 	
 	/*
-	The query is usually a single   frame of a video.  It is defined in contrast to the "train" image, which is 
+	The query is usually a single frame of a video. It is defined in contrast to the "train" image, which is 
 	 usually analyzed once at the beginning of the app and then compared against the query image.
 	 */
 	Image query;
@@ -39,8 +35,11 @@ private:
 	/*
 	 The "train" image is usually created at the beginning of the app and compared against a 'query' image every frame.
 	 */
-	Image train;
+	vector<TrainingSet*> trainingSets;
 	
+	/*
+	 Use the flow to fill in blanks between frame analysis.
+	 */
 	FlowFinder flow;
 	bool findTrackingPoints;
 };

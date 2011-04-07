@@ -12,7 +12,10 @@
 // ------------------------------
 unlogo::~unlogo()
 {
-
+	for(int i=0; i<trainingSets.size(); i++)
+	{
+		delete trainingSets[i];
+	}	
 }
 
 
@@ -21,9 +24,16 @@ int unlogo::init(const char* argstr)
 {	
 	findTrackingPoints=true;
 
-	train.open(argstr, true);
+	vector<string> archives;
+	split( archives, argstr, boost::algorithm::is_any_of(":,") );
+	for(int i=0; i<archives.size(); i++)
+	{
+		TrainingSet* set = new TrainingSet();
+		set->loadFromArchive(archives[i]);
+		
+		trainingSets.push_back( set );
+	}
 	
-
 	flow.setMaxPoints(500);
 	return 0;
 }
@@ -37,11 +47,10 @@ void unlogo::process(Mat frame)
 	gray = query.getGrayscale();
 	assert(gray.channels()==1);
 	
-	// Equalize histograms here
+	// TO DO: pre-process image here (equalize historgrams, soebel, threshold, etc?) 
 	
 	if(findTrackingPoints)
 	{
-		cout << "finding new tracking points" << endl;
 		flow.findTrackingPoints( gray );
 		findTrackingPoints=false;
 	}
@@ -50,14 +59,19 @@ void unlogo::process(Mat frame)
 		flow.updateTrackingPoints( gray );
 	}
 
-	
-
 	Mat H12 = flow.getHomography();
 
-
+	
+	// Use each of the training sets to find logos in the frame
+	for(int i=0; i<trainingSets.size(); i++)
+	{
+		trainingSets[i]->match(gray);
+		
+		// TO DO:  If we find a match, we need to draw something into 'query'
+	}
+	
 	
 	query.text("unlogo", 10, query.height()-20);
-	
 	
 	imshow("preview", frame);
 	cvWaitKey(1);
