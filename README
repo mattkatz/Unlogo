@@ -86,7 +86,7 @@ NOTE:  these are my configure options.  You may find them useful if you installe
 	--disable-mmx --disable-asm --disable-stripping --enable-debug  \
 	--disable-doc --enable-libx264 --enable-nonfree --enable-libvorbis --enable-gpl --enable-libxvid --enable-version3 \
 	--enable-pthreads --enable-libfaac --enable-libopencore-amrnb \
-	--enable-libopencore-amrwb --enable-libtheora--enable-x11grab \
+	--enable-libopencore-amrwb --enable-libtheora --enable-x11grab \
 	--enable-ffplay --enable-avfilter
 
 5. If you get an error, you probably just need to adjust your configure options.  You can run ./configure --help to see all of the options.  
