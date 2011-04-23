@@ -1,0 +1,262 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1F22C78A13625785004F3461 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F22C78313625785004F3461 /* main.cpp */; };
+		1F22C78B13625785004F3461 /* moustachizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F22C78413625785004F3461 /* moustachizer.cpp */; };
+		1F22C79113625814004F3461 /* Face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F22C78D13625814004F3461 /* Face.cpp */; };
+		1F22C79213625814004F3461 /* Face.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F22C78E13625814004F3461 /* Face.h */; };
+		1F22C79313625814004F3461 /* FaceTracker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1F22C78F13625814004F3461 /* FaceTracker.cpp */; };
+		1F22C79413625814004F3461 /* FaceTracker.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F22C79013625814004F3461 /* FaceTracker.h */; };
+		1F6196DE13157824005A036C /* libopencv_calib3d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6196D913157824005A036C /* libopencv_calib3d.dylib */; };
+		1F6196DF13157824005A036C /* libopencv_core.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6196DA13157824005A036C /* libopencv_core.dylib */; };
+		1F6196E013157824005A036C /* libopencv_features2d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6196DB13157824005A036C /* libopencv_features2d.dylib */; };
+		1F6196E113157824005A036C /* libopencv_highgui.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6196DC13157824005A036C /* libopencv_highgui.dylib */; };
+		1F6196E213157824005A036C /* libopencv_imgproc.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F6196DD13157824005A036C /* libopencv_imgproc.dylib */; };
+		1F61979013157D25005A036C /* libopencv_objdetect.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F61978F13157D25005A036C /* libopencv_objdetect.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1F22C78313625785004F3461 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
+		1F22C78413625785004F3461 /* moustachizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = moustachizer.cpp; path = src/moustachizer.cpp; sourceTree = "<group>"; };
+		1F22C78D13625814004F3461 /* Face.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Face.cpp; path = ../src/Tools/Face.cpp; sourceTree = "<group>"; };
+		1F22C78E13625814004F3461 /* Face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Face.h; path = ../src/Tools/Face.h; sourceTree = "<group>"; };
+		1F22C78F13625814004F3461 /* FaceTracker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FaceTracker.cpp; path = ../src/Tools/FaceTracker.cpp; sourceTree = "<group>"; };
+		1F22C79013625814004F3461 /* FaceTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FaceTracker.h; path = ../src/Tools/FaceTracker.h; sourceTree = "<group>"; };
+		1F6196D913157824005A036C /* libopencv_calib3d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.dylib; path = /usr/local/lib/libopencv_calib3d.dylib; sourceTree = "<absolute>"; };
+		1F6196DA13157824005A036C /* libopencv_core.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_core.dylib; path = /usr/local/lib/libopencv_core.dylib; sourceTree = "<absolute>"; };
+		1F6196DB13157824005A036C /* libopencv_features2d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_features2d.dylib; path = /usr/local/lib/libopencv_features2d.dylib; sourceTree = "<absolute>"; };
+		1F6196DC13157824005A036C /* libopencv_highgui.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.dylib; path = /usr/local/lib/libopencv_highgui.dylib; sourceTree = "<absolute>"; };
+		1F6196DD13157824005A036C /* libopencv_imgproc.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.dylib; path = /usr/local/lib/libopencv_imgproc.dylib; sourceTree = "<absolute>"; };
+		1F61978F13157D25005A036C /* libopencv_objdetect.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_objdetect.dylib; path = /usr/local/lib/libopencv_objdetect.dylib; sourceTree = "<absolute>"; };
+		D2AAC0630554660B00DB518D /* moustachizer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = moustachizer.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D289988505E68E00004EDB86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F6196DE13157824005A036C /* libopencv_calib3d.dylib in Frameworks */,
+				1F6196DF13157824005A036C /* libopencv_core.dylib in Frameworks */,
+				1F6196E013157824005A036C /* libopencv_features2d.dylib in Frameworks */,
+				1F6196E113157824005A036C /* libopencv_highgui.dylib in Frameworks */,
+				1F6196E213157824005A036C /* libopencv_imgproc.dylib in Frameworks */,
+				1F61979013157D25005A036C /* libopencv_objdetect.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* moustachizer */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				1F61942B1314C84C005A036C /* libs */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = moustachizer;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				1F22C78313625785004F3461 /* main.cpp */,
+				1F22C78413625785004F3461 /* moustachizer.cpp */,
+				1F22C78D13625814004F3461 /* Face.cpp */,
+				1F22C78E13625814004F3461 /* Face.h */,
+				1F22C78F13625814004F3461 /* FaceTracker.cpp */,
+				1F22C79013625814004F3461 /* FaceTracker.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC0630554660B00DB518D /* moustachizer.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1F61942B1314C84C005A036C /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				1F6196D913157824005A036C /* libopencv_calib3d.dylib */,
+				1F6196DA13157824005A036C /* libopencv_core.dylib */,
+				1F6196DB13157824005A036C /* libopencv_features2d.dylib */,
+				1F6196DC13157824005A036C /* libopencv_highgui.dylib */,
+				1F6196DD13157824005A036C /* libopencv_imgproc.dylib */,
+				1F61978F13157D25005A036C /* libopencv_objdetect.dylib */,
+			);
+			name = libs;
+			path = /Users/jeff/Desktop/moustachizer;
+			sourceTree = "<absolute>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC0600554660B00DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F22C79213625814004F3461 /* Face.h in Headers */,
+				1F22C79413625814004F3461 /* FaceTracker.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC0620554660B00DB518D /* moustachizer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB914A08733D8E0010E9CD /* Build configuration list for PBXNativeTarget "moustachizer" */;
+			buildPhases = (
+				D2AAC0600554660B00DB518D /* Headers */,
+				D2AAC0610554660B00DB518D /* Sources */,
+				D289988505E68E00004EDB86 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = moustachizer;
+			productName = moustachizer;
+			productReference = D2AAC0630554660B00DB518D /* moustachizer.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB914E08733D8E0010E9CD /* Build configuration list for PBXProject "moustachizer" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 08FB7794FE84155DC02AAC07 /* moustachizer */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC0620554660B00DB518D /* moustachizer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC0610554660B00DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F22C78A13625785004F3461 /* main.cpp in Sources */,
+				1F22C78B13625785004F3461 /* moustachizer.cpp in Sources */,
+				1F22C79113625814004F3461 /* Face.cpp in Sources */,
+				1F22C79313625814004F3461 /* FaceTracker.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB914B08733D8E0010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = moustachizer;
+			};
+			name = Debug;
+		};
+		1DEB914C08733D8E0010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_PREFIX = "";
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = moustachizer;
+			};
+			name = Release;
+		};
+		1DEB914F08733D8E0010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB915008733D8E0010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB914A08733D8E0010E9CD /* Build configuration list for PBXNativeTarget "moustachizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB914B08733D8E0010E9CD /* Debug */,
+				1DEB914C08733D8E0010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB914E08733D8E0010E9CD /* Build configuration list for PBXProject "moustachizer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB914F08733D8E0010E9CD /* Debug */,
+				1DEB915008733D8E0010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

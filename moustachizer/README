@@ -1,0 +1,52 @@
+moustachizer
+By Jeff Crouse
+jefftimesten at gmail dot com
+http://www.jeffcrouse.info
+ 
+This software is licensed under the GNU-GPL version 3 or later.
+
+moustachizer is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public
+License as published by the Free Software Foundation; either
+version 3 of the License, or (at your option) any later version.
+
+moustachizer is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+
+
+INTRODUCTION
+----------------
+moustachizer is a video filter that uses Haar Cascades in OpenCV to add moustaches to faces in a video.  It isn't really meant to be a tool for the public.  I am making it just to create videos as a reward for contributors to my Kickstarter campaign for Unlogo. But maybe it will be helpful for others.
+
+
+REQUIREMENTS
+----------------
+
+OpenCV 2.2 - http://opencv.willowgarage.com/wiki/
+FFMPEG compiled with vf_plugin.c
+
+vf_plugin.c is a simple framework that allows you to specify a dylib or .o file to use as an avfilter in FFMPEG.  It basically saves you the trouble of having to recompile FFMPEG every time you make a change to your filter.  Perhaps future versions fo the moustachizer/Unlogo will just be a self-contained avfilter, but for development, this is the way to go*.
+
+1. I start with the v0.6.1 tag from the git repository
+
+git clone git://git.ffmpeg.org/ffmpeg.git ffmpeg
+cd ffmpeg
+git checkout v0.6.1
+
+2. add vf_plugin.c to the libavfilter folder
+
+cp [this folder]/libavfilter/vf_plugin.c [your ffmpeg clone]/libavfilter
+
+3. modify '[your ffmpeg clone]/libavfilter/allfilters.c' and [your ffmpeg clone]/libavfilter/Makefile to include vf_plugin (see examples in [this folder]/libavfilter)
+
+4. Then just ./configure, make, make install as usual
+
+* The frei0r video filter framework is similar (but much more sophisticated) to vf_plugin.c, but I couldn't get it to work at all.
+
+
+EXAMPLE USAGE
+---------------
+ffmpeg -i movies/FullHouse.mp4 -qscale 2 -vf frei0r=moustachizer -y out.mov
